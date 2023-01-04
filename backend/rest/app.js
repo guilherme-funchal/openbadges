@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var address = "http://127.0.0.1:8545"
+var address = "http://127.0.0.1:8545";
 
 const uploadUser = require('./middlewares/uploadFiles');
 const crypto = require('crypto');
@@ -65,7 +65,6 @@ app.get('/issuers', async function (req, res) {
   var issuer_identificado = [];
 
   var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
-  console.log(contratoInteligente);
 
   let issuers = await contratoInteligente.methods.getItemsIssuer().call(function (err, res) {
     if (err) {
@@ -80,55 +79,229 @@ app.get('/issuers', async function (req, res) {
    
     let issuer = await contratoInteligente.methods.getIssuerByID(i).call(function (err, res) {
       if (err) {
-        console.log("Ocorreu um erro", err)
         return
       }
 
     });
+    
 
-    if (issuer['0'] !== "") {
+    if (issuer['0'] !== '0') {
       issuer_identificado.push({
         entityType: "Issuer",
-        entityId: issuer['0'],
-        openBadgeId: "http://api.serpro.gov.br/public/issuers/" + issuer['0'],
-        createAt: issuer['3'],
-        createBy: issuer['4'],
-        name: issuer['1'],
+        id: issuer['0'],
+        entityId: issuer['1'],
+        openBadgeId: "http://api.serpro.gov.br/public/issuers/" + issuer['1'],
+        createAt: issuer['4'],
+        createBy: issuer['5'],
+        name: issuer['2'],
         image: issuer['6'],
-        email: issuer['8'],
-        description: issuer['2'],
-        url: issuer['9'],
+        email: issuer['7'],
+        description: issuer['3'],
+        url: issuer['8'],
         staffId: issuer['7'],
-        userId: issuer['5'],
-        extensions: "",
-        badgrDomain: ""       
+        badgrDomain: issuer['9'],    
+        extensions: ""
       });
     }
   }
-  
-    res.status(200).send(issuer_identificado);
-
+      res.status(200).send(issuer_identificado);
 });
-
-// Functions for assertions
 
 // Routes
 /**
  * @swagger
- * /assertions:
- *  get:
- *    description: Use to request all assertions
+ * /issuers:
+ *  post:
+ *    description: Use to insert issuers
  *    responses:
  *      '200':
  *        description: A successful response
  */
+
+app.post('/issuers', async function (req, res) {
+
+  let now = Date.now();
+
+  let entityId = String(crypto.randomUUID());
+  let name = String(req.body.name);
+  let description = String(req.body.description);
+  let createdAt = String(now);
+  let createdBy = String(req.body.createdBy);
+  let image = String(req.body.image);
+  let staffId = String(req.body.staffId);
+  let email = String(req.body.email);
+  let url = String(req.body.url);
+  let domain = String(req.body.domain);
+  
+  const network = process.env.ETHEREUM_NETWORK;
+  console.log(network);
+
+  const web3 = new Web3(
+    new Web3.providers.HttpProvider(
+     `${address}`
+    )
+  );
+
+  
+  const signer = web3.eth.accounts.privateKeyToAccount(
+    process.env.SIGNER_PRIVATE_KEY
+  );
+  
+  web3.eth.accounts.wallet.add(signer);
+
+  var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+  const tx = contratoInteligente.methods.setIssuer(
+    entityId,
+    name,
+    description,
+    createdAt,
+    createdBy,
+    image,
+    staffId,
+    email,
+    url,
+    domain
+  )
+
+  const receipt = await tx
+      .send({
+        from: signer.address,
+        gas: await tx.estimateGas(),
+      })
+      .once("transactionHash", (txhash) => {
+        console.log(`Dados enviados com sucesso ...`);
+      });
+    console.log(`Dados inseridos -> ${receipt.blockNumber}`);
+    res.status(200).send(`Dados inseridos no bloco ${receipt.blockNumber}`);
+  });
+
+  // Routes
+/**
+ * @swagger
+ * /issuers:
+ *  patch:
+ *    description: Use to update issuers
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+
+  app.patch('/issuers', async function (req, res) {
+
+    let now = Date.now();
+  
+    let id = String(req.body.id);
+    let name = String(req.body.name);
+    let description = String(req.body.description);
+    let image = String(req.body.image);
+    let staffId = String(req.body.staffId);
+    let email = String(req.body.email);
+    let url = String(req.body.url);
+    let domain = String(req.body.domain);
+    
+    const network = process.env.ETHEREUM_NETWORK;
+  
+    const web3 = new Web3(
+      new Web3.providers.HttpProvider(
+       `${address}`
+      )
+    );
+      
+    const signer = web3.eth.accounts.privateKeyToAccount(
+      process.env.SIGNER_PRIVATE_KEY
+    );
+    
+    web3.eth.accounts.wallet.add(signer);
+  
+    var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+  
+    const tx = contratoInteligente.methods.updateIssuer(
+      id,
+      name,
+      description,
+      image,
+      staffId,
+      email,
+      url,
+      domain
+    )
+  
+    const receipt = await tx
+        .send({
+          from: signer.address,
+          gas: await tx.estimateGas(),
+        })
+        .once("transactionHash", (txhash) => {
+          console.log(`Dados enviados com sucesso ...`);
+        });
+      console.log(`Dados inseridos -> ${receipt.blockNumber}`);
+      res.status(200).send(`Dados inseridos no bloco ${receipt.blockNumber}`);
+    });  
+
+// Routes
+/**
+ * @swagger
+ * /issuers:
+ *  delete:
+ *    description: Use to delete issuers
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+
+    app.delete('/issuer/:id', async function (req, res) {
+
+      let id = req.params.id
+  
+      const network = process.env.ETHEREUM_NETWORK;
+  
+      const web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          `${address}`
+        )
+      );
+      const signer = web3.eth.accounts.privateKeyToAccount(
+        process.env.SIGNER_PRIVATE_KEY
+      );
+      web3.eth.accounts.wallet.add(signer);
+      var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+  
+      const tx = contratoInteligente.methods.deleteIssuer(
+        id
+      );
+  
+      const receipt = await tx
+        .send({
+          from: signer.address,
+          gas: await tx.estimateGas(),
+        })
+        .once("transactionHash", (txhash) => {
+          console.log(`Dados enviados com sucesso ...`);
+        });
+      console.log(`Dados inseridos -> ${receipt.blockNumber}`);
+      res.status(200).send(`Issuer excluído com sucesso`);
+    });
+
+    
+// Functions for assertions
+
+// Routes
+/**
+* @swagger
+* /assertions:
+*  get:
+*    description: Use to request all assertions
+*    responses:
+*      '200':
+*        description: A successful response
+*/
 
 app.get('/assertions', async function (req, res) {
   var web3 = new Web3(address);
   var assertions_identificado = [];
 
   var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
-  console.log(contratoInteligente);
 
   let assertions = await contratoInteligente.methods.getItemsIssuer().call(function (err, res) {
     if (err) {
@@ -152,6 +325,7 @@ app.get('/assertions', async function (req, res) {
     if (assertion['0'] !== "") {
       assertions_identificado.push({
         entityId: assertion['0'],
+        openBadgeId: "http://api.serpro.gov.br/public/issuers/" + assertion['0'],
         createdAt: assertion['1'],
         image: assertion['2'],
         isssuerId: assertion['3'],
@@ -160,7 +334,7 @@ app.get('/assertions', async function (req, res) {
         issueOn: assertion['6'],
         revoked: assertion['7'],
         revocationReason: assertion['8'],
-        expires: assertion['9']
+        extensions: {}
       });
     }
     
@@ -211,22 +385,25 @@ app.get('/badgeclass', async function (req, res) {
 
     if (badge['0'] !== "") {
       badge_identificado.push({
+        type: "BadgeClass",
         entityId: badge['0'],
         createdAt: badge['1'],
         createdBy: badge['2'],
-        issuerId: badge['3'],
         name: badge['4'],
         image: badge['5'],
         description: badge['6'],
         criteriaUrl: badge['7'],
-        alignmentsTargetName: badge['8'],
-        alignmentsTargetUrl: badge['9'],
-        alignmentsTargetDescription: badge['10'],
-        alignmentsTargetFramework: badge['11'],
-        alignmentsTargetCode: badge['12'],
-        tags: badge['13'],
-        expiresAmount: badge['14'],
-        expiresDuration: badge['15']
+        criteriaNarrative: badge['8'],
+        alignmentsTargetName: badge['9'],
+        alignmentsTargetUrl: badge['10'],
+        alignmentsTargetDescription: badge['11'],
+        alignmentsTargetFramework: badge['12'],
+        alignmentsTargetCode: badge['13'],
+        tags: badge['14'],
+        issuerId: badge['3'],
+        expiresAmount: badge['15'],
+        expiresDuration: badge['16'],
+        extensions: ""
       });
     }
   }
@@ -235,6 +412,131 @@ app.get('/badgeclass', async function (req, res) {
 
 });
 
+// Functions for BadgeClass
+// Routes
+/**
+ * @swagger
+ * /badgeclass:
+ *  delete:
+ *    description: Use to delete badgeclass
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+
+app.post('/badgeclass', async function (req, res) {
+
+  let now = Date.now();
+
+  let entityId = String(crypto.randomUUID());
+  let createdAt = String(now);
+  let createdBy = String(req.body.createdBy);
+  let name = String(req.body.name);
+  let image = String(req.body.image);
+  let description = String(req.body.description);
+  let criteriaUrl = String(req.body.criteriaUrl);
+  let criteriaNarrative = String(req.body.criteriaNarrative);
+  let alignmentsTargetName = String(req.body.alignmentsTargetName);
+  let alignmentsTargetUrl = String(req.body.alignmentsTargetUrl);
+  let alignmentsTargetDescription = String(req.body.alignmentsTargetDescription);
+  let alignmentsTargetFramework = String(req.body.alignmentsTargetFramework);
+  let alignmentsTargetCode = String(req.body.alignmentsTargetCode);
+  let tags = String(req.body.tags);
+  let expiresAmount = String(req.body.expiresAmount);
+  let expiresDuration = String(req.body.expiresDuration);
+  
+  const network = process.env.ETHEREUM_NETWORK;
+
+  const web3 = new Web3(
+    new Web3.providers.HttpProvider(
+     `${address}`
+    )
+  );
+
+  
+  const signer = web3.eth.accounts.privateKeyToAccount(
+    process.env.SIGNER_PRIVATE_KEY
+  );
+  
+  web3.eth.accounts.wallet.add(signer);
+
+  var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+  const tx = contratoInteligente.methods.setBadgeClass(
+        entityId,
+        createdAt,
+        createdBy,
+        name,
+        image,
+        description,
+        criteriaUrl,
+        criteriaNarrative,
+        alignmentsTargetName,
+        alignmentsTargetUrl,
+        alignmentsTargetDescription,
+        alignmentsTargetFramework,
+        alignmentsTargetCode,
+        tags,
+        expiresAmount,
+        expiresDuration
+  )
+
+  const receipt = await tx
+      .send({
+        from: signer.address,
+        gas: await tx.estimateGas(),
+      })
+      .once("transactionHash", (txhash) => {
+        console.log(`Dados enviados com sucesso ...`);
+      });
+    console.log(`Dados inseridos -> ${receipt.blockNumber}`);
+    res.status(200).send(`Dados inseridos no bloco ${receipt.blockNumber}`);
+  });
+
+// Functions for BadgeClass
+// Routes
+/**
+ * @swagger
+ * /badgeclass:
+ *  delete:
+ *    description: Use to delete badgeclass
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+
+ app.delete('/badgeclass/:id', async function (req, res) {
+
+  let id = req.params.id
+
+  const network = process.env.ETHEREUM_NETWORK;
+
+  const web3 = new Web3(
+    new Web3.providers.HttpProvider(
+      `${address}`
+    )
+  );
+  const signer = web3.eth.accounts.privateKeyToAccount(
+    process.env.SIGNER_PRIVATE_KEY
+  );
+  web3.eth.accounts.wallet.add(signer);
+  var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+  const tx = contratoInteligente.methods.deleteBadgeClass(
+    id
+  );
+
+  const receipt = await tx
+    .send({
+      from: signer.address,
+      gas: await tx.estimateGas(),
+    })
+    .once("transactionHash", (txhash) => {
+      console.log(`Dados enviados com sucesso ...`);
+    });
+  console.log(`Dados inseridos -> ${receipt.blockNumber}`);
+  res.status(200).send(`BadgeClass excluído com sucesso`);
+});
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
