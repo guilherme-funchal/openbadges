@@ -1,0 +1,15 @@
+[
+    {
+        "user_id":"1",
+        "profile":"administrador",
+        "name":"Administrador do Serpro",
+        "email":"admin@serpro.gov.br",
+        "type":"pj",
+        "created_at":"1666355218",
+        "updated_at":"01/12/2022 08:20:47 am",
+        "last_login":"1666355218",
+        "image":"dist/img/mma.png",
+        "pass_hash":"",
+        "pass_salt":""
+    }
+]

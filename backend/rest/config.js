@@ -1,12 +1,7 @@
 
-const CONTACT_ADDRESS = '0xf5059a5D33d5853360D16C683c16e67980206f36';
+const CONTACT_ADDRESS = '0x809d550fca64d94Bd9F66E60752A544199cfAC3D'; 
 
 const CONTACT_ABI = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -122,25 +117,6 @@ const CONTACT_ABI = [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "uint256",
 				"name": "id",
 				"type": "uint256"
@@ -178,6 +154,495 @@ const CONTACT_ABI = [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "_revoked",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "_revocationReason",
+				"type": "string"
+			}
+		],
+		"name": "revokeAssertion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"name": "safeTransferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "operator",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "approved",
+				"type": "bool"
+			}
+		],
+		"name": "setApprovalForAll",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_entityId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_createdAt",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_image",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_issuerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_badgeclassId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_recipientId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_issuedOn",
+				"type": "string"
+			},
+			{
+				"internalType": "bool",
+				"name": "_revoked",
+				"type": "bool"
+			},
+			{
+				"internalType": "string",
+				"name": "_revocationReason",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_expires",
+				"type": "string"
+			}
+		],
+		"name": "setAssertion",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_entityId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_createdAt",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_createdBy",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_issuerId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_image",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_criteriaUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_criteriaNarrative",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetDescription",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetFramework",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetCode",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_tags",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_expiresAmount",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_expiresDuration",
+				"type": "string"
+			}
+		],
+		"name": "setBadgeClass",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_entityId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_createdAt",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_createdBy",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_image",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_staffId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_url",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_domain",
+				"type": "string"
+			}
+		],
+		"name": "setIssuer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_criteriaUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_criteriaNarrative",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetUrl",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetDescription",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetFramework",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_alignmentsTargetCode",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_tags",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_expiresAmount",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_expiresDuration",
+				"type": "string"
+			}
+		],
+		"name": "updateBadgeClass",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_image",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_staffId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_url",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_domain",
+				"type": "string"
+			}
+		],
+		"name": "updateIssuer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -206,6 +671,11 @@ const CONTACT_ABI = [
 		],
 		"name": "getAssertionByID",
 		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
 			{
 				"internalType": "string",
 				"name": "",
@@ -270,6 +740,11 @@ const CONTACT_ABI = [
 		],
 		"name": "getBadgeClassByID",
 		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "_id",
+				"type": "uint256"
+			},
 			{
 				"internalType": "string",
 				"name": "_entityId",
@@ -743,291 +1218,6 @@ const CONTACT_ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bytes",
-				"name": "data",
-				"type": "bytes"
-			}
-		],
-		"name": "safeTransferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "operator",
-				"type": "address"
-			},
-			{
-				"internalType": "bool",
-				"name": "approved",
-				"type": "bool"
-			}
-		],
-		"name": "setApprovalForAll",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_entityId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_createdAt",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_image",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_issuerId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_badgeclassId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_recipientId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_issuedOn",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "_revoked",
-				"type": "bool"
-			},
-			{
-				"internalType": "string",
-				"name": "_revocationReason",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_expires",
-				"type": "string"
-			}
-		],
-		"name": "setAssertion",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_entityId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_createdAt",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_createdBy",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_issuerId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_image",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_criteriaUrl",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_criteriaNarrative",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetUrl",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetDescription",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetFramework",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetCode",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_tags",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_expiresAmount",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_expiresDuration",
-				"type": "string"
-			}
-		],
-		"name": "setBadgeClass",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_entityId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_createdAt",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_createdBy",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_image",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_staffId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_url",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_domain",
-				"type": "string"
-			}
-		],
-		"name": "setIssuer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "bytes4",
@@ -1076,206 +1266,6 @@ const CONTACT_ABI = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_entityId",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "_revoked",
-				"type": "bool"
-			},
-			{
-				"internalType": "string",
-				"name": "_revocationReason",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_expires",
-				"type": "string"
-			}
-		],
-		"name": "updateAssertion",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_entityId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_image",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_criteriaUrl",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_criteriaNarrative",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetUrl",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetDescription",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetFramework",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_alignmentsTargetCode",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_tags",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_expiresAmount",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_expiresDuration",
-				"type": "string"
-			}
-		],
-		"name": "updateBadgeClass",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "id",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_image",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_staffId",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_email",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_url",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_domain",
-				"type": "string"
-			}
-		],
-		"name": "updateIssuer",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ];

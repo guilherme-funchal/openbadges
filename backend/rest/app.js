@@ -134,7 +134,6 @@ app.post('/issuers', async function (req, res) {
   let domain = String(req.body.domain);
   
   const network = process.env.ETHEREUM_NETWORK;
-  console.log(network);
 
   const web3 = new Web3(
     new Web3.providers.HttpProvider(
@@ -383,26 +382,27 @@ app.get('/badgeclass', async function (req, res) {
 
     });
 
-    if (badge['0'] !== "") {
+    if (badge['0'] !== "0") {
       badge_identificado.push({
         type: "BadgeClass",
-        entityId: badge['0'],
-        createdAt: badge['1'],
-        createdBy: badge['2'],
-        name: badge['4'],
-        image: badge['5'],
-        description: badge['6'],
-        criteriaUrl: badge['7'],
-        criteriaNarrative: badge['8'],
-        alignmentsTargetName: badge['9'],
-        alignmentsTargetUrl: badge['10'],
-        alignmentsTargetDescription: badge['11'],
-        alignmentsTargetFramework: badge['12'],
-        alignmentsTargetCode: badge['13'],
-        tags: badge['14'],
-        issuerId: badge['3'],
-        expiresAmount: badge['15'],
-        expiresDuration: badge['16'],
+        id: badge['0'],
+        entityId: badge['1'],
+        createdAt: badge['2'],
+        createdBy: badge['3'],
+        name: badge['5'],
+        image: badge['6'],
+        description: badge['7'],
+        criteriaUrl: badge['8'],
+        criteriaNarrative: badge['9'],
+        alignmentsTargetName: badge['10'],
+        alignmentsTargetUrl: badge['11'],
+        alignmentsTargetDescription: badge['12'],
+        alignmentsTargetFramework: badge['13'],
+        alignmentsTargetCode: badge['14'],
+        tags: badge['15'],
+        issuerId: badge['4'],
+        expiresAmount: badge['16'],
+        expiresDuration: badge['17'],
         extensions: ""
       });
     }
@@ -418,7 +418,7 @@ app.get('/badgeclass', async function (req, res) {
  * @swagger
  * /badgeclass:
  *  delete:
- *    description: Use to delete badgeclass
+ *    description: Use to insert badgeclass
  *    responses:
  *      '200':
  *        description: A successful response
@@ -432,6 +432,7 @@ app.post('/badgeclass', async function (req, res) {
   let createdAt = String(now);
   let createdBy = String(req.body.createdBy);
   let name = String(req.body.name);
+  let issuerId = String(req.body.issuerId);
   let image = String(req.body.image);
   let description = String(req.body.description);
   let criteriaUrl = String(req.body.criteriaUrl);
@@ -466,6 +467,7 @@ app.post('/badgeclass', async function (req, res) {
         entityId,
         createdAt,
         createdBy,
+        issuerId,
         name,
         image,
         description,
@@ -537,6 +539,79 @@ app.post('/badgeclass', async function (req, res) {
   console.log(`Dados inseridos -> ${receipt.blockNumber}`);
   res.status(200).send(`BadgeClass excluído com sucesso`);
 });
+
+// Functions for BadgeClass
+// Routes
+/**
+ * @swagger
+ * /badgeclass:
+ *  patch:
+ *    description: Use to update badgeclass
+ *    responses:
+ *      '200':
+ *        description: A successful response
+ */
+
+ app.patch('/badgeclass', async function (req, res) {
+  let id = String(req.body.id);
+  let name = String(req.body.name);
+  let description = String(req.body.description);
+  let criteriaUrl = String(req.body.criteriaUrl);
+  let criteriaNarrative = String(req.body.criteriaNarrative);
+  let alignmentsTargetName = String(req.body.alignmentsTargetName);
+  let alignmentsTargetUrl = String(req.body.alignmentsTargetUrl);
+  let alignmentsTargetDescription = String(req.body.alignmentsTargetDescription);
+  let alignmentsTargetFramework = String(req.body.alignmentsTargetFramework);
+  let alignmentsTargetCode = String(req.body.alignmentsTargetCode);
+  let tags = String(req.body.tags);
+  let expiresAmount = String(req.body.expiresAmount);
+  let expiresDuration = String(req.body.expiresDuration);
+  
+  const network = process.env.ETHEREUM_NETWORK;
+
+  const web3 = new Web3(
+    new Web3.providers.HttpProvider(
+     `${address}`
+    )
+  );
+
+  
+  const signer = web3.eth.accounts.privateKeyToAccount(
+    process.env.SIGNER_PRIVATE_KEY
+  );
+  
+  web3.eth.accounts.wallet.add(signer);
+
+  var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+  const tx = contratoInteligente.methods.updateBadgeClass(
+        id,
+        name,
+        description,
+        criteriaUrl,
+        criteriaNarrative,
+        alignmentsTargetName,
+        alignmentsTargetUrl,
+        alignmentsTargetDescription,
+        alignmentsTargetFramework,
+        alignmentsTargetCode,
+        tags,
+        expiresAmount,
+        expiresDuration
+  )
+
+  const receipt = await tx
+      .send({
+        from: signer.address,
+        gas: await tx.estimateGas(),
+      })
+      .once("transactionHash", (txhash) => {
+        console.log(`Dados enviados com sucesso ...`);
+      });
+    console.log(`Dados inseridos -> ${receipt.blockNumber}`);
+    res.status(200).send(`Dados inseridos no bloco ${receipt.blockNumber}`);
+  });
+
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
