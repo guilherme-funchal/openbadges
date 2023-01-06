@@ -1,28 +1,57 @@
 const User = require('../models/user')
+const crypto = require('crypto');
+
 module.exports = {
   async create(req, res) {
     try {
-      const { name, email, type, image, pass_hash, pass_salt } = req.body
+
+      let name = req.body.name;
+      let email = req.body.email;
+      let type = req.body.type;
+      let image = req.body.image;
+      let password = req.body.password;
+
       const user = await User.findOne({ where: { email } })
       if (user) {
         res.status(401).json({ message: "Já existe um usuario com este email" })
       } else {
-        const user = await User.create({ name, email, type, image, pass_hash, pass_salt, create_at, update_at, last_login })
+        const entity_id = String(crypto.randomUUID());
+        const pass_salt = crypto.randomBytes(12).toString('hex');       
+        const pass_hash = crypto.pbkdf2Sync(password, pass_salt, 1000, 64, `sha512`).toString(`hex`);
+
+        const user = await User.create({ name, email, type, image, pass_hash, pass_salt, entity_id })
         res.status(200).json({ user })
       }
     } catch (error) {
       res.status(400).json({ error })
     }
   },
-  async update(req, res) {
+  async update_password(req, res) {
     try {
-      const { entityId } = req.params
-      const { name, email, type, image, pass_hash, pass_salt, last_login } = req.body
-      const user = await User.findOne({ where: { entityId } })
+      const { id } = req.params
+      let password = req.body.password;
+      const user = await User.findOne({ where: { id } })
       if (!user) {
         res.status(401).json({ message: "Nenhum usuario encontrado" })
       } else {
-        const user = await User.update({ name, email, type, image, pass_hash, pass_salt, last_login }, { where: { entityId } })
+        const pass_salt = crypto.randomBytes(12).toString('hex');   
+        const pass_hash = crypto.pbkdf2Sync(password, pass_salt, 1000, 64, `sha512`).toString(`hex`);
+        const user = await User.update({ pass_salt, pass_hash }, { where: { id } })
+        res.status(200).json({ result:true })
+      }
+    } catch (error) {
+      res.status(400).json({ result:false })
+    }
+  },
+  async update(req, res) {
+    try {
+      const { id } = req.params
+      const { name, email, type, image } = req.body
+      const user = await User.findOne({ where: { id } })
+      if (!user) {
+        res.status(401).json({ message: "Nenhum usuario encontrado" })
+      } else {
+        const user = await User.update({ name, email, type, image }, { where: { id } })
         res.status(200).json({ user })
       }
     } catch (error) {
@@ -30,6 +59,7 @@ module.exports = {
     }
   },
   async list(req, res) {
+
     try {
       const usuarios = await User.findAll()
       if (!usuarios) {
@@ -41,13 +71,25 @@ module.exports = {
     }
   },
   async delete(req, res) {
-    const { entityId } = req.params
-    const user = await User.findOne({ where: { entityId } })
+    const { id } = req.params
+    const user = await User.findOne({ where: { id } })
     if (!user) {
       res.status(401).json({ message: 'Usuario não encontrado' })
     } else {
-      await User.destroy({ where: { entityId } })
+      await User.destroy({ where: { id } })
       res.status(200).json({ ok: true })
+    }
+  },
+  async test(req, res) {
+    let id = req.body.id;
+    let password = req.body.password;
+    const user = await User.findOne({ where: { id } })
+    hash = crypto.pbkdf2Sync(password, user.pass_salt, 1000, 64, `sha512`).toString(`hex`);
+
+    if (hash === user.pass_hash) {
+      res.status(200).json({result : true})
+    } else {
+      res.status(200).json({result : false})
     }
   }
 }

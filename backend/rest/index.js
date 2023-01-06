@@ -1,9 +1,11 @@
-var express = require('express');
+const express = require('express');
 var app = express();
 var address = "http://127.0.0.1:8545";
-const routes = require('./routes')
+
+const routes = require('./routes');
 
 const uploadUser = require('./middlewares/uploadFiles');
+
 const crypto = require('crypto');
 
 const bodyParser = require('body-parser');
@@ -27,7 +29,10 @@ const http = require('http');
 const hostname = '127.0.0.1';
 const port = 3000;
 
-app.use(routes)
+require('./database')
+
+app.use(express.json())
+app.use(routes);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
