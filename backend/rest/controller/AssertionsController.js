@@ -1,6 +1,7 @@
 var Web3 = require('web3');
 var address = "http://127.0.0.1:8545";
-
+var moment = require('moment');
+const short = require('short-uuid');
 require("dotenv").config();
 
 const CONTACT_ABI = require('./../config');
@@ -41,33 +42,47 @@ module.exports = {
   
       });
   
-      if (assertion['0'] !== "0") {
+    //   if (assertion['0'] !== "0") {
+
+        console.log(assertion['7']); 
         assertions_identificado.push({
-          id: assertion['0'],
-          entityId: assertion['1'],
-          openBadgeId: "http://api.serpro.gov.br/public/issuers/" + assertion['1'],
-          createdAt: assertion['2'],
+          type: "Assertion",  
+          id: "https://openbadges.serpro.gov.br/public/assertions/" + assertion['1'],
+          "@context": "https://w3id.org/openbadges/v2",
+          recipient: assertion['6'],
+          issueOn: assertion['7'],  
           image: assertion['3'],
-          isssuerId: assertion['4'],
-          badgeclassId: assertion['5'],
-          recipienteId: assertion['6'],
-          issueOn: assertion['7'],
+        //   isssuerId: assertion['4'],
+        //   badgeclassId: assertion['5'],
+        //   recipienteId: assertion['6'],
           revoked: assertion['8'],
-          revocationReason: assertion['9'],
-          extensions: {}
+          verification: {
+            type: "HostedBadge"
+          },
+        //   revocationReason: assertion['9'],
+          "extensions:recipientProfile":{"name": "email@mail.com",
+          "@context": "https://openbadgespec.org/extensions/recipientProfile/context.json",
+          "type": [
+            "Extension",
+            "extensions:RecipientProfile"
+          ]}
         });
-      }
-      
-    }
+      }   
+    // }
     
       res.status(200).send(assertions_identificado);  
   },
 
   async insert(req, res) {
-      let now = Date.now();
-      let entityId = String(crypto.randomUUID());
+      var time = new Date().getTime();
+      file = "burning.png"
+      var now = moment()
+      .utcOffset('-03:00')
+      .format('DD/MM/YYYY hh:mm:ss a');
+    //   let entityId = String(crypto.randomUUID());
+      let entityId = String(short.generate());
       let createdAt = String(now);
-      let image = "Burning image..."
+      let image = "https://openbadges.serpro.gov.br/public/assertions/" + file + "/image"
       let issuerId = String(req.body.issuerId);
       let badgeclassId = String(req.body.badgeclassId);
       let recipientId = String(req.body.recipientId);

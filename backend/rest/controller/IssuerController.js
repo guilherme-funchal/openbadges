@@ -1,6 +1,6 @@
 var Web3 = require('web3');
 var address = "http://127.0.0.1:8545";
-
+const short = require('short-uuid');
 require("dotenv").config();
 
 const CONTACT_ABI = require('./../config');
@@ -65,7 +65,8 @@ module.exports = {
 
     async insert(req, res) {
         let now = Date.now();
-        let entityId = String(crypto.randomUUID());
+//      let entityId = String(crypto.randomUUID());
+        let entityId = String(short.generate());
         let name = String(req.body.name);
         let description = String(req.body.description);
         let createdAt = String(now);

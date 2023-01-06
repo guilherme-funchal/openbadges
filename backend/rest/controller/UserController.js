@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const crypto = require('crypto');
+const short = require('short-uuid');
 
 module.exports = {
   async create(req, res) {
@@ -15,7 +16,11 @@ module.exports = {
       if (user) {
         res.status(401).json({ message: "Já existe um usuario com este email" })
       } else {
-        const entity_id = String(crypto.randomUUID());
+        
+        //    const entity_id = String(crypto.randomUUID());
+
+        let entity_id  = String(short.generate());
+
         const pass_salt = crypto.randomBytes(12).toString('hex');       
         const pass_hash = crypto.pbkdf2Sync(password, pass_salt, 1000, 64, `sha512`).toString(`hex`);
 
