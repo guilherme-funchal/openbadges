@@ -15,11 +15,11 @@ contract Badges is ERC721, Ownable {
         string description;
         string createdAt;
         string createdBy;
-        string userId;
         string image;
         string staffId;
-        string contactEmail;
+        string email;
         string url;
+        string domain;
     }
 
     struct BadgeClass {
@@ -75,11 +75,11 @@ contract Badges is ERC721, Ownable {
         string memory _description,
         string memory _createdAt,
         string memory _createdBy,
-        string memory _userId,
         string memory _image,
         string memory _staffId,
-        string memory _contactEmail,
-        string memory _url
+        string memory _email,
+        string memory _url,
+        string memory _domain
         ) public { 
         issuerId++;
         Issuer memory newIssuer = Issuer({
@@ -89,11 +89,11 @@ contract Badges is ERC721, Ownable {
             description: _description,
             createdAt : _createdAt,
             createdBy : _createdBy,
-            userId : _userId,
             image : _image,
             staffId: _staffId,
-            contactEmail : _contactEmail,
-            url : _url
+            email : _email,
+            url : _url,
+            domain : _domain
         });
         issuerIds.push(newIssuer.id);
         issuers[newIssuer.id] = newIssuer; 
@@ -179,32 +179,29 @@ contract Badges is ERC721, Ownable {
     }
 
     function updateIssuer(
-            uint id,
-            string memory _entityId,
+            uint256 id,
             string memory _name,
             string memory _description,
-            string memory _userId,
             string memory _image,
             string memory _staffId,
-            string memory _contactEmail,
-            string memory _url
+            string memory _email,
+            string memory _url,
+            string memory _domain
     ) public
     {
             Issuer storage targetIssuer = issuers[id];
-            targetIssuer.userId = _userId;
-            targetIssuer.image = _image;
             targetIssuer.name = _name;
             targetIssuer.description = _description;
+            targetIssuer.image = _image;      
             targetIssuer.staffId = _staffId;
-            targetIssuer.contactEmail = _contactEmail;
+            targetIssuer.email = _email;
             targetIssuer.url = _url;
+            targetIssuer.domain = _domain;
     }
 
     function updateBadgeClass(
             uint256 id,
-            string memory _entityId,
             string memory _name,
-            string memory _image,
             string memory _description,
             string memory _criteriaUrl,
             string memory _criteriaNarrative,
@@ -222,7 +219,6 @@ contract Badges is ERC721, Ownable {
             BadgeClass storage targetBadgeClass = badgeclasses[id];
 
             targetBadgeClass.name = _name;
-            targetBadgeClass.image = _image;
             targetBadgeClass.description = _description;
             targetBadgeClass.criteriaUrl = _criteriaUrl;
             targetBadgeClass.criteriaNarrative = _criteriaNarrative;
@@ -236,19 +232,15 @@ contract Badges is ERC721, Ownable {
             targetBadgeClass.expiresDuration = _expiresDuration;
     }
 
-    function updateAssertion(
+    function revokeAssertion(
         uint256 id,
-        string memory _entityId,
         bool _revoked,
-        string memory _revocationReason,
-        string memory _expires
-           
+        string memory _revocationReason
     ) public
     {
             Assertion storage targetAssertion = assertions[id];
             targetAssertion.revoked = _revoked;
-            targetAssertion.revocationReason = _revocationReason;
-            targetAssertion.expires = _expires;          
+            targetAssertion.revocationReason = _revocationReason;        
     }
     
     function deleteIssuer(uint256 id) public {
@@ -264,6 +256,8 @@ contract Badges is ERC721, Ownable {
     }
 
     function getIssuerByID(uint256 id)  public view returns(
+            uint256,
+            string memory,
             string memory,
             string memory,
             string memory,
@@ -278,19 +272,22 @@ contract Badges is ERC721, Ownable {
         Issuer memory issuer = issuers[id];
 
         return(
+            issuer.id,
             issuer.entityId,
             issuer.name,
             issuer.description,
             issuer.createdAt,
             issuer.createdBy,
-            issuer.userId,
             issuer.image,
-            issuer.contactEmail,
-            issuer.url
+            issuer.staffId,
+            issuer.email,
+            issuer.url,
+            issuer.domain
         );
     }
 
     function getAssertionByID(uint256 id)  public view returns(
+            uint256,
             string memory,
             string memory,
             string memory,
@@ -307,6 +304,7 @@ contract Badges is ERC721, Ownable {
         Assertion memory assertion = assertions[id];
 
         return(
+            assertion.id,
             assertion.entityId,
             assertion.createdAt,
             assertion.image,
@@ -321,6 +319,7 @@ contract Badges is ERC721, Ownable {
     }
 
      function getBadgeClassByID(uint256 id)  public view returns(
+            uint256 _id,
             string memory _entityId,
             string memory _createdAt,
             string memory _createdBy,
@@ -344,6 +343,7 @@ contract Badges is ERC721, Ownable {
         BadgeClass memory badgeclass = badgeclasses[id];
 
         return(
+            badgeclass.id,
             badgeclass.entityId,
             badgeclass.createdAt,
             badgeclass.createdBy,
