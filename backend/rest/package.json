@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.2.2",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
@@ -22,6 +23,7 @@
     "mysql2": "^2.3.3",
     "nanoid": "^4.0.0",
     "nodemon": "^2.0.20",
+    "openbadges-bakery-v2": "^2.1.0",
     "sequelize": "^6.28.0",
     "sequelize-cli": "^6.5.2",
     "short-uuid": "^4.2.2",

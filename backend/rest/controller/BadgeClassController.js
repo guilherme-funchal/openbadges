@@ -16,8 +16,62 @@ require("dotenv").config();
 
 
 module.exports = {
+    async search(req, res) {
+        let entityId = String(req.params.entityId);
+        var web3 = new Web3(address);
+        var badge_identificado = [];
 
+        var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
 
+        let badges = await contratoInteligente.methods.getItemsBadgeClass().call(function (err, res) {
+            if (err) {
+                console.log("Ocorreu um erro", err)
+                return
+            }
+        });
+
+        const quantidade = badges.length + 1;
+
+        for (var i = 1; i < quantidade; i++) {
+
+            let badge = await contratoInteligente.methods.getBadgeClassByID(i).call(function (err, res) {
+                if (err) {
+                    console.log("Ocorreu um erro", err)
+                    return
+                }
+
+            });
+
+            if (badge['0'] !== "0") {
+                if (String(entityId) === String(badge['1'])){
+                    badge_identificado.push({
+                        type: "BadgeClass",
+                        id: badge['0'],
+                        entityId: badge['1'],
+                        createdAt: badge['2'],
+                        createdBy: badge['3'],
+                        name: badge['5'],
+                        image: badge['6'],
+                        description: badge['7'],
+                        criteriaUrl: badge['8'],
+                        criteriaNarrative: badge['9'],
+                        alignmentsTargetName: badge['10'],
+                        alignmentsTargetUrl: badge['11'],
+                        alignmentsTargetDescription: badge['12'],
+                        alignmentsTargetFramework: badge['13'],
+                        alignmentsTargetCode: badge['14'],
+                        tags: badge['15'],
+                        issuerId: badge['4'],
+                        expiresAmount: badge['16'],
+                        expiresDuration: badge['17'],
+                        extensions: ""
+                    });
+                }
+            }
+        }
+
+        res.status(200).send(badge_identificado);
+    },
     async list(req, res) {
         var web3 = new Web3(address);
         var badge_identificado = [];

@@ -64,15 +64,23 @@ module.exports = {
     }
   },
   async list(req, res) {
-
     try {
       const usuarios = await User.findAll()
       if (!usuarios) {
-        res.status(401).json({ message: 'Não existe usuario cadastros' })
+        res.status(401).json({ message: 'Não existe usuario cadastrado' })
       }
       res.status(200).json({ usuarios })
     } catch (error) {
       res.status(400).json({ error })
+    }
+  },
+  async search(req, res) {
+    const { entity_id } = req.params
+    const usuario = await User.findOne({ where: { entity_id } })
+    if (!usuario) {
+      res.status(401).json({ message: 'Usuario não encontrado' })
+    } else {
+      res.status(200).json({ usuario })
     }
   },
   async delete(req, res) {
