@@ -1,0 +1,685 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API para emissão de Badges",
+    "description": "API para emissão de Badges no formato Openbadges 2.1 e Ethereum"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Autenticação",
+      "description": "\nPara gerar o token de autenticação é necessario..."
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "X-API-KEY",
+      "description": "any description..."
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/issuer": {
+      "get": {
+        "description": "Busca todos os emissores",
+        "tags":["Issuers"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "Cria um novo emissor",
+        "tags":["Issuers"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "string"
+                },
+                "description": {
+                  "example": "string"
+                },
+                "createdBy": {
+                  "example": "string"
+                },
+                "image": {
+                  "example": "string"
+                },
+                "staffId": {
+                  "example": "string"
+                },
+                "email": {
+                  "example": "string"
+                },
+                "url": {
+                  "example": "string"
+                },
+                "domain": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "description": "Atualiza um emissor",
+        "tags":["Issuers"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "string"
+                },
+                "name": {
+                  "example": "string"
+                },
+                "description": {
+                  "example": "string"
+                },
+                "image": {
+                  "example": "string"
+                },
+                "staffId": {
+                  "example": "string"
+                },
+                "email": {
+                  "example": "string"
+                },
+                "url": {
+                  "example": "string"
+                },
+                "domain": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/issuer/{id}": {
+      "delete": {
+        "description": "Exclui um emissor",
+        "tags":["Issuers"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/badgeclass": {
+      "get": {
+        "description": "Busca todas as classes",
+        "tags":["Badge Classes"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "Cria uma nova classe",
+        "tags":["Badge Classes"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "createdBy": {
+                  "example": "string"
+                },
+                "name": {
+                  "example": "string"
+                },
+                "issuerId": {
+                  "example": "string"
+                },
+                "image": {
+                  "example": "string"
+                },
+                "description": {
+                  "example": "string"
+                },
+                "criteriaUrl": {
+                  "example": "string"
+                },
+                "criteriaNarrative": {
+                  "example": "string"
+                },
+                "alignmentsTargetName": {
+                  "example": "string"
+                },
+                "alignmentsTargetUrl": {
+                  "example": "string"
+                },
+                "alignmentsTargetDescription": {
+                  "example": "string"
+                },
+                "alignmentsTargetFramework": {
+                  "example": "string"
+                },
+                "alignmentsTargetCode": {
+                  "example": "string"
+                },
+                "tags": {
+                  "example": "string"
+                },
+                "expiresAmount": {
+                  "example": "string"
+                },
+                "expiresDuration": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "description": "Atualiza uma classe",
+        "tags":["Badge Classes"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "string"
+                },
+                "name": {
+                  "example": "string"
+                },
+                "description": {
+                  "example": "string"
+                },
+                "criteriaUrl": {
+                  "example": "string"
+                },
+                "criteriaNarrative": {
+                  "example": "string"
+                },
+                "alignmentsTargetName": {
+                  "example": "string"
+                },
+                "alignmentsTargetUrl": {
+                  "example": "string"
+                },
+                "alignmentsTargetDescription": {
+                  "example": "string"
+                },
+                "alignmentsTargetFramework": {
+                  "example": "string"
+                },
+                "alignmentsTargetCode": {
+                  "example": "string"
+                },
+                "tags": {
+                  "example": "string"
+                },
+                "expiresAmount": {
+                  "example": "string"
+                },
+                "expiresDuration": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/badgeclass/{entityId}": {
+      "get": {
+        "description": "Busca uma classe específica",
+        "tags":["Badge Classes"],
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/badgeclass/{id}": {
+      "delete": {
+        "description": "Excluí uma classe",
+        "tags":["Badge Classes"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assertions": {
+      "get": {
+        "description": "Busca todas as badges emitidas",
+        "tags":["Assertions"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "Emite uma nova badge a um usuário",
+        "tags":["Assertions"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "issuerId": {
+                  "example": "string"
+                },
+                "badgeclassId": {
+                  "example": "string"
+                },
+                "recipientId": {
+                  "example": "string"
+                },
+                "expires": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assertions/{entityId}": {
+      "get": {
+        "description": "Busca uma badge específica",
+        "tags":["Assertions"],
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "Excluir uma badge",
+        "tags":["Assertions"],
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assertions/": {
+      "patch": {
+        "description": "Atualiza uma badge",
+        "tags":["Assertions"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "entityId": {
+                  "example": "string"
+                },
+                "revoked": {
+                  "example": "string"
+                },
+                "revocationReason": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assertions/file": {
+      "post": {
+        "description": "Busca os dados de um arquivo de badge",
+        "tags":["Assertions"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/assertions/file/{id}": {
+      "get": {
+        "description": "Busca um arquivo de badge",
+        "tags":["Assertions"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "description": "Cria um usuário",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "string"
+                },
+                "email": {
+                  "example": "string"
+                },
+                "type": {
+                  "example": "string"
+                },
+                "image": {
+                  "example": "string"
+                },
+                "password": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "description": "Busca um usuário",
+        "tags":["Users"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "description": "Atualiza os dados de um usuário",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "delete": {
+        "description": "Exclui um usuário",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/password/{id}": {
+      "put": {
+        "description": "Atualiza a senha de um usuário",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "password": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/{entity_id}": {
+      "get": {
+        "description": "Busca os dados de um usuário",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "entity_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/test": {
+      "post": {
+        "description": "Verifica se o usuário é válido",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "string"
+                },
+                "password": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/files": {
+      "post": {
+        "description": "Envia um arquivo para o servidor de badges",
+        "tags":["Files"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/files/{file}": {
+      "get": {
+        "description": "Busca um arquivo no servidor de badges",
+        "tags":["Files"],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+  }
+}

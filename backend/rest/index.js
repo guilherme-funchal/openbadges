@@ -29,6 +29,10 @@ const http = require('http');
 const hostname = '127.0.0.1';
 const port = 3000;
 
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger-output.json')
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 require('./database')
 
 app.use(express.json())
