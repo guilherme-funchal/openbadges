@@ -70,7 +70,6 @@ module.exports = {
 
   async get_badge(req, res){
     const id = req.params.id
-    console.log("id->", id);
 
     const targget = "public/assertions/" + id + ".png"
     res.download(targget, function (err) {
@@ -97,10 +96,7 @@ module.exports = {
     var web3 = new Web3(address);
 
     let entityId = String(req.params.entityId);
-    console.log("->", String(entityId));
-
     var assertions_identificado = [];
-
     var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
 
     let assertions = await contratoInteligente.methods.getItemsAssertion().call(function (err, res) {

@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../models/user');
 const crypto = require('crypto');
 const short = require('short-uuid');
 
@@ -6,11 +6,12 @@ module.exports = {
   async create(req, res) {
     try {
 
-      let name = req.body.name;
+      let username = req.body.username;
       let email = req.body.email;
       let type = req.body.type;
       let image = req.body.image;
       let password = req.body.password;
+      let level = req.body.level;
 
       const user = await User.findOne({ where: { email } })
       if (user) {
@@ -24,7 +25,7 @@ module.exports = {
         const pass_salt = crypto.randomBytes(12).toString('hex');       
         const pass_hash = crypto.pbkdf2Sync(password, pass_salt, 1000, 64, `sha512`).toString(`hex`);
 
-        const user = await User.create({ name, email, type, image, pass_hash, pass_salt, entity_id })
+        const user = await User.create({ username, email, type, image, pass_hash, pass_salt, entity_id, level })
         res.status(200).json({ user })
       }
     } catch (error) {
@@ -51,12 +52,12 @@ module.exports = {
   async update(req, res) {
     try {
       const { id } = req.params
-      const { name, email, type, image } = req.body
+      const { username, email, type, image, level } = req.body
       const user = await User.findOne({ where: { id } })
       if (!user) {
         res.status(401).json({ message: "Nenhum usuario encontrado" })
       } else {
-        const user = await User.update({ name, email, type, image }, { where: { id } })
+        const user = await User.update({ username, email, type, image, level }, { where: { id } })
         res.status(200).json({ user })
       }
     } catch (error) {

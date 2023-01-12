@@ -38,9 +38,6 @@ require('./database')
 app.use(express.json())
 app.use(routes);
 
-
-console.log(process.env.REST_HOST);
-
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

@@ -77,7 +77,6 @@ module.exports = {
         var badge_identificado = [];
 
         var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
-        console.log(contratoInteligente);
 
         let badges = await contratoInteligente.methods.getItemsBadgeClass().call(function (err, res) {
             if (err) {

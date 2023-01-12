@@ -4,7 +4,7 @@ const IssuerController = require('./controller/IssuerController');
 const BadgeClassController = require('./controller/BadgeClassController');
 const AssertionsController = require('./controller/AssertionsController');
 const UserController = require('./controller/UserController');
-
+const UserAuth = require('./controller/UserAuth');
 
 const fileUploadController= require('./controller/UploadController');
 const upload = require('./middlewares/upload-middleware');
@@ -41,5 +41,7 @@ router.delete('/users/:id', UserController.delete);
 router.post('/files', upload.single('file'), fileUploadController.uploadSingle);
 router.get('/files/:file', fileUploadController.downloadSingle);
 
+router.post('/user/login', UserAuth.login);
+router.post('/user/refresh', UserAuth.RefreshToken);
 
 module.exports = router;

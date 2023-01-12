@@ -3,7 +3,7 @@ const { Model, DataTypes } = require('sequelize')
 class User extends Model {
   static init(sequelize) {
     super.init({       
-        name: DataTypes.STRING, 
+        username: DataTypes.STRING, 
         email: DataTypes.STRING,
         type: DataTypes.STRING,
         image: DataTypes.STRING,
@@ -12,7 +12,8 @@ class User extends Model {
         created_at: DataTypes.STRING,
         updated_at: DataTypes.STRING,
         last_login: DataTypes.STRING,
-        entity_id: DataTypes.STRING 
+        entity_id: DataTypes.STRING,
+        level: DataTypes.INTEGER
     }, {
       tableName: 'users',
       sequelize
