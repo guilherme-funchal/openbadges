@@ -4,6 +4,7 @@ const uploadFile = require('../middlewares/uploadFiles');
 module.exports = {
 
 async download(req, res) {
+  try {
     const file = req.params.file
     // Download function provided by express
     const targget = "../public/upload/" + '/' + file
@@ -17,11 +18,14 @@ async download(req, res) {
         });
       }
     })
+    res.status(200).send(badge_identificado);
+  } catch (e) {
+      console.error(e)
+  }      
 },
 
 async upload(req, res) {
-    console.log(req.file);
-
+  try {
     if (req.file) {
       const fileBuffer = fs.readFileSync(req.file.path);
       const hash = crypto.createHash('sha256');
@@ -39,5 +43,8 @@ async upload(req, res) {
       erro: true,
       mensagem: "Erro: Upload não realizado com sucesso!"
     });
+  } catch (e) {
+    console.error(e)
+  }  
   }
 }  

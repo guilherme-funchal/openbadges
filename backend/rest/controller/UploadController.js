@@ -4,24 +4,27 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 exports.uploadSingle = (req, res) => {
+  try {
     if (req.file) {
-        const fileBuffer = fs.readFileSync(req.file.path);
-        const hash = crypto.createHash('sha256');
-        const finalHex = hash.update(fileBuffer).digest('hex');
+      const fileBuffer = fs.readFileSync(req.file.path);
+      const hash = crypto.createHash('sha256');
+      const finalHex = hash.update(fileBuffer).digest('hex');
 
-        return res.json({
-            erro: false,
-            path: req.file.path,
-            file: req.file.filename,
-            hash_file: finalHex
-        });
+      return res.json({
+        erro: false,
+        path: req.file.path,
+        file: req.file.filename,
+        hash_file: finalHex
+      });
     }
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 exports.downloadSingle = (req, res) => {
+  try {
     const file = req.params.file
-
-    // Download function provided by express
     const targget = "./public/uploads" + '/' + file
     res.download(targget, function (err) {
 
@@ -33,26 +36,8 @@ exports.downloadSingle = (req, res) => {
         });
       }
     })
+  } catch (e) {
+    console.error(e)
+  }
 }
 
-// exports.uploadMultiple = (req, res) => {
-//     if (req.files.length) {
-//         console.log(req.files)
-
-//         req.flash('success', 'Files Uploaded.');
-//     }
-//     return res.redirect('/');
-// }
-
-// exports.uploadSingleV2 = async (req, res) => {
-//     const uploadFile = util.promisify(upload.single('file'));
-//     try {
-//         await uploadFile(req, res);
-//         console.log(req.file)
-        
-//         req.flash('success', 'File Uploaded.');
-//     } catch (error) {
-//         console.log(error)
-//     }
-//     return res.redirect('/');
-// }

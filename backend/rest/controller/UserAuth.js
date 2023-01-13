@@ -70,9 +70,26 @@ module.exports = {
       }
       res.status(200).json(data)
     } else {
-      res.status(400).json({result : false})
+      res.status(400).json({ result: false })
     }
   },
+  async verifyToken(req, res) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+      console.log("token->", token);
+      
+      return res.status(403).send('A token is required for authentication');
+    }
+    try {
+      const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
+      req.decoded = decoded;
+    } catch (err) {
+      return res.status(401).send('Invalid Token');
+    }
+  },
+  
   async RefreshToken(req, res) {
     const postData = req.body;
     console.log("---->", postData.refreshToken);
@@ -82,7 +99,7 @@ module.exports = {
         postData.refreshToken,
         process.env.SECRET_RTOKEN
       );
-  
+
       const token = await generateAccessToken(
         decoded.user,
         decoded.email,
@@ -100,7 +117,7 @@ module.exports = {
       };
       req.token = token;
       req.refreshToken = refreshToken;
-  
+
       await addToList(refreshToken, token);
       console.log("refreshToken->", refreshToken);
 

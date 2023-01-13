@@ -3,14 +3,14 @@
   "info": {
     "version": "1.0.0",
     "title": "API para emissão de Badges",
-    "description": "API para emissão de Badges no formato Openbadges 2.1 e Ethereum"
+    "description": "\n## Token de acesso\nEnvia email e senha via Post como o comando de exemplo:\n```bash\ncurl -X POST 'https://{host:port}/user/login' -d \"email=EMAIL&password=SENHA\"\n```\n\nResposta:\n```javascript\n{\n    \"access_token\": \"TOKENDEACESSO\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 86400,\n    \"refresh_token\": \"TOKENDEREFRESH\",\n}\n```\n\n## Expiração de Token\nToken de expiração para renovar  por examplo:\n\n```bash\ncurl -X POST 'https://{host:port}/user/refresh' -d \"refreshToken=refresh_token```\n\n"
   },
   "host": "localhost:3000",
   "basePath": "/",
   "tags": [
     {
       "name": "Autenticação",
-      "description": "\nPara gerar o token de autenticação é necessario..."
+      "description": "\nPara gerar o tSucessoen de autenticação é necessario..."
     }
   ],
   "schemes": [
@@ -18,13 +18,14 @@
     "https"
   ],
   "securityDefinitions": {
-    "apiKeyAuth": {
+    "bearerAuth": {
       "type": "apiKey",
       "in": "header",
-      "name": "X-API-KEY",
+      "name": "Authorization",
       "description": "any description..."
     }
   },
+  "security": [{"AuthorizationHeader": []}],
   "consumes": [
     "application/json"
   ],
@@ -32,21 +33,105 @@
     "application/json"
   ],
   "paths": {
+    "/user/login": {
+      "post": {
+        "description": "Gera um novo tSucessoen e refresh tSucessoen aparti da senha",
+        "tags":["User"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "string"
+                },
+                "password": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
+          }
+        }
+      }
+    },
+    "/user/refresh": {
+      "post": {
+        "description": "Gera um novo tSucessoen apartir do refresh tSucessoen",
+        "tags":["User"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "refreshTSucessoen": {
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
+          }
+        }
+      }
+    },
     "/issuer": {
       "get": {
         "description": "Busca todos os emissores",
         "tags":["Issuers"],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "security": [ { "bearerAuth": [] } ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       },
       "post": {
         "description": "Cria um novo emissor",
         "tags":["Issuers"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -83,14 +168,26 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       },
       "patch": {
         "description": "Atualiza um emissor",
         "tags":["Issuers"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -127,7 +224,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -136,36 +239,68 @@
       "delete": {
         "description": "Exclui um emissor",
         "tags":["Issuers"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
     },
+    
     "/badgeclass": {
       "get": {
         "description": "Busca todas as classes",
         "tags":["Badge Classes"],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
-        }
+        },
+        "security": [ { "bearerAuth": [] } ]
       },
       "post": {
         "description": "Cria uma nova classe",
         "tags":["Badge Classes"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -223,14 +358,26 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       },
       "patch": {
         "description": "Atualiza uma classe",
         "tags":["Badge Classes"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -282,7 +429,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -291,7 +444,13 @@
       "get": {
         "description": "Busca uma classe específica",
         "tags":["Badge Classes"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "entityId",
             "in": "path",
@@ -301,7 +460,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -310,7 +475,13 @@
       "delete": {
         "description": "Excluí uma classe",
         "tags":["Badge Classes"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "path",
@@ -320,7 +491,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -329,17 +506,36 @@
       "get": {
         "description": "Busca todas as badges emitidas",
         "tags":["Assertions"],
-        "parameters": [],
+        "security": [ { "bearerAuth": [] } ],
+        "parameters": [
+          {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       },
       "post": {
         "description": "Emite uma nova badge a um usuário",
         "tags":["Assertions"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -364,7 +560,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -373,34 +575,58 @@
       "get": {
         "description": "Busca uma badge específica",
         "tags":["Assertions"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
           {
             "name": "entityId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       },
       "delete": {
         "description": "Excluir uma badge",
         "tags":["Assertions"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
           {
             "name": "entityId",
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -408,8 +634,14 @@
     "/assertions/": {
       "patch": {
         "description": "Atualiza uma badge",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Assertions"],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -419,7 +651,7 @@
                 "entityId": {
                   "example": "string"
                 },
-                "revoked": {
+                "revSucessoed": {
                   "example": "string"
                 },
                 "revocationReason": {
@@ -431,7 +663,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -440,10 +678,28 @@
       "post": {
         "description": "Busca os dados de um arquivo de badge",
         "tags":["Assertions"],
-        "parameters": [],
+        "security": [ { "bearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "file",
+           "type": "file"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -452,7 +708,13 @@
       "get": {
         "description": "Busca um arquivo de badge",
         "tags":["Assertions"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "path",
@@ -461,8 +723,14 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
+          "200": {
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -470,8 +738,14 @@
     "/users": {
       "post": {
         "description": "Cria um usuário",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Users"],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -499,29 +773,36 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Sucesso"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       },
       "get": {
         "description": "Busca um usuário",
         "tags":["Users"],
-        "parameters": [],
+        "security": [ { "bearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Sucesso"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -529,21 +810,14 @@
     "/users/{id}": {
       "put": {
         "description": "Atualiza os dados de um usuário",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Users"],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "authorization",
+            "in": "header",
             "type": "string"
-          }
-        ],
-        "responses": {}
-      },
-      "delete": {
-        "description": "Exclui um usuário",
-        "tags":["Users"],
-        "parameters": [
+          },
           {
             "name": "id",
             "in": "path",
@@ -553,10 +827,41 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
+          }
+        }
+      },
+      "delete": {
+        "description": "Exclui um usuário",
+        "tags":["Users"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -564,8 +869,14 @@
     "/users/password/{id}": {
       "put": {
         "description": "Atualiza a senha de um usuário",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Users"],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "id",
             "in": "path",
@@ -587,13 +898,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Sucesso"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -601,8 +912,14 @@
     "/users/{entity_id}": {
       "get": {
         "description": "Busca os dados de um usuário",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Users"],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "entity_id",
             "in": "path",
@@ -612,10 +929,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -623,8 +943,14 @@
     "/users/test": {
       "post": {
         "description": "Verifica se o usuário é válido",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Users"],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -643,7 +969,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -651,11 +983,29 @@
     "/files": {
       "post": {
         "description": "Envia um arquivo para o servidor de badges",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Files"],
-        "parameters": [],
+        "parameters": [
+          {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "in": "formData",
+          "name": "file",
+         "type": "file"
+        }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
@@ -663,8 +1013,14 @@
     "/files/{file}": {
       "get": {
         "description": "Busca um arquivo no servidor de badges",
+        "security": [ { "bearerAuth": [] } ],
         "tags":["Files"],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "file",
             "in": "path",
@@ -673,8 +1029,14 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad Request"
+          "200": {
+            "description": "Sucesso"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "403": {
+            "description": "Negado"
           }
         }
       }
