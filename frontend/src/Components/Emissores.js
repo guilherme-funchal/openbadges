@@ -1,21 +1,36 @@
-import React from 'react';
 import Header from './Header';
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from './Footer';
+import React, { useState, useRef, useLayoutEffect } from "react";
+import ReactDOM from "react-dom";
+
 
 export default function Emissores() {
+  let subtitle;
 
-  const style = { width: '85px' }
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
+
+  const style = { width: '100px' }
+  // const [modalIsOpen, setIsOpen] = React.useState(false);
+
 
   return (
     <div>
       <Header />
       <div className="container">
         <h1>Emissores</h1>
-        <Button style={style} variant="success" size="sm"><i class="fas fa-plus"></i> Novo</Button>
       </div>
-      
+
       <div className="container">
         <div className="card">
           <div className="card-header d-flex p-0">
@@ -41,6 +56,9 @@ export default function Emissores() {
                 </div>
                 <div className="card-footer">
                   <div className="text-right">
+                    <Link to="/Diagram">
+                      <Button style={style} variant="success" size="sm"><i class="fas fa-sitemap"></i> Diagrama</Button>
+                    </Link>
                     <Link to="/classes">
                       <Button style={style} variant="warning" size="sm"><i class="fas fa-th"></i> Classes</Button>
                     </Link>
@@ -55,7 +73,7 @@ export default function Emissores() {
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer />     
     </div>
   )
 }

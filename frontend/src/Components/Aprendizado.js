@@ -21,7 +21,7 @@ export default function Aprendizado() {
                             </div>
                         </div>
                         <div className="card-body table-responsive p-0">
-
+                        <dev><center>Usuário sem badge</center></dev>
                         </div>
                     </div>
 

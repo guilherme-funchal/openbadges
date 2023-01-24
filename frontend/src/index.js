@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Administracao from './Components/Administracao';
 import Badges from './Components/Badges';
 import Emissores from './Components/Emissores';
+import Diagram from './Components/Diagram';
 import Classes from './Components/Classes';
 import Aprendizado from './Components/Aprendizado';
 import Premiados from './Components/Premiados';
@@ -23,6 +24,7 @@ root.render(
           <Route key="Badges" path="/Badges" element={<Badges />} />
           <Route key="Classes" path="/Classes" element={<Classes />} />
           <Route key="Emissores" path="/Emissores" element={<Emissores />} />
+          <Route key="Diagram" path="/Diagram" element={<Diagram />} />
           <Route key="Aprendizado" path="/Aprendizado" element={<Aprendizado />} />
           <Route key="Premiados" path="/Premiados" element={<Premiados />} />
           <Route key="logoff" path="/logoff" element={<Logoff />}  />
