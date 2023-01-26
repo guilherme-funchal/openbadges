@@ -6,7 +6,10 @@ import { FaMinus } from "react-icons/fa";
 import { GrEdit }  from "react-icons/gr"
 
 const badgeDetailsCard = (props, setModalShow) => {
-  console.log(props);
+
+  if (props.badge.type === "domain"){
+    var domain = true;
+  }
 
   if (props.badge.type === "badge"){
     var badges = true;
@@ -81,6 +84,15 @@ const badgeDetailsCard = (props, setModalShow) => {
         <p className="diagram-card-item-value">{props.badge.description}</p>
       </div>
       {/* {props.badge.type === "badge" ? ( */}
+      { domain === true &&
+        <div className="diagram-card-item">
+          <p className="diagram-card-item-label">Data de premiação:</p>
+          <p className="diagram-card-item-value">{props.badge.date}</p>
+          <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
+            <FaPlus />
+          </button>
+        </div>
+      }  
       { badges === true &&
         <div className="diagram-card-item">
           <p className="diagram-card-item-label">Data de premiação:</p>
@@ -96,6 +108,9 @@ const badgeDetailsCard = (props, setModalShow) => {
           <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
             <FaPlus />
           </button>
+          <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}>
+            <FaMinus />
+            </button>  
           <button className="diagram-card-edit-btn" onClick={() => { props.handleClose(); props.handleShowEdit();}}>
             <GrEdit />
           </button>

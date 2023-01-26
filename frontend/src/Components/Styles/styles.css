@@ -35,6 +35,14 @@
     justify-content: center;
     border-radius: 1rem;
   }
+  .node-container-domain {
+    min-height: 140px;
+    background-color: #945d94;
+    color: #227c9d;
+    display: flex;
+    justify-content: center;
+    border-radius: 1rem;
+  }
   .node-container-class {
     min-height: 140px;
     background-color: #a0a090;
@@ -218,12 +226,38 @@
     border: 2px solid #227c9d;
     cursor: pointer;
   }
+  .diagram-card-domain {
+    position: absolute;
+    top: -45px;
+    left: 150px;
+    width: 30%;
+    height: 45%;
+    padding: 2rem;
+    margin: 10rem;
+    background-color: #fef9ef;
+    border-radius: 1rem;
+    border: 1px solid #d3d3d3;
+  }
   .diagram-card-issuer {
     position: absolute;
     top: -45px;
     left: 150px;
-    width: 50%;
-    height: 80%;
+    width: 30%;
+    height: 85%;
+    padding: 2rem;
+    margin: 10rem;
+    background-color: #fef9ef;
+    border-radius: 1rem;
+    border: 1px solid #d3d3d3;
+  }
+  .diagram-card-class {
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    top: -45px;
+    left: 150px;
+    width: 25%;
+    height: 20%;
+    justify-content: center;
     padding: 2rem;
     margin: 10rem;
     background-color: #fef9ef;

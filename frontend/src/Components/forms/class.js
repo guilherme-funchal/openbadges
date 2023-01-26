@@ -1,95 +1,180 @@
-export const schemaClass = {
-    title: "Criar uma classe",
-    type: "object",
-    required: ["nome"],
-    properties: {
-      createdBy: {
-        type: "string",
-        default: "",
-        title: "createdBy",
-        minLength: 1
-      },
-      issuerId: {
-        type: "string",
-        default: "",
-        title: "issuerId"
-      },
-      name: {
-        type: "string",
-        default: "",
-        title: "Nome"
-      },
-      image: {
-        type: "string",
-        default: "",
-        title: "Imagem"
-      },
-      description: {
-        type: "string",
-        default: "",
-        title: "Descrição"
-      },
-      criteriaUrl: {
-        type: "string",
-        default: "",
-        title: "criteriaUrl"
-      },
-      criteriaNarrative: {
-        type: "string",
-        default: "",
-        title: "Narrativa"
-      },
-      alignmentsTargetName: {
-        type: "string",
-        default: "",
-        title: "Alinhamento"
-      },
-      alignmentsTargetUrl: {
-        type: "string",
-        default: "",
-        title: "URL Alinhamento "
-      },
-      alignmentsTargetDescription: {
-        type: "string",
-        default: "",
-        title: "Descrição"
-      },
-      alignmentsTargetFramework: {
-        type: "string",
-        default: "",
-        title: "alinhamento Framework"
-      },
-      alignmentsTargetCode: {
-        type: "string",
-        default: "",
-        title: "Código de alinhamento"
-      },
-      tags: {
-        type: "string",
-        default: "",
-        title: "Etiqueta"
-      },
-      expiresAmount: {
-        type: "string",
-        default: "",
-        title: "Data de expiração"
-      },
-      expiresDuration: {
-        type: "string",
-        default: "",
-        title: "Tempo de expiração"
-      }
-    }
-  };
-  
-  export const uiSchemaClass = {
-    "ui:rootFieldId": "formOne"
-  };
-  
-  export const formDataClass = {};
-  
-  export default {
-    schemaClass,
-    uiSchemaClass,
-    formDataClass
-  };
+import React, { useState, useEffect, useRef } from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from 'react-bootstrap/Button';
+
+
+
+export default function Basico(props) {
+  const style = { width: '93px' }
+
+
+  return (
+    <div>
+      <Box
+        // sx={{
+        //     display: 'flex',
+        //     alignItems: 'center',
+        //     '& > :not(style)': { m: 2 },
+        // }}
+        sx={{
+          '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }}
+      >
+        <div>
+          <div className="row">
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Nome"
+                id="name"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Descrição"
+                id="description"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Imagem"
+                id="image"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div>
+            <TextField
+                style={{ width: '95%' }}
+                label="Url de Criterio"
+                id="criteriaUrl"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>
+          <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Narrativa"
+                id="criteriaNarrative"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Nome alinhamento"
+                id="alignmentsTargetName"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Alinhamento Framework"
+                id="alignmentsTargetFramework"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>  
+          <div className="row">
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Codigo alinhamento"
+                id="alignmentsTargetCode"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Tags"
+                id="tags"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>  
+          <div className="row">
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Tempo de expiração"
+                id="expiresAmount"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Tempo de duração"
+                id="expiresDuration"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          </div>  
+            <div className="row">
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Descrição"
+                id="alignmentsTargetDescription"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+            <div>
+              <TextField
+                style={{ width: '95%' }}
+                label="Alinhamento URL"
+                id="alignmentsTargetUrl"
+                defaultValue=""
+                fullWidth
+                size="small"
+              />
+            </div>
+          <div className="row">
+            <div class="text-center">
+                <Button style={style} className="btn btn-default" variant="danger" size="sm" >Cancelar</Button>
+                <Button style={style} className="btn btn-default" variant="success" size="sm" >Enviar</Button>
+            </div>
+          </div>
+
+        </div>
+      </Box>
+    </div>
+  )
+}

@@ -1,7 +1,19 @@
 const badges = [
     {
-      id: 1,
+      id: 0,
       parentId: "",
+      name: "Serpro",
+      positionName: "Dominio",
+      team: "",
+      type: "domain",
+      date: "",
+      description:
+        "Organização",
+      imageUrl: "http://localhost:3000/dist/img/serpro.png",
+    },
+    {
+      id: 1,
+      parentId: "0",
       name: "Serpro Educa",
       positionName: "Emissor de badges",
       team: "",
