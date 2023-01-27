@@ -3,9 +3,49 @@ import { MdClose } from "react-icons/md";
 import "./Styles/styles.css";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
-import { GrEdit }  from "react-icons/gr"
+import { GrEdit }  from "react-icons/gr";
+import Swal from 'sweetalert2';
 
 const badgeDetailsCard = (props, setModalShow) => {
+
+  const Sucesso = Swal.mixin({
+    toast: true,
+    // position: 'center',
+    iconColor: 'green',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true
+  });
+
+  function delData() {
+    Swal.fire({
+      title: 'Deseja excluir?',
+      text: "",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        console.log("chamar API EXCLUIR")
+        // Promise.resolve(getTabela());
+
+        Sucesso.fire({
+          icon: 'success',
+          title: 'Registro foi excluído'
+        });  
+        
+      }
+
+    })
+    props.handleClose();
+  }
 
   if (props.badge.type === "domain"){
     var domain = true;
@@ -97,7 +137,8 @@ const badgeDetailsCard = (props, setModalShow) => {
         <div className="diagram-card-item">
           <p className="diagram-card-item-label">Data de premiação:</p>
           <p className="diagram-card-item-value">{props.badge.date}</p>
-          <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}>
+          <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>
+          {/* <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}></button> */}
             <FaMinus />
             </button>  
         </div>
@@ -108,7 +149,8 @@ const badgeDetailsCard = (props, setModalShow) => {
           <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
             <FaPlus />
           </button>
-          <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}>
+          <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>
+          {/* <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}></button> */}
             <FaMinus />
             </button>  
           <button className="diagram-card-edit-btn" onClick={() => { props.handleClose(); props.handleShowEdit();}}>
@@ -121,7 +163,8 @@ const badgeDetailsCard = (props, setModalShow) => {
           <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
             <FaPlus />
           </button>
-          <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}>
+          <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>
+          {/* <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}></button> */}
             <FaMinus />
           </button>
           <button className="diagram-card-edit-btn" onClick={() => { props.handleClose(); props.handleShowEdit();}}>

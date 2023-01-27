@@ -4,12 +4,12 @@ import "./Styles/styles.css";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
 // import { schemaBadge, uiSchemaBadge, formDataBadge } from "../Components/forms/badge";
-import { schemaClass, uiSchemaClass, formDataClass } from "../Components/forms/class";
-import { schemaIssuer, uiSchemaIssuer, formDataIssuer } from "../Components/forms/issuer";
+import { schemaClass, uiSchemaClass, formDataClass } from "./forms/class-add";
+import { schemaIssuer, uiSchemaIssuer, formDataIssuer } from "./forms/issuer-add";
 import Form from "react-jsonschema-form-bs4";
-import FormBadge from "../Components/forms/badge"
-import FormIssuer from "../Components/forms/issuer"
-import FormClass from "../Components/forms/class"
+import FormBadge from "./forms/badge-add"
+import FormIssuer from "./forms/issuer-add"
+import FormClass from "./forms/class-add"
 
 
 
@@ -38,14 +38,14 @@ const badgeAddCard = (props) => {
         <MdClose />
       </button>
       {domain === true &&
-        <FormIssuer />
+        <FormIssuer handleCloseAdd={props.handleCloseAdd}/>
       }
       {classe === true &&
-        <FormBadge />
+        <FormBadge handleCloseAdd={props.handleCloseAdd}/>
       }
 
       {issuer === true &&
-        <FormClass />
+        <FormClass handleCloseAdd={props.handleCloseAdd}/>
       }
     </div>
   );
