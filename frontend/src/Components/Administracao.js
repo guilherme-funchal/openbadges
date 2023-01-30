@@ -12,10 +12,10 @@ export default function Administracao() {
             <Header />
             <div className="container">
                 <h1>Administração</h1>
-                <Button style={style} variant="success" size="sm"><i class="fas fa-plus"></i> Novo</Button>
+                <Button style={style} variant="success" size="sm"><i className="fas fa-plus"></i> Novo</Button>
             </div>
             <div className="container">
-                <div class="card">
+                <div className="card">
                     <div>
                         <div className="card-header">
                             <h3 className="card-title">Lista de usuários</h3>
@@ -50,8 +50,8 @@ export default function Administracao() {
                                         <td>PF</td>
                                         <td>Usuário</td>
                                         <td>
-                                        <Button style={style} variant="danger" size="sm"><i class="fas fa-ban"></i> Excluir</Button>
-                                        <Button style={style} variant="primary" size="sm"><i class="fas fa-check"></i> Editar</Button>
+                                        <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
+                                        <Button style={style} variant="primary" size="sm"><i className="fas fa-check"></i> Editar</Button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -61,8 +61,8 @@ export default function Administracao() {
                                         <td>PF</td>
                                         <td>Administrador</td>
                                         <td>
-                                        <Button style={style} variant="danger" size="sm"><i class="fas fa-ban"></i> Excluir</Button>
-                                        <Button style={style} variant="primary" size="sm"><i class="fas fa-check"></i> Editar</Button>    
+                                        <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
+                                        <Button style={style} variant="primary" size="sm"><i className="fas fa-check"></i> Editar</Button>    
                                         </td>
                                     </tr>
                                 </tbody>

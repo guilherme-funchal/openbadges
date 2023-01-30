@@ -15,31 +15,31 @@ export default function Header() {
     <nav className="main-header navbar navbar-expand-md navbar-dark bg-primary" >
       <div className="container">
         <a href="../../index3.html" className="navbar-brand">
-        {/* <img src="" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        {/* <img src="" alt="AdminLTE Logo" className="brand-image img-circle elevation-3" style="opacity: .8">
         </img> */}
         </a>
         <button className="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon" />
         </button>
         <div className="collapse navbar-collapse order-3" id="navbarCollapse">
-        <ul class="navbar-nav">
+        <ul className="navbar-nav">
             <li className="nav-item">
-            <Link to="/Badges" class="nav-link">
+            <Link to="/Badges" className="nav-link">
             <p>Badges</p>         
             </Link>
             </li>
             <li className="nav-item">
-            <Link to="/Emissores" class="nav-link">
+            <Link to="/Emissores" className="nav-link">
             <p>Emissores</p>         
             </Link>
             </li>
             <li className="nav-item">
-            <Link to="/Aprendizado" class="nav-link">
+            <Link to="/Aprendizado" className="nav-link">
             <p>Aprendizado</p>         
             </Link>
             </li>
             <li className="nav-item">
-            <Link to="/Administracao" class="nav-link">
+            <Link to="/Administracao" className="nav-link">
             <p>Administração</p>         
             </Link>
             </li>

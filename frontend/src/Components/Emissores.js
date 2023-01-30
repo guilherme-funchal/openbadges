@@ -1,14 +1,20 @@
 import Header from './Header';
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from './Footer';
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useState } from "react";
+
 import ReactDOM from "react-dom";
+import Modal1 from "./Modals/addEmissor"
+import Modal2 from "./Modals/editEmissor"
 
 
 export default function Emissores() {
-  let subtitle;
 
+  const [showAddEmissor, setShowAddEmissor] = useState(false);
+  const [showEditEmissor, setShowEditEmissor] = useState(false);
+  
+  
   const customStyles = {
     content: {
       top: '50%',
@@ -32,6 +38,9 @@ export default function Emissores() {
       </div>
 
       <div className="container">
+        <Button style={style} variant="primary" size="sm" onClick={() => setShowAddEmissor(true)}>
+            <i class="fas fa-plus"></i> Novo
+        </Button>
         <div className="card">
           <div className="card-header d-flex p-0">
             <h3 className="card-title p-3">Serpro Educa</h3>
@@ -57,13 +66,13 @@ export default function Emissores() {
                 <div className="card-footer">
                   <div className="text-right">
                     <Link to="/Diagram">
-                      <Button style={style} variant="success" size="sm"><i class="fas fa-sitemap"></i> Diagrama</Button>
+                      <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
                     </Link>
                     <Link to="/classes">
-                      <Button style={style} variant="warning" size="sm"><i class="fas fa-th"></i> Classes</Button>
+                      <Button style={style} variant="warning" size="sm"><i className="fas fa-th"></i> Classes</Button>
                     </Link>
-                    <Button style={style} variant="danger" size="sm"><i class="fas fa-ban"></i> Excluir</Button>
-                    <Button style={style} variant="primary" size="sm"><i class="fas fa-check"></i> Editar</Button>
+                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
+                    <Button style={style} variant="primary" size="sm" onClick={() => setShowEditEmissor(true)}><i className="fas fa-check"></i> Editar</Button>
 
                   </div>
                 </div>
@@ -73,6 +82,8 @@ export default function Emissores() {
           </div>
         </div>
       </div>
+      <Modal1 title="My Modal1" name="teste" onClose={() => setShowAddEmissor(false)} show={showAddEmissor} />
+      <Modal1 title="My Modal1" name="teste" onClose={() => setShowEditEmissor(false)} show={showEditEmissor} />
       <Footer />     
     </div>
   )

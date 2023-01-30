@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from "react";
 import Header from './Header';
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from './Footer';
+import Modal1 from "./Modals/addClasse";
+import Modal2 from "./Modals/addBadge";
+import Modal3 from "./Modals/editClasse"
 
 export default function Emissores() {
+
+  const [showAddClasse, setShowAddClasse] = useState(false);
+  const [showEditClasse, setShowEditClasse] = useState(false);
+
+  const [showAddBadge, setShowAddBadge] = useState(false);
 
   const style = { width: '110px' }
 
@@ -12,10 +20,12 @@ export default function Emissores() {
     <div>
       <Header />
       <div className="container">
+
         <div className="row mb-2">
           <div className="col-sm-6">
             <h1>Classes</h1>
           </div>
+
           <div className="col-sm-6">
             <ol className="breadcrumb float-sm-right">
               <li className="breadcrumb-item"><Link to="/emissores">Emissores</Link></li>
@@ -26,6 +36,9 @@ export default function Emissores() {
 
       </div>
       <div className="container">
+        <Button style={style} variant="primary" size="sm" onClick={() => setShowAddClasse(true)}>
+          <i class="fas fa-plus"></i> Novo
+        </Button>
         <div className="card">
           <div className="card-header d-flex p-0">
             <h3 className="card-title p-3">P01 - Encarregado de Dados Pessoais (ED/DPO)</h3>
@@ -50,11 +63,11 @@ export default function Emissores() {
                 <div className="card-footer">
                   <div className="text-right">
                     <Link to="/premiados">
-                      <Button style={style} variant="success" size="sm"><i class="fas fa-users"></i> Premiados</Button>
+                      <Button style={style} variant="success" size="sm"><i className="fas fa-users"></i> Premiados</Button>
                     </Link>
-                    <Button style={style} variant="warning" size="sm"><i class="fas fa-handshake"></i> Premiar</Button>
-                    <Button style={style} variant="danger" size="sm"><i class="fas fa-ban"></i> Excluir</Button>
-                    <Button style={style} variant="primary" size="sm"><i class="fas fa-check"></i> Editar</Button>
+                    <Button style={style} variant="warning" size="sm" onClick={() => setShowAddBadge(true)}><i className="fas fa-handshake"></i> Premiar</Button>
+                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
+                    <Button style={style} variant="primary" size="sm" onClick={() => setShowEditClasse(true)}><i className="fas fa-check"></i> Editar</Button>
 
                   </div>
                 </div>
@@ -87,11 +100,11 @@ export default function Emissores() {
                 <div className="card-footer">
                   <div className="text-right">
                     <Link to="/premiados">
-                      <Button style={style} variant="success" size="sm"><i class="fas fa-users"></i> Classes</Button>
+                      <Button style={style} variant="success" size="sm"><i className="fas fa-users"></i> Premiados</Button>
                     </Link>
-                    <Button style={style} variant="warning" size="sm"><i class="fa-handshake"></i> Premiar</Button>
-                    <Button style={style} variant="danger" size="sm"><i class="fas fa-ban"></i> Excluir</Button>
-                    <Button style={style} variant="primary" size="sm"><i class="fas fa-check"></i> Editar</Button>
+                    <Button style={style} variant="warning" size="sm" onClick={() => setShowAddBadge(true)}><i className="fas fa-handshake" ></i> Premiar</Button>
+                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
+                    <Button style={style} variant="primary" size="sm" onClick={() => setShowEditClasse(true)}><i className="fas fa-check"></i> Editar</Button>
 
                   </div>
                 </div>
@@ -101,6 +114,9 @@ export default function Emissores() {
           </div>
         </div>
       </div>
+      <Modal1 title="My Modal1" name="teste" onClose={() => setShowAddClasse(false)} show={showAddClasse} />
+      <Modal2 title="My Modal2" name="teste" onClose={() => setShowAddBadge(false)} show={showAddBadge} />
+      <Modal1 title="My Modal1" name="teste" onClose={() => setShowEditClasse(false)} show={showEditClasse} />
       <Footer />
     </div>
   )

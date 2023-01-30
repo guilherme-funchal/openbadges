@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 
 const badgeDetailsCard = (props, setModalShow) => {
 
+  console.log("->", props);
+
   const Sucesso = Swal.mixin({
     toast: true,
     // position: 'center',
@@ -62,13 +64,14 @@ const badgeDetailsCard = (props, setModalShow) => {
   if (props.badge.type === "class"){
     var classes = true;
   }
+  
+  console.log(props);
 
   return (
     <div className="diagram-card">
       <button className="diagram-card-close-btn" onClick={props.handleClose}>
         <MdClose />
       </button>
-
       {props.badge.team === "" ? (
         <div>
           <div className="diagram-card-header">
@@ -146,7 +149,10 @@ const badgeDetailsCard = (props, setModalShow) => {
       {/* ) : ( */}
       { issues === true &&
         <div>
-          <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
+          {/* <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
+            <FaPlus />
+          </button> */}
+          <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowModal1();}}>
             <FaPlus />
           </button>
           <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>

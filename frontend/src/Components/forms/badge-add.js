@@ -50,7 +50,7 @@ export default function Basico(props) {
             </div>
           </div>
           <div className="row">
-            <div class="text-center">
+            <div className="text-center">
                 <Button style={style} className="btn btn-default" variant="danger" size="sm" onClick={props.handleCloseAdd}>Cancelar</Button>
                 <Button style={style} className="btn btn-default" variant="success" size="sm" >Enviar</Button>
             </div>

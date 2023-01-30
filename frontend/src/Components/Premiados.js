@@ -27,7 +27,7 @@ export default function Administracao() {
 
             </div>
             <div className="container">
-                <div class="card">
+                <div className="card">
                     <div>
                         <div className="card-header">
                             <h3 className="card-title">Classe Nome...</h3>
@@ -56,14 +56,14 @@ export default function Administracao() {
                                         <td>John Doe</td>
                                         <td>22/01/2022</td>
                                         <td>
-                                            <Button style={style} variant="primary" size="sm"><i class="fas fa-ban"></i> Ver</Button>
+                                            <Button style={style} variant="primary" size="sm"><i className="fas fa-ban"></i> Ver</Button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Maria Silva</td>
                                         <td>22/01/2022</td>
                                         <td>
-                                            <Button style={style} variant="primary" size="sm"><i class="fas fa-ban"></i> Ver</Button>
+                                            <Button style={style} variant="primary" size="sm"><i className="fas fa-ban"></i> Ver</Button>
                                         </td>
                                     </tr>
 

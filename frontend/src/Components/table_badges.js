@@ -9,7 +9,7 @@ export default function TableBadges() {
 
     return (
         <div className="container">
-            <div class="card">
+            <div className="card">
                 <div>
                     <div className="card-header">
                         <h3 className="card-title">Tabela</h3>
@@ -42,7 +42,7 @@ export default function TableBadges() {
                                     <td>Serpro Educa</td>
                                     <td>01/01/2023</td>
                                     <td>
-                                        <Button style={style} variant="success" size="sm"><i class="fas fa-share"></i> </Button>
+                                        <Button style={style} variant="success" size="sm"><i className="fas fa-share"></i> </Button>
                                     </td>
                                 </tr>
                             </tbody>

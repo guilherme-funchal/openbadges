@@ -5,6 +5,10 @@ import { IoInformation } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
 
 const CustomNodeContent = (props) => {
+
+  console.log("->", props);
+
+  
   var type = props.data.type
   if (props.data.type === "domain"){
     var node = "node-container-domain"

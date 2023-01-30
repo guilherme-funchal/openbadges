@@ -7,7 +7,7 @@ import BadgeDetailsCard from "./badgeDetailsCard";
 import BadgeAddCard from "./badgeAddCard";
 import BadgeDelCard from "./badgeDelCard";
 import BadgeEditCard from "./badgeEditCard";
-
+import Modal1 from "./Modals/Modal1";
 
 const OrganizationalChart = (props) => {
   
@@ -15,7 +15,7 @@ const OrganizationalChart = (props) => {
   const [cardShowAdd, setCardShowAdd] = useState(false);
   const [cardShowDel, setCardShowDel] = useState(false);
   const [cardShowEdit, setCardShowEdit] = useState(false);
-
+  const [showModal1, setShowModal1] = useState(false);
 
   const d3Container = useRef(null);
 
@@ -33,8 +33,11 @@ const OrganizationalChart = (props) => {
   const handleShowEdit = () => setCardShowEdit(true);
   const handleCloseEdit = () => setCardShowEdit(false);
 
-  
+  const handleShowModal1 = () => setShowModal1(true);
+  const handleCloseModal1 = () => setShowModal1(false);
+
   useLayoutEffect(() => {
+  
     const toggleDetailsCard = (nodeId) => {
       handleShow();
       setBadgeId(nodeId);
@@ -77,6 +80,8 @@ const OrganizationalChart = (props) => {
           handleShowDel={handleShowDel}
           handleCloseEdit={handleCloseEdit}
           handleShowEdit={handleShowEdit}
+          handleCloseModal1={handleCloseModal1}
+          handleShowModal1={handleShowModal1}
         />     
        )} 
        {cardShowAdd && (
@@ -98,6 +103,14 @@ const OrganizationalChart = (props) => {
           badges={props.data}
           badge={props.data.find((badge) => badge.id === badgeId)}
           handleCloseEdit={handleCloseEdit}
+        />     
+       )} 
+       {showModal1 && (
+        <Modal1
+          badges={props.data}
+          badge={props.data.find((badge) => badge.id === badgeId)}
+          handleCloseModal1={handleCloseModal1}
+          handleShowModal1={handleShowModal1}
         />     
        )} 
            

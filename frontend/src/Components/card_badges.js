@@ -116,7 +116,7 @@ P01 - Encarregado de Dados Pessoais (ED/DPO)
             </section>
 
 
-            {/* <div class="card">
+            {/* <div className="card">
                 <div>
                     <div className="card-header">
                         <h3 className="card-title">Grid</h3>
@@ -132,7 +132,7 @@ P01 - Encarregado de Dados Pessoais (ED/DPO)
                         </div>
                     </div>
                     <div className="row">
-                        <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                        <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
                     
                         </div>
                     </div>

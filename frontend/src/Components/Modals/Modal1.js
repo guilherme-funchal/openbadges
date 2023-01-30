@@ -1,22 +1,16 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./Modal.css";
 
 const Modal = props => {
-  const closeOnEscapeKeyDown = e => {
-    if ((e.charCode || e.keyCode) === 27) {
-      props.onClose();
-    }
-  };
+ 
+  console.log("entrei no modal!!!")
 
   useEffect(() => {
-    document.body.addEventListener("keydown", closeOnEscapeKeyDown);
-    return function cleanup() {
-      document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
-    };
   }, []);
-
+  
   return ReactDOM.createPortal(
     <CSSTransition
       in={props.show}
