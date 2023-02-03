@@ -68,8 +68,6 @@ export default function Home() {
             "password": password
         }
 
-        console.log("block->", block)
-
         var response = await Api.post('user/login', block);
         console.log(response.status);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './Header';
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, Modal } from "react-bootstrap";
 import Footer from './Footer';
 import Api from '../Api';
 import Swal from 'sweetalert2';
@@ -22,7 +22,6 @@ export default function Administracao() {
     async function EditItemsUser(entity_id) {
         var response = await Api.get('users/' + entity_id, header);
         setItems(response.data);
-        console.log(response.data);
     }
 
     async function editUser(entity_id) {
@@ -70,7 +69,6 @@ export default function Administracao() {
     });
 
     async function delUsuario(id) {
-        console.log(header);
         Swal.fire({
             title: 'Deseja excluir a conta?',
             text: "",
@@ -93,6 +91,63 @@ export default function Administracao() {
         })
     }
 
+    async function changePassword(id) {
+
+
+        (async () => {
+
+            const { value: formValues } = await Swal.fire({
+                title: 'Trocar a senha',
+                html:
+                    '<input type="password" id="senha1" class="swal2-input" placeholder="senha">' +
+                    '<input type="password" id="senha2" class="swal2-input" placeholder="confirmação">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    return [
+                        document.getElementById('senha1').value,
+                        document.getElementById('senha2').value
+                    ]
+                }
+            })
+
+            if (formValues) {
+                var senha1 = formValues[0];
+                var senha2 = formValues[1];
+
+
+                if (senha1 === senha2) {
+                    try {
+                        var block = {
+                            "password": senha1
+                          }
+                        var response = await Api.put('users/password/'+ id, block, header);
+
+                        if (response.status === 200) {
+                            await Sucesso.fire({
+                                icon: 'success',
+                                title: 'Senha atualizada'
+                            })
+                        }    
+                    } catch (e) {
+                        await Falha.fire({
+                            icon: 'error',
+                            title: 'Senha não foi alterada'
+                        })
+                    }
+                } else {
+                    await Falha.fire({
+                        icon: 'error',
+                        title: 'Senhas digitadas são diferentes!!!'
+                    })
+                }
+            }
+
+
+
+        })()
+
+    }
+
     useEffect(() => {
         getUsers();
     }, []);
@@ -100,7 +155,6 @@ export default function Administracao() {
     return (
         <div>
             <Header />
-            {console.log(users.usuarios)}
             <div className="container">
                 <h1>Administração</h1>
                 <Button style={style} variant="primary" size="sm" onClick={() => setShowModalAddUser(true)}>
@@ -123,7 +177,6 @@ export default function Administracao() {
                                 </div>
                             </div>
                         </div>
-                        {console.log("aqui->", users.usuarios)}
 
                         <div className="card-body table-responsive p-0">
                             <table className="blueTable">
@@ -153,15 +206,16 @@ export default function Administracao() {
 
                                     return (
                                         <tr>
-                                            <td><center>{data.entity_id}</center></td>
-                                            <td><center>{data.username}</center></td>
-                                            <td><center>{data.email}</center></td>
-                                            <td><center>{tp}</center></td>
-                                            <td><center>{prof}</center></td>
+                                            <td style={{ cursor: "pointer" }} key={data.entity_id} onClick={() => editUser(data.entity_id)}><center>{data.entity_id}</center></td>
+                                            <td style={{ cursor: "pointer" }} key={data.entity_id} onClick={() => editUser(data.entity_id)}><center>{data.username}</center></td>
+                                            <td style={{ cursor: "pointer" }} key={data.entity_id} onClick={() => editUser(data.entity_id)}><center>{data.email}</center></td>
+                                            <td style={{ cursor: "pointer" }} key={data.entity_id} onClick={() => editUser(data.entity_id)}><center>{tp}</center></td>
+                                            <td style={{ cursor: "pointer" }} key={data.entity_id} onClick={() => editUser(data.entity_id)}><center>{prof}</center></td>
                                             <td>
                                                 <center>
-                                                    <Button style={style} variant="danger" size="sm" onClick={() => delUsuario(data.id)}><i className="fas fa-ban" ></i> Excluir</Button>
-                                                    <Button style={style} variant="primary" size="sm" onClick={() => editUser(data.entity_id)}><i className="fas fa-check"></i> Editar</Button>
+                                                    <Button style={style} variant="success" size="sm" onClick={() => changePassword(data.id)}><i className="fas fa-key" ></i> Senha</Button>
+                                                    <Button style={style} variant="danger" size="sm" onClick={() => delUsuario(data.id)}><i className="fas fa-trash" ></i> Excluir</Button>
+                                                    <Button style={style} variant="primary" size="sm" onClick={() => editUser(data.entity_id)}><i className="fas fa-pen"></i> Editar</Button>
                                                 </center>
                                             </td>
                                         </tr>
@@ -177,7 +231,7 @@ export default function Administracao() {
             </div>
             <ModalAddUser onClose={() => { getUsers(); setShowModalAddUser(false); setItems(' '); }} show={showModalAddUser} backdrop={"static"} keyboard={false} header={header} />
             <ModalEditUser onClose={() => { getUsers(); setShowModalEditUser(false); setItems(' '); }} show={showModalEditUser} backdrop={"static"} keyboard={false} header={header} items={items} />
-                          
+
             <Footer />
         </div>
     )

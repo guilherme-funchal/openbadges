@@ -1,31 +1,31 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
-import { Form, Button,Col } from "react-bootstrap";
+import { Form, Button, Col, Modal } from "react-bootstrap";
 import Api from '../../Api';
 import Swal from 'sweetalert2';
 import { Controller, useForm } from "react-hook-form";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 
 function ModalEditUser(props) {
-  const [userProfile, setProfile] = useState("");
 
-  const [current, setCurrent] = useState("");
+  // const [userProfile, setProfile] = useState("");
+  // const [current, setCurrent] = useState("");
   const form = useRef(null);
 
-  const [userType, setType] = useState("pf");
-  const [userLevel, setLevel] = useState("1");
+  const [userType, setType] = useState(props.items.usuario?.type);
+  const [userLevel, setLevel] = useState(props.items.usuario?.level);
+
+  const [file, setFile] = useState("");
 
   var id = props.items.usuario?.id;
   var username = props.items.usuario?.username;
-  var email  = props.items.usuario?.email;
-  var type  = props.items.usuario?.type;
+  var email = props.items.usuario?.email;
   var image = props.items.usuario?.image;
-  var level = props.items.usuario?.level;
 
   useEffect(() => {
- 
+
   }, [])
 
 
@@ -54,22 +54,47 @@ function ModalEditUser(props) {
       email: "",
       type: "",
       image: "",
-      level:""
+      level: ""
     },
   });
 
   async function submitForm(data) {
-    
-    console.log("aqui!!!")
+
+    if (file !== "empty") {
+      let formdata = new FormData();
+      formdata.append('file', file);
+
+      var login = localStorage.getItem('login');
+      var token = JSON.parse(login);
+
+      const headers = {
+        'headers': {
+          'Authorization': 'Bearer ' + token.access_token,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+
+      var new_tring = image.split("/");
+      // console.log("----->",  new_tring[2])
+      // var remove_result = await Api.delete("/files/" + new_tring[2], props.header);
+      // console.log(remove_result);
+
+      var transactions_result = await Api.post("/files", formdata, headers);
+      image = 'public/uploads/' + transactions_result.data.file;
+
+      var remove_result = await Api.delete("/files/" + new_tring[2], props.header);
+      console.log(remove_result);
+
+    }
+
     const block = {
       "username": username,
       "email": email,
-      "type": type,
+      "type": userType,
       "image": image,
-      "level": level
+      "level": userLevel
     };
 
-    console.log("block->", block)
     await Api.put('users/' + id, block, props.header);
 
     await Toast.fire({
@@ -78,8 +103,10 @@ function ModalEditUser(props) {
     });
 
     props.onClose();
+    setFile("empty");
   }
 
+  const style = { width: '45px' }
 
   return ReactDOM.createPortal(
     <CSSTransition
@@ -94,103 +121,61 @@ function ModalEditUser(props) {
           </div>
           <div className="modal-body">
             <form ref={form} noValidate onSubmit={handleSubmit(submitForm)}>
-              <Form.Group as={Col} md="20" >
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
                 <Form.Label>Nome usuario</Form.Label>
-                <Controller
+                <Form.Control
+                  type="text"
+                  id="username"
                   name="username"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Form.Control
-                    type="text"
-                    id="username"
-                    name="username"
-                    defaultValue={props.items.usuario?.username}
-                    placeholder="Username"
-                    onChange={(e) => username=e.target.value}
-                    />
-                  )}
+                  placeholder="Nome usuario"
+                  defaultValue={props.items.usuario?.username}
+                  onChange={(e) => username = e.target.value}
                 />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    <Form.Control.Feedback type="invalid">
-                      O campo é requerido
-                    </Form.Control.Feedback>
-                  </div>
-                )}
               </Form.Group>
-              <Form.Group as={Col} md="20" >
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
                 <Form.Label>Email</Form.Label>
-                <Controller
+                <Form.Control
+                  type="text"
+                  id="email"
                   name="email"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Form.Control
-                    type="text"
-                    id="email"
-                    name="email"
-                    defaultValue={props.items.usuario?.email}
-                    placeholder="Email"
-                    onChange={(e) => email=e.target.value}
-                    />
-                  )}
+                  placeholder="Email"
+                  defaultValue={props.items.usuario?.email}
+                  onChange={(e) => email = e.target.value}
                 />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    <Form.Control.Feedback type="invalid">
-                      O campo é requerido
-                    </Form.Control.Feedback>
-                  </div>
-                )}
               </Form.Group>
-              <Form.Group as={Col} md="20" >
-                <Form.Label>Image</Form.Label>
-                <Controller
-                  name="image"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Form.Control
-                    type="text"
-                    id="image"
-                    name="image"
-                    defaultValue={props.items.usuario?.image}
-                    placeholder="Image"
-                    onChange={(e) => image=e.target.value}
-                    />
-                  )}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    <Form.Control.Feedback type="invalid">
-                      O campo é requerido
-                    </Form.Control.Feedback>
-                  </div>
-                )}
-              </Form.Group> 
-              <Form.Group as={Col} md="20">
-                <Form.Label>Estado</Form.Label><br></br>
-                <select name="type" value={type} onChange={state => setType(state.target.value)}>
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
+                <Form.Label>Tipo</Form.Label><br></br>
+                <select name="type" value={userType} onChange={type => setType(type.target.value)}>
                   <option value="pf">Pessoa física</option>
                   <option value="pj">Pessoa jurídica</option>
                 </select><br /><br />
-            </Form.Group>  
-            <Form.Group as={Col} md="20">
+              </Form.Group>
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
                 <Form.Label>Estado</Form.Label><br></br>
-                <select name="level" value={level} onChange={level => setLevel(level.target.value)}>
+                <select name="level" value={userLevel} onChange={level => setLevel(level.target.value)}>
                   <option value="1">Usuário</option>
                   <option value="0">Administrador</option>
                 </select><br /><br />
-            </Form.Group>  
-              
+              </Form.Group>
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
+                <Form.Label>Arquivo atual : {props.items.usuario?.image}</Form.Label><br></br>
+                <Form.Label></Form.Label><br></br>
+                <input
+                  type="file"
+                  name="image"
+                  defaultValue={props.items.usuario?.image}
+                  onChange={e => setFile(e.target.files[0])}
+                />
+                <br></br>
+              </Form.Group>
+
               <br></br>
               <div className="text-right">
-                <Button variant="danger" onClick={props.onClose} size="sm">
-                <i class="fas fa-trash"> Cancela</i>
+                <Button variant="danger" style={style} onClick={props.onClose} size="sm">
+                  <i class="fas fa-ban"></i>
                 </Button>
-                <Button variant="primary" type="submit" size="sm">
-                <i class="fas fa-check"> Salvar</i>
+                <Button variant="primary" style={style} type="submit" size="sm">
+                  <i class="fas fa-check"></i>
                 </Button>
               </div>
             </form>

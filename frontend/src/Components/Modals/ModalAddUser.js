@@ -5,7 +5,7 @@ import { Form, Button,Col } from "react-bootstrap";
 import Api from '../../Api';
 import Swal from 'sweetalert2';
 import { Controller, useForm } from "react-hook-form";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 
 function ModalAddUser(props) {
@@ -18,6 +18,8 @@ function ModalAddUser(props) {
   const [userType, setType] = useState("pf");
   const [userLevel, setLevel] = useState("1");
 
+  const [file, setFile] = useState('');
+
   useEffect(() => {
     var data = moment()
       .utcOffset('-03:00')
@@ -26,6 +28,7 @@ function ModalAddUser(props) {
 
   }, [])
 
+  const style = { width: '45px' }
 
   const Toast = Swal.mixin({
     toast: true,
@@ -48,29 +51,43 @@ function ModalAddUser(props) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      user_id: "",
-      profile: "",
-      desc: "",
-      name: "",
+      username: "",
       email: "",
       type: "",
-      doc: "",
-      created_at: "",
-      updated_at: "",
-      last_login: "",
-      image: ""
+      image: "",
+      password: "",
+      level: ""
     },
   });
 
   async function submitForm(data) {
 
-    console.log(props.header)
+    console.log(file);
+
+    let formdata = new FormData(); 
+    formdata.append('file', file);
+    
+    console.log(formdata.file);
+
+    var login = localStorage.getItem('login');
+    var token = JSON.parse(login);
+
+    const headers = {
+      'headers': {
+        'Authorization': 'Bearer ' + token.access_token,
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+    
+    console.log(headers);
+
+    var transactions_result = await Api.post("/files", formdata, headers);
 
     const block = {
       "username": data.username,
       "email": data.email,
       "type": userType,
-      "image": data.image,
+      "image": 'public/uploads/' + transactions_result.data.file,
       "password": data.password,
       "level": userLevel
     };
@@ -146,29 +163,7 @@ function ModalAddUser(props) {
                   </div>
                 )}
               </Form.Group>
-              <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Image</Form.Label>
-                <Controller
-                  name="image"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Form.Control
-                      {...field}
-                      type="text"
-                      placeholder="Imagem"
-                      isInvalid={errors.image}
-                    />
-                  )}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">
-                    <Form.Control.Feedback type="invalid">
-                      O campo é requerido
-                    </Form.Control.Feedback>
-                  </div>
-                )}
-              </Form.Group> 
+              <br></br>
               <Form.Group as={Col} md="20" controlId="validationCustom01">
                 <Form.Label>Senha</Form.Label>
                 <Controller
@@ -206,14 +201,18 @@ function ModalAddUser(props) {
                   <option value="0">Administrador</option>
                 </select><br /><br />
             </Form.Group>  
+            <Form.Group as={Col} md="20" controlId="validationCustom01">
+                <Form.Label>Foto</Form.Label><br></br>
+                <input type="file" name="image" onChange={e => setFile(e.target.files[0])} />
+            </Form.Group> 
               
               <br></br>
               <div className="text-right">
-                <Button variant="danger" onClick={props.onClose} size="sm">
-                <i class="fas fa-trash"> Cancela</i>
+                <Button style={style} variant="danger" onClick={props.onClose} size="sm">
+                <i class="fas fa-ban"></i>
                 </Button>
-                <Button variant="primary" type="submit" size="sm">
-                <i class="fas fa-check"> Salvar</i>
+                <Button style={style} variant="primary" type="submit" size="sm">
+                <i class="fas fa-check"></i>
                 </Button>
               </div>
             </form>

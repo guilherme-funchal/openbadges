@@ -1,5 +1,6 @@
 
 const uploadFile = require('../middlewares/uploadFiles');
+const fs = require('fs');
 
 module.exports = {
 
