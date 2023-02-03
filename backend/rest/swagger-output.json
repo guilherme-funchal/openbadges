@@ -840,6 +840,7 @@
       "delete": {
         "description": "Exclui um usuário",
         "tags":["Users"],
+        "security": [ { "bearerAuth": [] } ],
         "parameters": [
           {
             "name": "authorization",

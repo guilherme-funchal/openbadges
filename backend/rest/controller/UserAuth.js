@@ -25,6 +25,8 @@ const generateRefreshToken = async (username, email, level) => {
 }
 
 const generateAccessToken = async (username, email, level) => {
+  // console.log(process.env.SECRET_TOKEN);
+
   return jwt.sign(
     { user: username, email: email, level: level },
     process.env.SECRET_TOKEN,
@@ -38,40 +40,43 @@ module.exports = {
   async login(req, res) {
     let email = req.body.email;
     let password = req.body.password;
-    const user = await User.findOne({ where: { email } })
-    hash = crypto.pbkdf2Sync(password, user.pass_salt, 1000, 64, `sha512`).toString(`hex`);
+    try {
+      const user = await User.findOne({ where: { email } })
+      hash = crypto.pbkdf2Sync(password, user.pass_salt, 1000, 64, `sha512`).toString(`hex`);
 
-    if (hash === user.pass_hash) {
-      const token = await generateAccessToken(user.username, user.email, user.level);
-      req.token = token;
-      const refreshToken = await generateRefreshToken(
-        user.username,
-        user.email,
-        user.level
-      );
-      console.log(refreshToken);
+      if (hash === user.pass_hash) {
+        const token = await generateAccessToken(user.username, user.email, user.level);
+        req.token = token;
+        const refreshToken = await generateRefreshToken(
+          user.username,
+          user.email,
+          user.level
+        );
+        console.log(refreshToken);
+        req.refreshToken = refreshToken;
+        req.content = {
+          user: user.username,
+          email: user.email,
+          level: user.level,
+        };
+        req.token = token;
+        req.refreshToken = refreshToken;
+        await addToList(refreshToken, token);
 
-      req.refreshToken = refreshToken;
-      req.content = {
-        user: user.username,
-        email: user.email,
-        level: user.level,
-      };
-      req.token = token;
-      req.refreshToken = refreshToken;
-      await addToList(refreshToken, token);
-
-      const data = {
-        "access_token": token,
-        "expires_in": 14400,
-        "token_type": "Bearer",
-        "level": user.level,
-        "refresh_token": refreshToken
+        const data = {
+          "access_token": token,
+          "expires_in": 14400,
+          "token_type": "Bearer",
+          "level": user.level,
+          "refresh_token": refreshToken
+        }
+        res.status(200).json(data)
+      } else {
+        res.status(201).json({ result: "password or user problem" })
       }
-      res.status(200).json(data)
-    } else {
+    } catch (e) {
       res.status(400).json({ result: false })
-    }
+    }      
   },
   async verifyToken(req, res) {
     const authHeader = req.headers['authorization'];
@@ -92,7 +97,6 @@ module.exports = {
   
   async RefreshToken(req, res) {
     const postData = req.body;
-    console.log("---->", postData.refreshToken);
 
     if (postData.refreshToken && postData.refreshToken in refreshList) {
       const decoded = jwt.verify(
@@ -119,7 +123,6 @@ module.exports = {
       req.refreshToken = refreshToken;
 
       await addToList(refreshToken, token);
-      console.log("refreshToken->", refreshToken);
 
       const data = {
         "access_token": token,

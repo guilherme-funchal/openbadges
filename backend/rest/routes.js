@@ -39,6 +39,14 @@ router.get('/users/:entity_id', verifyToken, UserController.search);
 router.post('/users/test', verifyToken, UserController.test);
 router.delete('/users/:id',verifyToken,  UserController.delete);
 
+// router.post('/users', UserController.create);
+// router.put('/users/:id', UserController.update);
+// router.put('/users/password/:id', UserController.update_password);
+// router.get('/users', UserController.list);
+// router.get('/users/:entity_id', UserController.search);
+// router.post('/users/test', UserController.test);
+// router.delete('/users/:id',  UserController.delete);
+
 router.post('/files', verifyToken, upload.single('file'), fileUploadController.uploadSingle);
 router.get('/files/:file', verifyToken, fileUploadController.downloadSingle);
 
