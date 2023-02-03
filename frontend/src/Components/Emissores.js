@@ -3,18 +3,56 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from './Footer';
 import React, { useState } from "react";
-
+import Swal from 'sweetalert2';
 import ReactDOM from "react-dom";
 import Modal1 from "./Modals/addEmissor"
 import Modal2 from "./Modals/editEmissor"
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Emissores() {
 
   const [showAddEmissor, setShowAddEmissor] = useState(false);
   const [showEditEmissor, setShowEditEmissor] = useState(false);
+
+  const navigate = useNavigate();
+
+
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-right',
+    iconColor: 'green',
+    customClass: {
+      popup: 'colored-toast'
+    },
+    showConfirmButton: false,
+    timer: 2500,
+    timerProgressBar: true
+  });
   
-  
+  function delEmissor() {
+    console.log("aqui!!!")
+    Swal.fire({
+      title: 'Deseja excluir o projeto?',
+      text: "",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim',
+      cancelButtonText: 'Não'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        Toast.fire({
+          icon: 'success',
+          title: 'Projeto excluído'
+        });
+        navigate(0);
+      }
+
+    })
+  }
+
   const customStyles = {
     content: {
       top: '50%',
@@ -29,6 +67,7 @@ export default function Emissores() {
   const style = { width: '100px' }
   // const [modalIsOpen, setIsOpen] = React.useState(false);
 
+  
 
   return (
     <div>
@@ -71,7 +110,7 @@ export default function Emissores() {
                     <Link to="/classes">
                       <Button style={style} variant="warning" size="sm"><i className="fas fa-th"></i> Classes</Button>
                     </Link>
-                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
+                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban" onClick={() => delEmissor()}></i> Excluir</Button>
                     <Button style={style} variant="primary" size="sm" onClick={() => setShowEditEmissor(true)}><i className="fas fa-check"></i> Editar</Button>
 
                   </div>

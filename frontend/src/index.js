@@ -5,6 +5,7 @@ import App from './App';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Administracao from './Components/Administracao';
 import Badges from './Components/Badges';
+import Home from './Components/Home';
 import Emissores from './Components/Emissores';
 import Diagram from './Components/Diagram';
 import Classes from './Components/Classes';
@@ -20,6 +21,7 @@ root.render(
     <Router key="router">
         <Routes key="routes">
           <Route key="/" path="/" element={<App />} />
+          <Route key="/" path="/Home" element={<Home />} />
           <Route key="Administracao" path="/Administracao" element={<Administracao />} />
           <Route key="Badges" path="/Badges" element={<Badges />} />
           <Route key="Classes" path="/Classes" element={<Classes />} />

@@ -1,37 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import React from 'react';
-import Header from './Header';
+import React, { useState, useEffect, useRef } from "react";
 import Swal from 'sweetalert2';
 import Footer from "./Footer";
 import Api from '../Api';
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import { Button } from "react-bootstrap";
 
 export default function Home() {
-
-    const style = { width: '100px' }
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'bottom-right',
-        iconColor: 'green',
-        customClass: {
-          popup: 'colored-toast'
-        },
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true
-      });
-
-    function delEmissor() {
-        Sucesso.fire({
-            icon: 'success',
-            title: 'Usuário conectado'
-        })
-    }
 
     const navigate = useNavigate();
 
@@ -50,18 +24,19 @@ export default function Home() {
     const Falha = Swal.mixin({
         toast: true,
         position: 'center',
-        iconColor: 'red',
+        iconColor: 'falha',
         customclassName: {
             popup: 'colored-toast'
         },
         showConfirmButton: false,
-        timer: 4500,
+        timer: 2500,
         timerProgressBar: true
     });
 
-    const handleSubmit = async event => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-        event.preventDefault();
+    async function handleSubmit(props) {
 
         var block = {
             "email": email,
@@ -69,29 +44,22 @@ export default function Home() {
         }
 
         console.log("block->", block)
-
         var response = await Api.post('user/login', block);
         console.log(response.status);
 
         if (response.status === 200) {
-
             localStorage.setItem('login', JSON.stringify(response.data));
             navigate("/Badges");
-            navigate(0);   
-        } 
-        
-        if  (response.status === 201) {
-            Falha.fire({
-                icon: 'error',
-                title: 'Usuário ou senha inválido'
-            })
+            navigate(0);           
+        } else {
+            await Swal.fire('Verifique usuario e senha!');
         }
        
     }
 
 
     return (
-        <div>
+        <div className="container">
             <div className="row">
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4">
@@ -105,7 +73,7 @@ export default function Home() {
                                     <p className="login-box-msg">Entre com o email e senha</p>
                                     <form onSubmit={handleSubmit}>
                                         <div className="input-group mb-3">
-                                            <input type="email" className="form-control" id="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+                                            <input type="email" className="form-control" id="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                                             <div className="input-group-append">
                                                 <div className="input-group-text">
                                                     <span className="fas fa-envelope" />
@@ -113,7 +81,7 @@ export default function Home() {
                                             </div>
                                         </div>
                                         <div className="input-group mb-3">
-                                            <input type="password" className="form-control" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+                                            <input type="password" className="form-control" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                                             <div className="input-group-append">
                                                 <div className="input-group-text">
                                                     <span className="fas fa-lock" />
@@ -145,7 +113,7 @@ export default function Home() {
                 </div>
             </div>
             <pre></pre>
-
+            <Footer />
         </div>
     )
 }
