@@ -106,7 +106,7 @@ export default function Header() {
         }
         try {
           var response = await Api.post('user/login', block);
-          console.log(response.status);
+
           if (response.status === 200) {
             localStorage.setItem('login', JSON.stringify(response.data));
             navigate("/Badges");

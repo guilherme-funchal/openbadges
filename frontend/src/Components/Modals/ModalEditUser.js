@@ -74,28 +74,40 @@ function ModalEditUser(props) {
         }
       }
 
-      var new_tring = image.split("/");
-      // console.log("----->",  new_tring[2])
-      // var remove_result = await Api.delete("/files/" + new_tring[2], props.header);
-      // console.log(remove_result);
+      var  old_image = image;
+     
 
       var transactions_result = await Api.post("/files", formdata, headers);
-      image = 'public/uploads/' + transactions_result.data.file;
+      image = transactions_result.data.file;
+      console.log(image);
 
-      var remove_result = await Api.delete("/files/" + new_tring[2], props.header);
+      var remove_result = await Api.delete("/files/" + old_image, props.header);
       console.log(remove_result);
 
+      const block = {
+        "username": username,
+        "email": email,
+        "type": userType,
+        "image": image,
+        "level": userLevel
+      };
+  
+      await Api.put('users/' + id, block, props.header);
+
+      
+    } else {
+
+      const block = {
+        "username": username,
+        "email": email,
+        "type": userType,
+        "image": image,
+        "level": userLevel
+      };
+      await Api.put('users/' + id, block, props.header);
     }
 
-    const block = {
-      "username": username,
-      "email": email,
-      "type": userType,
-      "image": image,
-      "level": userLevel
-    };
-
-    await Api.put('users/' + id, block, props.header);
+    
 
     await Toast.fire({
       icon: 'success',

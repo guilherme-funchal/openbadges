@@ -1,20 +1,41 @@
 import Header from './Header';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from './Footer';
-import React, { useState } from "react";
 import Swal from 'sweetalert2';
 import ReactDOM from "react-dom";
-import Modal1 from "./Modals/addEmissor"
-import Modal2 from "./Modals/editEmissor"
+import Modal1 from "./Modals/addEmissor";
+import Modal2 from "./Modals/editEmissor";
+import Modal3 from "./Modals/viewEmissor";
 import { useNavigate } from 'react-router-dom';
+import Api from '../Api';
 
 export default function Emissores() {
 
   const [showAddEmissor, setShowAddEmissor] = useState(false);
   const [showEditEmissor, setShowEditEmissor] = useState(false);
-
+  const [showViewEmissor, setShowViewEmissor] = useState(false);
+  const [issuers, setIssuers] = useState([]);
+  const [items, setItems] = useState([' ']);
+  const [id, setId] = useState([' ']);
+  const [header, setHeader] = useState([]);
   const navigate = useNavigate();
+
+  const getIssuer = async () => {
+    var login = localStorage.getItem('login');
+    var token = JSON.parse(login);
+
+    let config = {
+      headers: {
+        'Authorization': 'Bearer ' + token.access_token,
+        'Content-Type': 'application/json'
+      }
+    }
+    const response = await Api.get('issuer', config);
+    setIssuers(response.data);
+    setHeader(config);
+  };
 
 
   const Toast = Swal.mixin({
@@ -28,11 +49,24 @@ export default function Emissores() {
     timer: 2500,
     timerProgressBar: true
   });
-  
-  function delEmissor() {
-    console.log("aqui!!!")
+
+
+  async function editIssuer(id) {
+    var response = await Api.get('issuer/' + id, header);
+    setItems(response.data);
+    setShowEditEmissor(true);
+  }
+
+  async function viewIssuer(id) {
+    var response = await Api.get('issuer/' + id, header);
+    setItems(response.data);
+    setShowViewEmissor(true);
+  }
+
+  function delIssuer(id) {
+    console.log("id->", id);
     Swal.fire({
-      title: 'Deseja excluir o projeto?',
+      title: 'Deseja excluir o emissor?',
       text: "",
       icon: 'question',
       showCancelButton: true,
@@ -42,11 +76,13 @@ export default function Emissores() {
       cancelButtonText: 'Não'
     }).then((result) => {
       if (result.isConfirmed) {
-        
+        Api.delete('issuer/' + id, header);
+
         Toast.fire({
           icon: 'success',
-          title: 'Projeto excluído'
+          title: 'Emissor excluído'
         });
+        getIssuer();
         navigate(0);
       }
 
@@ -64,12 +100,16 @@ export default function Emissores() {
     },
   };
 
-  const style = { width: '100px' }
-  // const [modalIsOpen, setIsOpen] = React.useState(false);
+  useEffect(() => {
+    getIssuer();
+  }, []);
 
-  
+  const style = { width: '100px' }
+
+  var baseURL = process.env.REACT_APP_REST_HOST+ '/files/'
 
   return (
+
     <div>
       <Header />
       <div className="container">
@@ -78,52 +118,62 @@ export default function Emissores() {
 
       <div className="container">
         <Button style={style} variant="primary" size="sm" onClick={() => setShowAddEmissor(true)}>
-            <i class="fas fa-plus"></i> Novo
+          <i class="fas fa-plus"></i> Novo
         </Button>
-        <div className="card">
-          <div className="card-header d-flex p-0">
-            <h3 className="card-title p-3">Serpro Educa</h3>
-          </div>
-          <div className="card-body">
-            <div className="tab-content">
-              <div className="tab-pane active" id="tab_1">
-                <div className="card-body pt-0">
-                  <div className="row">
-                    <div className="col-7">
-                      <h2 className="lead"><b>Certificações Profissionais SERPRO</b></h2>
+        {issuers.map((data) => {
+          return(
+            <div className="card">
+              <div className="card-header d-flex p-0">
+                <h3 className="card-title p-3">{data.name}</h3>
+              </div>
+              <div className="card-body">
+                <div className="tab-content">
+                  <div className="tab-pane active" id="tab_1">
+                    <div className="card-body pt-0">
+                      <div className="row">
+                        <div className="col-7">
+                          <h2 className="lead"><b>Descrição : {data.description}</b></h2>
+                          <h2 className="lead"><b>Email : {data.badgrDomain}</b></h2>
+                          <h2 className="lead"><b>URL : {data.url}</b></h2>
+                          <ul className="ml-4 mb-0 fa-ul text-muted">
+                            <li className="small"><span className="fa-li"></span> Classes: ????</li>
+                            <li className="small"><span className="fa-li"></span> Badges: ????</li>
+                          </ul>
+                        </div>
+                        <div className="col-5 text-center">
+                          <img src={baseURL + data.image} alt="image" className="img-circle img-fluid" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="card-footer">
+                      <div className="text-right">
+                      <Button style={style} variant="secondary" size="sm" onClick={() => viewIssuer(data.id)}><i className="fas fa-eye" ></i> Detalhar</Button>
+                      <Button style={style} variant="info" size="sm"><i className="fas fa-users" onClick=""></i> Staff</Button>
+                        <Link to="/Diagram">
+                          <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
+                        </Link>
+                        <Link to="/classes">
+                          <Button style={style} variant="warning" size="sm"><i className="fas fa-th"></i> Classes</Button>
+                        </Link>
+                        <Button style={style} variant="danger" size="sm" onClick={() => delIssuer(data.id)}><i className="fas fa-ban" ></i> Excluir</Button>
+                        <Button style={style} variant="primary" size="sm" onClick={() => editIssuer(data.id)}><i className="fas fa-check"></i> Editar</Button>
 
-                      <ul className="ml-4 mb-0 fa-ul text-muted">
-                        <li className="small"><span className="fa-li"></span> Classes: 2</li>
-                        <li className="small"><span className="fa-li"></span> Badges: 10</li>
-                      </ul>
+                      </div>
                     </div>
-                    <div className="col-5 text-center">
-                      <img src="../../dist/img/educa.png" alt="user-avatar" className="img-circle img-fluid" />
-                    </div>
+
                   </div>
                 </div>
-                <div className="card-footer">
-                  <div className="text-right">
-                    <Link to="/Diagram">
-                      <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
-                    </Link>
-                    <Link to="/classes">
-                      <Button style={style} variant="warning" size="sm"><i className="fas fa-th"></i> Classes</Button>
-                    </Link>
-                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban" onClick={() => delEmissor()}></i> Excluir</Button>
-                    <Button style={style} variant="primary" size="sm" onClick={() => setShowEditEmissor(true)}><i className="fas fa-check"></i> Editar</Button>
-
-                  </div>
-                </div>
-
               </div>
             </div>
-          </div>
-        </div>
+          )
+
+        })}
+
       </div>
-      <Modal1 title="My Modal1" name="teste" onClose={() => setShowAddEmissor(false)} show={showAddEmissor} />
-      <Modal1 title="My Modal1" name="teste" onClose={() => setShowEditEmissor(false)} show={showEditEmissor} />
-      <Footer />     
+      <Modal1 onClose={() => { setShowAddEmissor(false); getIssuer();} } show={showAddEmissor} header={header} />
+      <Modal2 onClose={() => { setShowEditEmissor(false); getIssuer();} } show={showEditEmissor} header={header} items={items}/>
+      <Modal3  onClose={() => setShowViewEmissor(false)} show={showViewEmissor} header={header} items={items}/>
+      <Footer />
     </div>
   )
 }

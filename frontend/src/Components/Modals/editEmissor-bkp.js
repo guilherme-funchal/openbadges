@@ -1,37 +1,38 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
-import { Form, Button, Col, Modal } from "react-bootstrap";
+import { Form, Button, Col  } from "react-bootstrap";
 import Api from '../../Api';
 import Swal from 'sweetalert2';
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import moment from "moment";
 
-function ModalEditUser(props) {
 
+function ModalEditEmissor (props) {
 
   const form = useRef(null);
-  const [file, setFile] = useState("empty");
+  const [file, setFile] = useState("");
   const [value, setValues] = useState("");
 
-  // setName(props.items[0]?.name);
-
-  // console.log("name:", name)
-
-  let id = props.items[0]?.id;
-  let name = props.items[0]?.name;
-  let description = props.items[0]?.description;
-  let email = props.items[0]?.email;
-  let url = props.items[0]?.url;
-  let domain = props.items[0]?.badgrDomain;
-  let image =  props.items[0]?.image;
-  let staffId = props.items[0]?.staffId;
+  const id = props.items[0]?.id;
+  var name =  props.items[0]?.name;
+  var description =  props.items[0]?.description;
+  var email =  props.items[0]?.email;
+  var url =  props.items[0]?.url;
+  var domain =  props.items[0]?.badgrDomain;
+  var image =  props.items[0]?.image;
+  var staffId = props.items[0]?.staffId;
 
   useEffect(() => {
 
   }, [])
 
+  // const onChange = (e) => {
+  //   setValues({
+  //     ...form,
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
 
   const Toast = Swal.mixin({
     toast: true,
@@ -49,35 +50,90 @@ function ModalEditUser(props) {
   var type = "";
 
   const {
-    control,
+    //control,
     handleSubmit,
-    formState: { errors },
+    //formState: { errors },
   } = useForm({
     defaultValues: {
-      id: "",
-      name: "",
-      description: "",
-      email: "",
-      url: "",
-      domain: "",
-      image: "",
-      staffId: ""
+      id : "",
+      name :  "",
+      description :  "",
+      email :  "",
+      url :  "",
+      domain :  "",
+      image :  "",
+      staffId : ""
     },
   });
 
-  async function submitForm() {
-    const block = {
-      "id": id,
-      "name": name,
-      "description": description,
-      "image": image,
-      "staffId": staffId,
-      "email": email,
-      "url": url,
-      "domain": domain
-    };
-    var response = await Api.patch('issuer', block, props.header);
+  async function submitForm(data) {
+    console.log("nome->", name);
+
+    if (file !== "empty") {
+      let formdata = new FormData();
+      formdata.append('file', file);
+
+      var login = localStorage.getItem('login');
+      var token = JSON.parse(login);
+
+      const headers = {
+        'headers': {
+          'Authorization': 'Bearer ' + token.access_token,
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+
+      var old_image = image;
+      console.log("image->", image);
+     
+
+      var transactions_result = await Api.post("/files", formdata, headers);
+      image = transactions_result.data.file;
+      console.log(image);
+
+      var remove_result = await Api.delete("/files/" + old_image, props.header);
+      console.log(remove_result);
+
+      const block = {
+        "id": id,
+        "name": name,
+        "description": description,
+        "image": image,
+        "staffId": staffId,
+        "email": email,
+        "url": url,
+        "domain": domain
+      };
+  
+      console.log("props.header->", props.header)
+  
+      await Api.patch('issuer', block, props.header);
+  
+
+    } else {
+      const block = {
+        "id": id,
+        "name": name,
+        "description": description,
+        "image": image,
+        "staffId": staffId,
+        "email": email,
+        "url": url,
+        "domain": domain
+      };
+  
+      await Api.patch('issuer', block, props.header);
+
+    }
+
+    
+    await Toast.fire({
+      icon: 'success',
+      title: 'Usuário atualizado'
+    });
+
     props.onClose();
+    setFile("empty");
   }
 
   const style = { width: '45px' }
@@ -103,7 +159,7 @@ function ModalEditUser(props) {
                   name="name"
                   placeholder="Nome"
                   defaultValue={props.items[0]?.name}
-                  onChange={(e) => name = e.target.value}
+                  onChange={(e) => name=e.target.value}
                 />
               </Form.Group>
               <br></br>
@@ -115,7 +171,7 @@ function ModalEditUser(props) {
                   name="description"
                   placeholder="Descrição"
                   defaultValue={props.items[0]?.description}
-                  onChange={(e) => description = e.target.value}
+                  onChange={(e) => description=e.target.value}
                 />
               </Form.Group>
               <br></br>
@@ -127,7 +183,7 @@ function ModalEditUser(props) {
                   name="email"
                   placeholder="Email"
                   defaultValue={props.items[0]?.email}
-                  onChange={(e) => email = e.target.value}
+                  onChange={(e) => email=e.target.value}
                 />
               </Form.Group>
               <br></br>
@@ -139,7 +195,7 @@ function ModalEditUser(props) {
                   name="url"
                   placeholder="URL"
                   defaultValue={props.items[0]?.url}
-                  onChange={(e) => url = e.target.value}
+                  onChange={(e) => url=e.target.value}
                 />
               </Form.Group>
               <br></br>
@@ -151,11 +207,11 @@ function ModalEditUser(props) {
                   name="domain"
                   placeholder="Dominio"
                   defaultValue={props.items[0]?.badgrDomain}
-                  onChange={(e) => domain = e.target.value}
+                  onChange={(e) => domain=e.target.value}
                 />
               </Form.Group>
               <br></br>
-              {/* <Form.Group as={Col} md="20">
+              <Form.Group as={Col} md="20">
                 <Form.Label>Arquivo atual : {props.items[0]?.image}</Form.Label><br></br>
                 <Form.Label></Form.Label><br></br>
                 <input
@@ -165,7 +221,7 @@ function ModalEditUser(props) {
                   onChange={e => setFile(e.target.files[0])}
                 />
                 <br></br>
-              </Form.Group> */}
+              </Form.Group>
               <div className="text-right">
                 <Button variant="danger" style={style} onClick={props.onClose} size="sm">
                   <i class="fas fa-ban"></i>
@@ -187,4 +243,4 @@ function ModalEditUser(props) {
   );
 };
 
-export default ModalEditUser;
+export default ModalEditEmissor;
