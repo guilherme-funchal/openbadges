@@ -11,6 +11,7 @@ import Diagram from './Components/Diagram';
 import Classes from './Components/Classes';
 import Aprendizado from './Components/Aprendizado';
 import Premiados from './Components/Premiados';
+import Profile from './Components/Profile';
 import Logoff from './Components/Logoff';
 import Erro from './Components/Erro';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,6 +32,7 @@ root.render(
           <Route key="Premiados" path="/Premiados" element={<Premiados />} />
           <Route key="logoff" path="/logoff" element={<Logoff />}  />
           <Route key="Erro" path="/Erro" element={<Erro />}  />
+          <Route key="Profile" path="/Profile" element={<Profile />}  />
         </Routes>
     </Router>
     

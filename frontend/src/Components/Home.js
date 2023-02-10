@@ -90,10 +90,12 @@ export default function Home() {
 
     return (
         <div>
-            <div className="row">
-                <div className="col-sm-4"></div>
-                <div className="col-sm-4">
-                    <div className="login-box">
+            <div class="login-box"></div>
+            <div className="row align-items-left">
+                <div className="col-sm"></div>
+                <div className="col-sm"></div>
+                <div className="col-sm">
+                    {/* <div className="login-box"> */}
                         <div>
                             <div className="login-logo">
                                 Servidor Openbadges
@@ -138,9 +140,11 @@ export default function Home() {
                         </div>
 
 
-                    </div>
+                    {/* </div> */}
                     <div className="col-sm-4"></div>
                 </div>
+                <div className="col-sm"></div>
+                <div className="col-sm"></div>
             </div>
             <pre></pre>
 

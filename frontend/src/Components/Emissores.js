@@ -121,6 +121,7 @@ export default function Emissores() {
           <i class="fas fa-plus"></i> Novo
         </Button>
         {issuers.map((data) => {
+          console.log("data:", data)
           return(
             <div className="card">
               <div className="card-header d-flex p-0">
@@ -132,12 +133,13 @@ export default function Emissores() {
                     <div className="card-body pt-0">
                       <div className="row">
                         <div className="col-7">
-                          <h2 className="lead"><b>Descrição : {data.description}</b></h2>
-                          <h2 className="lead"><b>Email : {data.badgrDomain}</b></h2>
-                          <h2 className="lead"><b>URL : {data.url}</b></h2>
+                          <h2 className="lead"><b>Descrição : </b>{data.description}</h2>
+                          <h2 className="lead"><b>Email : </b>{data.badgrDomain}</h2>
+                          <h2 className="lead"><b>URL : </b>{data.url}</h2>
+                          <h2 className="lead"><b>Id : </b>{data.entityId}</h2>
                           <ul className="ml-4 mb-0 fa-ul text-muted">
-                            <li className="small"><span className="fa-li"></span> Classes: ????</li>
-                            <li className="small"><span className="fa-li"></span> Badges: ????</li>
+                            <li className="small"><span className="fa-li"></span> Classes: 2</li>
+                            <li className="small"><span className="fa-li"></span> Badges: 0</li>
                           </ul>
                         </div>
                         <div className="col-5 text-center">
@@ -149,15 +151,15 @@ export default function Emissores() {
                       <div className="text-right">
                       <Button style={style} variant="secondary" size="sm" onClick={() => viewIssuer(data.id)}><i className="fas fa-eye" ></i> Detalhar</Button>
                       <Button style={style} variant="info" size="sm"><i className="fas fa-users" onClick=""></i> Staff</Button>
-                        <Link to="/Diagram">
-                          <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
-                        </Link>
-                        <Link to="/classes">
+                        
+                        <Link to="/classes" key={data.id} state={{ id: data.entityId }}>
                           <Button style={style} variant="warning" size="sm"><i className="fas fa-th"></i> Classes</Button>
                         </Link>
                         <Button style={style} variant="danger" size="sm" onClick={() => delIssuer(data.id)}><i className="fas fa-ban" ></i> Excluir</Button>
                         <Button style={style} variant="primary" size="sm" onClick={() => editIssuer(data.id)}><i className="fas fa-check"></i> Editar</Button>
-
+                        <Link to="/Diagram">
+                          <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
+                        </Link>
                       </div>
                     </div>
 

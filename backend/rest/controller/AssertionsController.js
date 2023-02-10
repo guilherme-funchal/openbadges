@@ -19,7 +19,8 @@ var Web3 = require('web3');
 require("dotenv").config();
 
 const api = axios.create({
-  baseURL: process.env.REST_HOST + '/'
+  baseURL: process.env.REST_HOST_DB + '/'
+  // baseURL: "http://localhost:3020" + '/'
 })
 
 const getUserData = async (recipientId, token) => {
@@ -27,9 +28,9 @@ const getUserData = async (recipientId, token) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-
     var response = await api.get('users/' + recipientId, config);
     return response;
+
   } catch (e) {
     console.error(e)
   }    
@@ -41,8 +42,10 @@ const burnBadge = async (entityId, badgeId, token) => {
       headers: { Authorization: `Bearer ${token}` }
     };
 
-    const path_assertion = "public/assertions/";
-    const path_image = "public/badgeClass/";
+    // const path_assertion = "public/assertions/";
+    const path_assertion = "./public/assertions/";
+    // const path_image = "public/badgeClass/";
+    const path_image = "./public/uploads/";
     var responseIssue = await api.get('assertions/' + entityId, config);
 
     var jsonData = responseIssue.data.block;
@@ -51,8 +54,12 @@ const burnBadge = async (entityId, badgeId, token) => {
     var image = responseBadgeClass.data[0].image;
 
     image = path_image +  image
+
+    console.log("->", image)
     
     var img=fs.readFileSync(image)
+
+    console.log("->", img)
 
     var options = {
       image: img,
@@ -149,6 +156,7 @@ module.exports = {
               id: "https://openbadges.serpro.gov.br/public/assertions/" + assertion['1'],
               badge: "https://openbadges.serpro.gov.br/public/badges/" + assertion['5'],
               image: assertion['3'],
+              file: "assertion-" + assertion['1'] + ".png",
               verification: {
                 type: "HostedBadge"
               },
@@ -223,6 +231,7 @@ module.exports = {
             id: "https://openbadges.serpro.gov.br/public/assertions/" + assertion['1'],
             badge: "https://openbadges.serpro.gov.br/public/badges/" + assertion['5'],
             image: assertion['3'],
+            file: "assertion-" + assertion['1'] + ".png",
             verification: {
               type: "HostedBadge"
             },

@@ -89,6 +89,20 @@ module.exports = {
       console.error(e)
     }
   },
+  async search_email(req, res) {
+    try {
+      const { email } = req.params
+      const usuario = await User.findOne({ where: { email } })
+      if (!usuario) {
+        res.status(401).json({ message: 'Usuario não encontrado' })
+      } else {
+        res.status(200).json({ usuario })
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  },
+
   async delete(req, res) {
     try {
       const { id } = req.params

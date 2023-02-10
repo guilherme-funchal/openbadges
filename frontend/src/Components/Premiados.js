@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import Header from './Header';
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Footer from './Footer';
+import { useLocation } from 'react-router-dom';
+import Api from '../Api';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-export default function Administracao() {
+
+export default function Premiados(props) {
+    const location = useLocation()
+    const [entityId, setEntityId] = useState('');
+    const navigate = useNavigate();
+
+    const getPremiados = (entityId) => {
+        console.log("entityId->", entityId)
+    }
+
+
+    useEffect(() => {
+        setEntityId(location.state.id);
+        getPremiados(location.state.id);
+    }, [])
 
     const style = { width: '85px' }
 
@@ -17,9 +35,9 @@ export default function Administracao() {
                         <h1>Premiados com Badge</h1>
                     </div>
                     <div className="col-sm-6">
-                        <ol className="breadcrumb float-sm-right">                           
+                        <ol className="breadcrumb float-sm-right">
                             <li className="breadcrumb-item"><Link to="/emissores">Emissores</Link></li>
-                            <li className="breadcrumb-item"><Link to="/classes">Classes</Link></li>
+                            <li className="breadcrumb-item"><Link to="/classes" key={entityId} state={{ id: entityId }}>Classes</Link></li>
                             <li className="breadcrumb-item active">Premiados</li>
                         </ol>
                     </div>

@@ -16,6 +16,7 @@ router.get('/issuer', verifyToken, IssuerController.list);
 router.post('/issuer', verifyToken, IssuerController.insert);
 router.delete('/issuer/:id', verifyToken, IssuerController.delete);
 router.patch('/issuer', verifyToken, IssuerController.update);
+router.get('/issuer/:id', verifyToken, IssuerController.search);
 
 router.get('/badgeclass', verifyToken, BadgeClassController.list);
 router.get('/badgeclass/:entityId', verifyToken, BadgeClassController.search);
@@ -36,6 +37,7 @@ router.put('/users/:id', verifyToken, UserController.update);
 router.put('/users/password/:id', verifyToken, UserController.update_password);
 router.get('/users', verifyToken, UserController.list);
 router.get('/users/:entity_id', verifyToken, UserController.search);
+router.get('/users/email/:email', verifyToken, UserController.search_email);
 router.post('/users/test', verifyToken, UserController.test);
 router.delete('/users/:id',verifyToken,  UserController.delete);
 
@@ -48,7 +50,7 @@ router.delete('/users/:id',verifyToken,  UserController.delete);
 // router.delete('/users/:id',  UserController.delete);
 
 router.post('/files', verifyToken, upload.single('file'), fileUploadController.uploadSingle);
-router.get('/files/:file', verifyToken, fileUploadController.downloadSingle);
+router.get('/files/:file', fileUploadController.downloadSingle);
 router.delete('/files/:file', verifyToken, fileUploadController.removeSingle);
 
 router.post('/user/login', UserAuth.login);

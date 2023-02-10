@@ -16,6 +16,49 @@ require("dotenv").config();
 
 
 module.exports = {
+    async search(req, res) {
+        try {
+            let id = String(req.params.id);
+            var web3 = new Web3(address);
+
+            var issuer_identificado = [];
+
+            var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+            let issuer = await contratoInteligente.methods.getIssuerByID(id).call(function (err, res) {
+                if (err) {
+                    console.log("Ocorreu um erro", err)
+                    return
+                }
+            });
+
+            console.log(issuer);
+
+            if (issuer['0'] !== '0') {
+                issuer_identificado.push({
+                    entityType: "Issuer",
+                    id: issuer['0'],
+                    entityId: issuer['1'],
+                    openBadgeId: "http://api.serpro.gov.br/public/issuers/" + issuer['1'],
+                    createAt: issuer['4'],
+                    createBy: issuer['5'],
+                    name: issuer['2'],
+                    image: issuer['6'],
+                    email: issuer['8'],
+                    description: issuer['3'],
+                    url: issuer['9'],
+                    staffId: issuer['7'],
+                    badgrDomain: issuer['10'],
+                    extensions: ""
+                });
+            }
+
+        res.status(200).send(issuer_identificado);
+
+        } catch (e) {
+            console.error(e)
+        }    
+    },
     async list(req, res) {
         try {
             var web3 = new Web3(address);
@@ -52,11 +95,11 @@ module.exports = {
                         createBy: issuer['5'],
                         name: issuer['2'],
                         image: issuer['6'],
-                        email: issuer['7'],
+                        email: issuer['8'],
                         description: issuer['3'],
-                        url: issuer['8'],
+                        url: issuer['9'],
                         staffId: issuer['7'],
-                        badgrDomain: issuer['9'],
+                        badgrDomain: issuer['10'],
                         extensions: ""
                     });
                 }
@@ -76,7 +119,7 @@ module.exports = {
             let createdAt = String(now);
             let createdBy = String(req.body.createdBy);
             let image = String(req.body.image);
-            let staffId = String(req.body.staffId);
+            let staffId = entityId;
             let email = String(req.body.email);
             let url = String(req.body.url);
             let domain = String(req.body.domain);

@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import Header from './Header';
 import TableBadges from './table_badges';
 import CardBadges from './card_badges';
 import { Form, Button, Row, Col } from "react-bootstrap";
 import Footer from './Footer';
+import Api from '../Api';
+import { getBadgeUtilityClass } from "@mui/material";
 
 export default function Badges() {
+
+    const getBadges = async (token) => {
+
+        var headers = {
+            'headers': {
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json'
+            }
+          }
+        const response = await Api.get('assertions', headers);
+        
+        console.log("badges->", response.data);
+
+      };
+
+
+    useEffect(() => {
+        var login = localStorage.getItem('login');
+        var token = JSON.parse(login);
+        getBadges(token.access_token);
+
+
+    }, [])
 
     const style = { width: '85px' }
 

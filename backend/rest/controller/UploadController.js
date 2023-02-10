@@ -44,7 +44,7 @@ exports.downloadSingle = (req, res) => {
 exports.removeSingle = (req, res) => {
   const file = req.params.file;
   try {
-    fs.unlinkSync("public/uploads/" + file);
+    fs.unlinkSync("./public/uploads/" + file);
     res.status(200).json("file deleted");
   } catch (e) {
     console.error(e)

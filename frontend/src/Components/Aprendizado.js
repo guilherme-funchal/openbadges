@@ -1,38 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useLayoutEffect } from "react";
 import Header from './Header';
-import { Form, Button, Row, Col } from "react-bootstrap";
-import Modal1 from "./Modals/Modal1"
+import { Link } from "react-router-dom";
+import OrganizationalChart from "./orgChart2";
+import Footer from './Footer';
+import badges from "./Data/data2";
 
-export default function Aprendizado() {
+export default function Diagram() {
 
-    const [showModal1, setShowModal1] = useState(false);
+  const style = { width: '100px' };
 
-    const style = { width: '85px' }
-
-    return (
-        <div>
-            <Header />
-            <div className="container">
-                <h1>Aprendizado</h1>
-            </div>
-            <div className="container">
-                <div className="card">
-                    <div>
-                        <div className="card-header">
-                            <h3 className="card-title"></h3>
-                            <div className="card-tools">
-                            </div>
-                        </div>
-                        <div className="card-body table-responsive p-0">
-                        <dev><center>Usuário sem badge</center></dev>
-                        <button onClick={() => setShowModal1(true)}>Show Modal 1</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <Modal1 title="My Modal1" name="teste" onClose={() => setShowModal1(false)} show={showModal1}>
-      </Modal1>
-            </div>
-            )
+  return (
+    <div>
+      <Header />
+      <div className="container">
+        <h1>Caminho de aprendizado</h1>
+      </div>
+      
+      <div className="container">
+        {/* <div className="card">
+          <div className="card-body"> */}
+          <OrganizationalChart data={badges} />  
+          {/* </div>
+        </div> */}
+      </div>
+      <Footer />
+    </div>
+  )
 }

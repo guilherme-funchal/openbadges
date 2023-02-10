@@ -68,6 +68,7 @@ module.exports = {
           "expires_in": 14400,
           "token_type": "Bearer",
           "level": user.level,
+          "entity_id": user.entity_id,
           "refresh_token": refreshToken
         }
         res.status(200).json(data)

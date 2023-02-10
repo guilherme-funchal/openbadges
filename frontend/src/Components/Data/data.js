@@ -50,26 +50,26 @@ const badges = [
     {
       id: 7,
       parentId: "3",
-      name: "Marco Tulio",
+      name: "John Doe",
       positionName: "",
       team: "",
       type: "badge",
       date: "01/01/2023",
       description:
         "P02 - Gestor de Dados Pessoais",
-      imageUrl: "http://localhost:3000/dist/img/marco.jpg",
+      imageUrl: "http://localhost:3000/dist/img/user1-128x128.jpg",
     },
     {
       id: 6,
       parentId: "3",
-      name: "Alfredo Baeta",
+      name: "Maria Silva",
       positionName: "",
       team: "",
       type: "badge",
       date: "01/01/2023",
       description:
         "P02 - Gestor de Dados Pessoais",
-      imageUrl: "http://localhost:3000/dist/img/baeta.jpg",
+      imageUrl: "http://localhost:3000/dist/img/user5-128x128.jpg",
     }
 
   ];

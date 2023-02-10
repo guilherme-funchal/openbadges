@@ -6,7 +6,7 @@ import "./Modal.css";
 
 const Modal = props => {
  
-  console.log("entrei no modal!!!")
+  console.log("entrei no modal aqui!!!")
 
   useEffect(() => {
   }, []);

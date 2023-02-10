@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import { Form, Button, Row, Col } from "react-bootstrap";
+import { IconName } from "react-icons/io";
 
 
 export default function TableBadges() {
@@ -33,6 +34,7 @@ export default function TableBadges() {
                                     <th>Emissor</th>
                                     <th>Data</th>
                                     <th>Compartilhar</th>
+                                    <th>Download</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,7 +44,22 @@ export default function TableBadges() {
                                     <td>Serpro Educa</td>
                                     <td>01/01/2023</td>
                                     <td>
-                                        <Button style={style} variant="success" size="sm"><i className="fas fa-share"></i> </Button>
+                                        <Button style={style} variant="success" size="sm"><i className="fas fa-retweet"></i> </Button>
+                                    </td>
+                                    <td>
+                                        <Button style={style} variant="primary" size="sm"><i className="fas fa-share"></i> </Button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img width="40" src="../../dist/img/emissor2.png" /></td>
+                                    <td>P02 - Encarregado de Dados Pessoais</td>
+                                    <td>Serpro Educa</td>
+                                    <td>01/01/2023</td>
+                                    <td>
+                                        <Button style={style} variant="success" size="sm"><i className="fas fa-retweet"></i> </Button>
+                                    </td>
+                                    <td>
+                                        <Button style={style} variant="primary" size="sm"><i className="fas fa-share"></i> </Button>
                                     </td>
                                 </tr>
                             </tbody>

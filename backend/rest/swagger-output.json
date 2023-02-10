@@ -5,12 +5,12 @@
     "title": "API para emissão de Badges",
     "description": "\n## Token de acesso\nEnvia email e senha via Post como o comando de exemplo:\n```bash\ncurl -X POST 'https://{host:port}/user/login' -d \"email=EMAIL&password=SENHA\"\n```\n\nResposta:\n```javascript\n{\n    \"access_token\": \"TOKENDEACESSO\",\n    \"token_type\": \"Bearer\",\n    \"expires_in\": 86400,\n    \"refresh_token\": \"TOKENDEREFRESH\",\n}\n```\n\n## Expiração de Token\nToken de expiração para renovar  por examplo:\n\n```bash\ncurl -X POST 'https://{host:port}/user/refresh' -d \"refreshToken=refresh_token```\n\n"
   },
-  "host": "localhost:3000",
+  "host": "localhost:3020",
   "basePath": "/",
   "tags": [
     {
       "name": "Autenticação",
-      "description": "\nPara gerar o tSucessoen de autenticação é necessario..."
+      "description": "\nPara gerar o token de autenticação é necessario..."
     }
   ],
   "schemes": [
@@ -35,7 +35,7 @@
   "paths": {
     "/user/login": {
       "post": {
-        "description": "Gera um novo tSucessoen e refresh tSucessoen aparti da senha",
+        "description": "Gera um novo token e refresh token apartir da senha",
         "tags":["User"],
         "parameters": [
           {

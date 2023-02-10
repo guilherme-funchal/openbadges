@@ -62,10 +62,9 @@ function ModalAddIssuer(props) {
   async function submitForm(data) {
 
     let formdata = new FormData(); 
+
     formdata.append('file', file);
     
-    console.log(formdata.file);
-
     var login = localStorage.getItem('login');
     var token = JSON.parse(login);
 
@@ -76,8 +75,6 @@ function ModalAddIssuer(props) {
       }
     }
     
-    console.log(headers);
-
     var transactions_result = await Api.post("/files", formdata, headers);
 
     const block = {

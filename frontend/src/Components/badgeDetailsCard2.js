@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 
 const badgeDetailsCard = (props, setModalShow) => {
 
+  console.log("->", props);
+
   const Sucesso = Swal.mixin({
     toast: true,
     // position: 'center',
@@ -129,19 +131,12 @@ const badgeDetailsCard = (props, setModalShow) => {
         <div className="diagram-card-item">
           <p className="diagram-card-item-label">Data de premiação:</p>
           <p className="diagram-card-item-value">{props.badge.date}</p>
-          <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
-            <FaPlus />
-          </button>
         </div>
       }  
       { badges === true &&
         <div className="diagram-card-item">
           <p className="diagram-card-item-label">Data de premiação:</p>
           <p className="diagram-card-item-value">{props.badge.date}</p>
-          <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>
-          {/* <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}></button> */}
-            <FaMinus />
-            </button>  
         </div>
       }  
       {/* ) : ( */}
@@ -150,30 +145,10 @@ const badgeDetailsCard = (props, setModalShow) => {
           {/* <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
             <FaPlus />
           </button> */}
-          <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
-            <FaPlus />
-          </button>
-          <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>
-          {/* <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}></button> */}
-            <FaMinus />
-            </button>  
-          <button className="diagram-card-edit-btn" onClick={() => { props.handleClose(); props.handleShowEdit();}}>
-            <GrEdit />
-          </button>
         </div>  
       }  
       { classes === true &&
         <div>
-          <button className="diagram-card-plus-btn" onClick={() => { props.handleClose(); props.handleShowAdd();}}>
-            <FaPlus />
-          </button>
-          <button className="diagram-card-minus-btn" onClick={() => { delData(); }}>
-          {/* <button className="diagram-card-minus-btn" onClick={() => { props.handleClose(); props.handleShowDel();}}></button> */}
-            <FaMinus />
-          </button>
-          <button className="diagram-card-edit-btn" onClick={() => { props.handleClose(); props.handleShowEdit();}}>
-            <GrEdit />
-          </button>
         </div>  
       }                
     </div>

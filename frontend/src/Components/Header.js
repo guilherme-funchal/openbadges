@@ -159,6 +159,11 @@ export default function Header() {
               ) : (
                 <>
                   <ul className="navbar-nav">
+                  <li className="nav-item">
+                      <Link to="/Profile" className="nav-link">
+                        <p>Profile</p>
+                      </Link>
+                    </li>
                     <li className="nav-item">
                       <Link to="/Badges" className="nav-link">
                         <p>Badges</p>
@@ -186,6 +191,7 @@ export default function Header() {
                         <i className="fa fa-unlock-alt" />
                       </a>
                     </li>
+
                   </ul>
                 </>
               )

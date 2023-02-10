@@ -70,7 +70,7 @@ P01 - Encarregado de Dados Pessoais (ED/DPO)
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                            {/* <div className="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
                                 <div className="card bg-light d-flex flex-fill">
                                     <div className="card-header text-muted border-bottom-0">
                                      Membro do Núcleo Brasília da RBAC
@@ -95,7 +95,7 @@ P01 - Encarregado de Dados Pessoais (ED/DPO)
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className="card-footer">

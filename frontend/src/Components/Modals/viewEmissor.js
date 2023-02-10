@@ -50,6 +50,9 @@ function ModalViewIssuer(props) {
                   <li className="list-group-item">
                     <b>OpenbadgeID</b> <a className="float-right">{props.items[0]?.openBadgeId}</a>
                   </li>
+                  <li className="list-group-item">
+                    <b>entityId</b> <a className="float-right">{props.items[0]?.entityId}</a>
+                  </li>
                   {/* <li className="list-group-item">
                     <b>Criado em </b> <a className="float-right">{resultado}</a>
                   </li> */}
