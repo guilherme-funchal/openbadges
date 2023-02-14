@@ -22,7 +22,7 @@ export default function Emissores(props) {
   const [issuerId, setIssuerId] = useState('');
   
   const location = useLocation()
-  const baseURL = process.env.REACT_APP_REST_HOST+ '/files/'
+  const baseURL = process.env.REACT_APP_REST_HOST + '/files/'
   const navigate = useNavigate();
 
   const style = { width: '110px' };
@@ -232,9 +232,9 @@ export default function Emissores(props) {
           </div>
         </div> */}
       </div>
-      <Modal1 name="teste" onClose={() => setShowAddClasse(false)} show={showAddClasse} entityId={issuerId}/>
-      <Modal2 name="teste" onClose={() => setShowAddBadge(false)} show={showAddBadge} entityId={entityId} issuerId={issuerId} />
-      <Modal1  name="teste" onClose={() => setShowEditClasse(false)} show={showEditClasse} />
+      <Modal1 name="teste" onClose={() => {setShowAddClasse(false); getClasses();navigate(0);}} show={showAddClasse} entityId={issuerId}/>
+      <Modal2 name="teste" onClose={() => {setShowAddBadge(false);getClasses();navigate(0);}} show={showAddBadge} entityId={entityId} issuerId={issuerId} />
+      <Modal1  name="teste" onClose={() => {setShowEditClasse(false);getClasses();navigate(0);}} show={showEditClasse} />
       <Footer />
     </div>
   )

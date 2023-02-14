@@ -83,7 +83,7 @@ module.exports = {
     try {
       const id = req.params.id
 
-      const targget = "public/assertions/assertion-" + id + ".png"
+      const targget = "./public/assertions/assertion-" + id + ".png"
       res.download(targget, function (err) {
 
         if (err) {
@@ -230,6 +230,7 @@ module.exports = {
             type: "Assertion",
             id: "https://openbadges.serpro.gov.br/public/assertions/" + assertion['1'],
             badge: "https://openbadges.serpro.gov.br/public/badges/" + assertion['5'],
+            badgeClassId: assertion['5'],
             image: assertion['3'],
             file: "assertion-" + assertion['1'] + ".png",
             verification: {
@@ -437,7 +438,7 @@ module.exports = {
               .once("transactionHash", (txhash) => {
                 console.log(`Dados enviados com sucesso ...`);
               });
-            var filePath = "public/assertions/assertion-" + entityId + ".png" ;
+            var filePath = "./public/assertions/assertion-" + entityId + ".png" ;
             fs.unlinkSync(filePath)  
             res.status(200).send(`Assertion excluído com sucesso`);
           }

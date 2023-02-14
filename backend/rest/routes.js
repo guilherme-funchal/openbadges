@@ -51,7 +51,10 @@ router.delete('/users/:id',verifyToken,  UserController.delete);
 
 router.post('/files', verifyToken, upload.single('file'), fileUploadController.uploadSingle);
 router.get('/files/:file', fileUploadController.downloadSingle);
+router.get('/assertion/:file', fileUploadController.downloadSingleAssertion);
 router.delete('/files/:file', verifyToken, fileUploadController.removeSingle);
+router.delete('/files/assertions/:file', verifyToken, fileUploadController.removeSingleAssertion);
+
 
 router.post('/user/login', UserAuth.login);
 router.post('/user/refresh', UserAuth.RefreshToken);

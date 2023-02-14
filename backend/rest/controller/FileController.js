@@ -8,7 +8,7 @@ async download(req, res) {
   try {
     const file = req.params.file
     // Download function provided by express
-    const targget = "../public/upload/" + '/' + file
+    const targget = "../public" + '/' + file
     res.download(targget, function (err) {
 
       if (err) {

@@ -41,10 +41,39 @@ exports.downloadSingle = (req, res) => {
   }
 }
 
+exports.downloadSingleAssertion = (req, res) => {
+  try {
+    const file = req.params.file
+    const targget = "./public/assertions" + '/' + file
+    res.download(targget, function (err) {
+
+      if (err) {
+        console.log(err);
+        return res.status(400).json({
+          erro: true,
+          mensagem: "Erro: Arquivo não pode ser encontrado!"
+        });
+      }
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
 exports.removeSingle = (req, res) => {
   const file = req.params.file;
   try {
     fs.unlinkSync("./public/uploads/" + file);
+    res.status(200).json("file deleted");
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+exports.removeSingleAssertion = (req, res) => {
+  const file = req.params.file;
+  try {
+    fs.unlinkSync("./public/assertions/" + file);
     res.status(200).json("file deleted");
   } catch (e) {
     console.error(e)
