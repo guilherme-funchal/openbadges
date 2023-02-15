@@ -12,9 +12,6 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 function ModalAddBadge(props) {
-
-  console.log("props->", props);
-
   var login = localStorage.getItem('login');
   var token = JSON.parse(login);
   const form = useRef(null);
@@ -55,11 +52,6 @@ function ModalAddBadge(props) {
   });
 
   async function submitForm(data) {
-
-    
-
-    console.log("data->", data)
-
     var headers = {
       'headers': {
         'Authorization': 'Bearer ' + token.access_token,
@@ -75,8 +67,6 @@ function ModalAddBadge(props) {
       "recipientId" : response.data.usuario.entity_id,
       "expires" : data.expires
     };
-
-    console.log("Block->", block)
 
     await Api.post('assertions', block, headers);
 

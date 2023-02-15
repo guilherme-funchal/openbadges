@@ -8,16 +8,11 @@ import { Controller, useForm } from "react-hook-form";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from "moment";
 
-function ModalEditUser(props) {
-
-
+function ModalEditIssuer(props) {
   const form = useRef(null);
   const [file, setFile] = useState("empty");
   const [value, setValues] = useState("");
 
-  // setName(props.items[0]?.name);
-
-  // console.log("name:", name)
 
   let id = props.items[0]?.id;
   let name = props.items[0]?.name;
@@ -91,7 +86,7 @@ function ModalEditUser(props) {
       <div className="modal">
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
-            <h4 className="modal-title">Editar usuário</h4>
+            <h4 className="modal-title">Editar Emissor</h4>
           </div>
           <div className="modal-body">
             <form ref={form} noValidate onSubmit={handleSubmit(submitForm)}>
@@ -187,4 +182,4 @@ function ModalEditUser(props) {
   );
 };
 
-export default ModalEditUser;
+export default ModalEditIssuer;

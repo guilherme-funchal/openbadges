@@ -7,24 +7,18 @@ import Swal from 'sweetalert2';
 import { Controller, useForm } from "react-hook-form";
 import moment from "moment";
 
-function ModalViewBadge(props) {
-
-  const getAssertion = async (id) => {
-
-    const response = await Api.get('assertions/' + id, props.header);
-
-    console.log("----->", response.data);
-  };
-
-  useEffect(() => {
-    getAssertion(props.assertion);
-
-  }, [])
-
+export default function ModalViewBadge(props) {
+  const baseURL = process.env.REACT_APP_REST_HOST + '/assertion/'
+  let state = "";
+  
   const style = { width: '45px' }
 
-  console.log("Assertion -> ", props.assertion);
-
+  if (props.items?.revoked === false){
+    state = "Válido";
+  } else {
+    state = "Revogado";
+  }
+ 
   return ReactDOM.createPortal(
     <CSSTransition
       in={props.show}
@@ -32,7 +26,7 @@ function ModalViewBadge(props) {
       timeout={{ enter: 0, exit: 300 }}
     >
       <div className="modal">
-        <div className="modal-content" style={{width: '650px'}} onClick={e => e.stopPropagation()}>
+        <div className="modal-content" style={{ width: '650px' }} onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h4 className="modal-title">Ver badge</h4>
           </div>
@@ -40,13 +34,17 @@ function ModalViewBadge(props) {
             <div className="card card-primary card-outline">
               <div className="card-body box-profile">
                 <div className="text-center">
-                  <img className="profile-user-img img-fluid img-circle" src="" alt="User profile picture" />
+                  <img className="profile-user-img img-fluid img-circle" src={ baseURL + props.items?.file} alt="User profile picture" /> 
                 </div>
                 <h3 className="profile-username text-center"></h3>
                 <p className="text-muted text-center"></p>
                 <ul className="list-group list-group-unbordered mb-3">
                   <li className="list-group-item">
-                    <b>Email</b> <a className="float-right"></a>
+                  <p class="text-muted text-sm"><b>Badge : </b> {props.items?.badge} </p>
+                  <p class="text-muted text-sm"><b>Arquivo imagem: </b> {props.items?.file} </p>
+                   <p class="text-muted text-sm"><b>ID : </b> {props.items?.id} </p>
+                  <p class="text-muted text-sm"><b>Data emissão : </b> {props.items?.issueOn} </p>
+                  <p class="text-muted text-sm"><b>Estado : </b> {state} </p> 
                   </li>
                 </ul>
               </div>
@@ -65,5 +63,3 @@ function ModalViewBadge(props) {
     document.getElementById("root")
   );
 };
-
-export default ModalViewBadge;

@@ -181,7 +181,7 @@ module.exports = {
           }
         }
       }
-      res.status(200).json({block});
+      res.status(200).json(block);
     } catch (e) {
       console.error(e)
     }  
@@ -264,6 +264,67 @@ module.exports = {
       console.error(e)
     }
   },
+  async listEmail(req, res) {
+    try {
+
+      let badgeClassId = String(req.params.badgeClassId);
+
+      const authHeader = req.headers['authorization'];
+      const token = authHeader && authHeader.split(' ')[1];
+
+      var web3 = new Web3(address);
+      var block = [];
+
+      var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+      let assertions = await contratoInteligente.methods.getItemsAssertion().call(function (err, res) {
+        if (err) {
+          console.log("Ocorreu um erro", err)
+          return
+        }
+        
+      });
+
+      const quantidade = assertions.length + 1;
+
+      for (var i = 1; i < quantidade; i++) {
+
+        let assertion = await contratoInteligente.methods.getAssertionByID(i).call(function (err, res) {
+          if (err) {
+            console.log("Ocorreu um erro", err)
+            return
+          }
+
+        });
+
+        if (assertion['6'] !== "") {
+          var user = await getUserData(String(assertion['6']), token);
+          var email_salt = crypto.randomBytes(12).toString('hex');
+          var email_hash = crypto.createHash("sha256").update(email_salt, "utf8").digest("hex")
+        }
+
+        if (assertion['0'] !== "0") {
+          if (badgeClassId === assertion['5']){
+            block.push({
+              id: assertion['1'],
+              badge: assertion['5'],
+              badgeClassId: assertion['5'],
+              image: assertion['3'],
+              file: "assertion-" + assertion['1'] + ".png",
+              issueOn: assertion['7'],
+              revoked: assertion['8'],
+              revocationReason: assertion['9'],
+              email: user.data.usuario.email,
+              nome: user.data.usuario.username,
+            });
+        }
+        }
+      }
+      res.status(200).json(block);
+    } catch (e) {
+      console.error(e)
+    }
+  },
   async insert(req, res) {
     try {
       const authHeader = req.headers['authorization'];
@@ -335,7 +396,7 @@ module.exports = {
   async revoke(req, res) {
     try {
       var web3 = new Web3(address);
-      let entityId = String(req.body.entityId );
+      let entityId = String(req.body.entityId);
       let revoked = String(req.body.revoked);
       let revocationReason = String(req.body.revocationReason);
 

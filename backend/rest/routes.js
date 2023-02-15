@@ -25,6 +25,7 @@ router.delete('/badgeclass/:id', verifyToken, BadgeClassController.delete);
 router.patch('/badgeclass', verifyToken, BadgeClassController.update);
 
 router.get('/assertions', verifyToken, AssertionsController.list);
+router.get('/assertions/:badgeClassId', verifyToken, AssertionsController.listEmail);
 router.get('/assertions/:entityId', verifyToken, AssertionsController.search);
 router.post('/assertions', verifyToken, AssertionsController.insert);
 router.delete('/assertions/:entityId', verifyToken, AssertionsController.delete);

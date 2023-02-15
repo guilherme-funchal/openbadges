@@ -3,32 +3,89 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import React, { useState, useEffect, useRef } from "react";
 import Modal1 from "./Modals/viewBadge";
 import Modal2 from "./Modals/shareBadge";
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import Api from '../Api';
 
 export default function CardBadges(props) {
-    const [vieBadge, setShowBadge] = useState(false);
+    const [viewBadge, setShowBadge] = useState(false);
     const [shareBadge, setShareBadge] = useState(false);
-
+    const navigate = useNavigate();
+    const [assertion, setAssertion] = useState(false);
+    const [id, setId] = useState(" ");
+    const [image, setImage] = useState(" ");
+    const [items, setItems] = useState([' ']);
     const style = { width: '55px' }
 
     const baseURL = process.env.REACT_APP_REST_HOST + '/assertion/'
 
+
+    const sharedBadge = async (id, image) => {
+        console.log("image->", image);
+        setImage(image);
+        setId(id);
+        setShareBadge(true);
+    };
+
+
     const detailBadge = async (id) => {
+        let result = id.replace(".png", "");
+        result = result.replace("assertion-", "");
+        const response = await Api.get('assertions/' + result, props.header);
+        setItems(response.data);
         setShowBadge(true);
     };
 
-    const sharedBadge = async (id) => {
-        console.log("id :", id);
-        setShareBadge(true);
-    };
+    const delBadge = async (entityId) => {
+        const result = await Api.delete('assertions/' + entityId, props.header);
+        Toast.fire({
+            icon: 'success',
+            title: 'Badge excluído'
+        });
+        navigate(0);
+    }
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-right',
+        iconColor: 'green',
+        customClass: {
+            popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+    });
+
+    const deleteBadge = async (id) => {
+
+        let entityId = id.replace(".png", "");
+        entityId = entityId.replace("assertion-", "");
+
+        Swal.fire({
+            title: 'Deseja excluir o badge?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                delBadge(entityId);
+            }
+
+        })
+    }
 
     const arr = [];
     props.classes?.map((item, index) => {
         let obj = {}
-        props.assertions.block?.filter((s,i) => {  
-            if(s.badgeClassId === item.entityId){
-                props.issuers?.filter((x,i) => {  
-                    console.log("x--->", x.entityId)
-                    if(item.issuerId === x.entityId){
+        props.assertions.block?.filter((s, i) => {
+            if (s.badgeClassId === item.entityId) {
+                props.issuers?.filter((x, i) => {
+                    if (item.issuerId === x.entityId) {
                         obj["name"] = item.name;
                         obj["classEntityId"] = item.entityId;
                         obj["badgeClassId"] = s.badgeClassId;
@@ -48,14 +105,13 @@ export default function CardBadges(props) {
                         obj["revoked"] = s.revoked;
                         obj["revocationReason"] = s.revocationReason;
                         arr.push(obj);
-                    }    
-                })    
-            } 
+                    }
+                })
+            }
         })
 
-        console.log("Obj->", obj);
-    })  
-    
+    })
+
 
     return (
         <div className="container">
@@ -120,16 +176,19 @@ export default function CardBadges(props) {
                                                 <div className="card-footer">
                                                     <div className="text-right">
                                                         <td>
-                                                        <Button style={props.style} variant="success" size="sm" onClick={() => sharedBadge(data.id)}><i className="fas fa-retweet"></i> </Button>
+                                                            <Button style={props.style} variant="success" size="sm" onClick={() => sharedBadge(data.id, baseURL + data.image)}><i className="fas fa-retweet"></i> </Button>
                                                         </td>
                                                         <td>
                                                             <a href={baseURL + data.image} download>
-                                                                <Button style={style} variant="primary" size="sm"><i className="fas fa-share"></i> </Button>
+                                                                <Button style={props.style} variant="primary" size="sm"><i className="fas fa-share"></i> </Button>
                                                             </a>
                                                         </td>
                                                         <td>
-                                                <Button style={props.style} variant="warning" size="sm"  onClick={() => detailBadge()}><i className="fas fa-eye"></i> </Button>
-                                             </td>
+                                                            <Button style={props.style} variant="warning" size="sm" onClick={() => detailBadge(data.image)}><i className="fas fa-eye"></i> </Button>
+                                                        </td>
+                                                        <td>
+                                                            <Button style={props.style} variant="danger" size="sm" onClick={() => deleteBadge(data.image)}><i className="fas fa-ban"></i> </Button>
+                                                        </td>
                                                     </div>
                                                 </div>
                                             </div>
@@ -145,8 +204,8 @@ export default function CardBadges(props) {
                     </div>
                 </div>
             </section>
-            <Modal1 onClose={() => { setShowBadge(false);} } show={vieBadge} />  
-            <Modal2 onClose={() => { setShareBadge(false);} } show={shareBadge} />                   
+            <Modal1 onClose={() => { setShowBadge(false);} } show={viewBadge} assertion={assertion} items={items}/>
+            <Modal2 onClose={() => { setShareBadge(false);} } show={shareBadge} id={id} image={image}/>
         </div>
     )
 }

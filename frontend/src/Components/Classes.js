@@ -20,7 +20,7 @@ export default function Emissores(props) {
   const [header, setHeader] = useState([]);
   const [entityId, setEntityId] = useState('');
   const [issuerId, setIssuerId] = useState('');
-  
+  const [items, setItems] = useState([' ']);
   const location = useLocation()
   const baseURL = process.env.REACT_APP_REST_HOST + '/files/'
   const navigate = useNavigate();
@@ -58,6 +58,12 @@ export default function Emissores(props) {
     setEntityId(id);
     setShowAddBadge(true);
   }
+
+  const editClasse = async (entityId) => {
+    var response = await Api.get('badgeclass/' + entityId, header);
+    setItems(response.data);
+    setShowEditClasse(true);
+  }  
 
   function delClass(id) {
     Swal.fire({
@@ -114,7 +120,6 @@ export default function Emissores(props) {
           <i class="fas fa-plus"></i> Novo
         </Button>
         {classes.map((data) => {
-          console.log("data----->:", data)
           return(
             <div className="card">
               <div className="card-header d-flex p-0">
@@ -140,12 +145,12 @@ export default function Emissores(props) {
                     </div>
                     <div className="card-footer">
                       <div className="text-right">
-                      <Link to="/premiados" key={data.id} state={{ id: data.issuerId }}>
+                      <Link to="/premiados" key={data.id} state={{ id: data.entityId }}>
                           <Button style={style} variant="info" size="sm"><i className="fas fa-users"></i> Premiados</Button>
                       </Link>
                       <Button style={style} variant="warning" size="sm" onClick={() => {sendBadge(data.entityId, data.issuerId);setShowAddBadge(true);}}><i className="fas fa-handshake"></i> Premiar</Button>
                       <Button style={style} variant="danger" size="sm" onClick={() => delClass(data.id)}><i className="fas fa-ban"></i> Excluir</Button>
-                      <Button style={style} variant="primary" size="sm" onClick={() => setShowEditClasse(true)}><i className="fas fa-check"></i> Editar</Button>
+                      <Button style={style} variant="primary" size="sm" onClick={() => editClasse(data.entityId)}><i className="fas fa-check"></i> Editar</Button>
 
                       </div>
                     </div>
@@ -157,84 +162,11 @@ export default function Emissores(props) {
           )
 
         })}
-        {/* <div className="card">
-          <div className="card-header d-flex p-0">
-            <h3 className="card-title p-3">P01 - Encarregado de Dados Pessoais (ED/DPO)</h3>
-          </div>
-          <div className="card-body">
-            <div className="tab-content">
-              <div className="tab-pane active" id="tab_1">
-                <div className="card-body pt-0">
-                  <div className="row">
-                    <div className="col-7">
-                      <h2 className="lead"><b>Certificações Profissionais SERPRO</b></h2>
-
-                      <ul className="ml-4 mb-0 fa-ul text-muted">
-                        <li className="small"><span className="fa-li"></span> Badges: 10</li>
-                      </ul>
-                    </div>
-                    <div className="col-5 text-center">
-                      <img src="../../dist/img/educa.png" alt="user-avatar" className="img-circle img-fluid" />
-                    </div>
-                  </div>
-                </div>
-                <div className="card-footer">
-                  <div className="text-right">
-                    <Link to="/premiados">
-                      <Button style={style} variant="success" size="sm"><i className="fas fa-users"></i> Premiados</Button>
-                    </Link>
-                    <Button style={style} variant="warning" size="sm" onClick={() => setShowAddBadge(true)}><i className="fas fa-handshake"></i> Premiar</Button>
-                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
-                    <Button style={style} variant="primary" size="sm" onClick={() => setShowEditClasse(true)}><i className="fas fa-check"></i> Editar</Button>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-header d-flex p-0">
-            <h3 className="card-title p-3">P02 - Gestor de Dados Pessoais</h3>
-          </div>
-          <div className="card-body">
-            <div className="tab-content">
-              <div className="tab-pane active" id="tab_1">
-                <div className="card-body pt-0">
-                  <div className="row">
-                    <div className="col-7">
-                      <h2 className="lead"><b>Certificações Profissionais SERPRO</b></h2>
-
-                      <ul className="ml-4 mb-0 fa-ul text-muted">
-                        <li className="small"><span className="fa-li"></span> Badges: 10</li>
-                      </ul>
-                    </div>
-                    <div className="col-5 text-center">
-                      <img src="../../dist/img/educa.png" alt="user-avatar" className="img-circle img-fluid" />
-                    </div>
-                  </div>
-                </div>
-                <div className="card-footer">
-                  <div className="text-right">
-                    <Link to="/premiados">
-                      <Button style={style} variant="success" size="sm"><i className="fas fa-users"></i> Premiados</Button>
-                    </Link>
-                    <Button style={style} variant="warning" size="sm" onClick={() => setShowAddBadge(true)}><i className="fas fa-handshake" ></i> Premiar</Button>
-                    <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i> Excluir</Button>
-                    <Button style={style} variant="primary" size="sm" onClick={() => setShowEditClasse(true)}><i className="fas fa-check"></i> Editar</Button>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div> */}
+        
       </div>
       <Modal1 name="teste" onClose={() => {setShowAddClasse(false); getClasses();navigate(0);}} show={showAddClasse} entityId={issuerId}/>
       <Modal2 name="teste" onClose={() => {setShowAddBadge(false);getClasses();navigate(0);}} show={showAddBadge} entityId={entityId} issuerId={issuerId} />
-      <Modal1  name="teste" onClose={() => {setShowEditClasse(false);getClasses();navigate(0);}} show={showEditClasse} />
+      <Modal3  name="teste" onClose={() => {setShowEditClasse(false);getClasses();navigate(0);}} show={showEditClasse} items={items} header={header}/>
       <Footer />
     </div>
   )

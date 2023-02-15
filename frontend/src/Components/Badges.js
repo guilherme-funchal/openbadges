@@ -49,7 +49,7 @@ export default function Badges() {
 
     }, [])
 
-    const style = { width: '55px' }
+    const style = { width: '35px' }
 
     return (
         <div>

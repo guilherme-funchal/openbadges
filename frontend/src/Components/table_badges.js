@@ -5,26 +5,79 @@ import { IconName } from "react-icons/io";
 import Api from '../Api';
 import Modal1 from "./Modals/viewBadge";
 import Modal2 from "./Modals/shareBadge";
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function TableBadges(props) {
     const [viewBadge, setShowBadge] = useState(false);
+    const [items, setItems] = useState([' ']);
     const [shareBadge, setShareBadge] = useState(false);
     const [assertion, setAssertion] = useState(false);
+    const [id, setId] = useState(" ");
+    const [image, setImage] = useState(" ");
+    const navigate = useNavigate();
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-right',
+        iconColor: 'green',
+        customClass: {
+          popup: 'colored-toast'
+        },
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      });
 
     const baseURL = process.env.REACT_APP_REST_HOST+ '/assertion/'
     const arr = [];
 
     const detailBadge = async (id) => {
         let result = id.replace(".png", "");
-        console.log("Result->", result);
         result = result.replace("assertion-", "");
-        console.log("Result->", result);
-        setAssertion(result);
+        const response = await Api.get('assertions/' + result, props.header);
+        setItems(response.data);
         setShowBadge(true);
     };
 
-    const sharedBadge = async (id) => {
-        console.log("id :", id);
+    const delBadge = async (entityId) => {
+        const result = await Api.delete('assertions/' + entityId, props.header);
+        Toast.fire({
+            icon: 'success',
+            title: 'Badge excluído'
+          });
+        navigate(0);
+    }    
+
+    const deleteBadge = async (id) => {
+
+        let entityId = id.replace(".png", "");
+        entityId = entityId.replace("assertion-", "");
+
+        Swal.fire({
+          title: 'Deseja excluir o badge?',
+          text: "",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sim',
+          cancelButtonText: 'Não'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            delBadge(entityId);
+    
+
+          }
+    
+        })
+      }
+
+
+    const sharedBadge = async (id, image) => {
+        console.log("image->", image);
+        setImage(image);
+        setId(id);
         setShareBadge(true);
     };
 
@@ -83,6 +136,7 @@ export default function TableBadges(props) {
                                     <th>Compartilhar</th>
                                     <th>Download</th>
                                     <th>Detalhar</th>
+                                    <th>Excluir</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -97,15 +151,18 @@ export default function TableBadges(props) {
                                             <td>{data.issueOn}</td>
                                             <td>{data.issuerName}</td>
                                             <td>
-                                                <Button style={props.style} variant="success" size="sm" onClick={() => sharedBadge(data.id)}><i className="fas fa-retweet"></i> </Button>
+                                                <Button style={props.style} variant="success" size="sm" onClick={() => sharedBadge(data.id, baseURL + data.image)}><i className="fas fa-retweet"></i></Button>
                                             </td>
                                             <td>
                                                <a href={baseURL + data.image} download>
-                                                <Button style={props.style} variant="primary" size="sm"><i className="fas fa-share"></i> </Button>
+                                                <Button style={props.style} variant="primary" size="sm"><i className="fas fa-share"></i></Button>
                                                </a> 
                                             </td>
                                             <td>
-                                                <Button style={props.style} variant="warning" size="sm"  onClick={() => detailBadge(data.image)}><i className="fas fa-eye"></i> </Button>
+                                                <Button style={props.style} variant="warning" size="sm"  onClick={() => detailBadge(data.image)}><i className="fas fa-eye"></i></Button>
+                                            </td>
+                                            <td>
+                                                <Button style={props.style} variant="danger" size="sm"  onClick={() => deleteBadge(data.image)}><i className="fas fa-ban"></i></Button>
                                             </td>
                                         </tr>
                                     )
@@ -120,8 +177,8 @@ export default function TableBadges(props) {
                 </div>
 
             </div>
-            <Modal1 onClose={() => { setShowBadge(false);} } show={viewBadge} assertion={assertion} props={props}/>
-            <Modal2 onClose={() => { setShareBadge(false);} } show={shareBadge} />     
+            <Modal1 onClose={() => { setShowBadge(false);} } show={viewBadge} assertion={assertion} items={items}/>
+            <Modal2 onClose={() => { setShareBadge(false);} } show={shareBadge} id={id} image={image}/>     
         </div>
        
     )
