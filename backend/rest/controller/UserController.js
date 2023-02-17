@@ -12,6 +12,7 @@ module.exports = {
       let image = req.body.image;
       let password = req.body.password;
       let level = req.body.level;
+      let domain = req.body.domain;
 
       const user = await User.findOne({ where: { email } })
       if (user) {
@@ -25,7 +26,7 @@ module.exports = {
         const pass_salt = crypto.randomBytes(12).toString('hex');
         const pass_hash = crypto.pbkdf2Sync(password, pass_salt, 1000, 64, `sha512`).toString(`hex`);
 
-        const user = await User.create({ username, email, type, image, pass_hash, pass_salt, entity_id, level })
+        const user = await User.create({ username, email, type, image, pass_hash, pass_salt, entity_id, level, domain })
         res.status(200).json({ user })
       }
     } catch (error) {
@@ -52,12 +53,12 @@ module.exports = {
   async update(req, res) {
     try {
       const { id } = req.params
-      const { username, email, type, image, level } = req.body
+      const { username, email, type, image, level, domain } = req.body
       const user = await User.findOne({ where: { id } })
       if (!user) {
         res.status(401).json({ message: "Nenhum usuario encontrado" })
       } else {
-        const user = await User.update({ username, email, type, image, level }, { where: { id } })
+        const user = await User.update({ username, email, type, image, level, domain }, { where: { id } })
         res.status(200).json({ user })
       }
     } catch (error) {

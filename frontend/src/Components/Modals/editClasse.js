@@ -144,7 +144,9 @@ function ModalEditClass(props) {
                                         <Form.Group as={Col} md="20" controlId="validationCustom01">
                                             <Form.Label>Descrição</Form.Label>
                                             <Form.Control
-                                                type="text"
+                                                as="textarea"
+                                                size="sm"
+                                                rows={3}
                                                 id="description"
                                                 name="description"
                                                 placeholder="Descrição"
@@ -172,7 +174,9 @@ function ModalEditClass(props) {
                                             <Form.Label>Narrativa do critério</Form.Label>
 
                                             <Form.Control
-                                                type="text"
+                                                as="textarea"
+                                                size="sm"
+                                                rows={3}
                                                 id="criteriaNarrative"
                                                 name="criteriaNarrative"
                                                 placeholder="Narrativa do critério"

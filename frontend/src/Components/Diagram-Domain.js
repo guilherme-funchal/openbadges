@@ -1,22 +1,23 @@
 import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
 import Header from './Header';
 import { Link } from "react-router-dom";
-import OrganizationalChart from "./orgChart2";
+import OrganizationalChart from "./orgChart";
 import Footer from './Footer';
-import badges from "./Data/data2";
-import Api from '../Api';
+import badges from "./Data/data";
 import { useLocation } from 'react-router-dom'
+import Api from '../Api';
 
 export default function Diagram(props) {
-
   const location = useLocation()
+  const style = { width: '100px' };
+  const arr = [];
   const [data, setData] = useState([ ]);
+  const [domain, setDomain] = useState([ ]);
 
   const getData = async () => {
     var login = localStorage.getItem('login');
     var token = JSON.parse(login);
-
-    console.log("issuer->", token.entity_id);
+    setDomain(token.domain);
 
     let header = {
       headers: {
@@ -24,9 +25,7 @@ export default function Diagram(props) {
         'Content-Type': 'application/json'
       }
     }
-    const response = await Api.get('/graph/user/' + token.entity_id, header);
-    console.log(response.data);
-
+    const response = await Api.get('/graph/domain/' + token.domain, header);
     setData(response.data);
   }  
 
@@ -34,19 +33,18 @@ export default function Diagram(props) {
     getData();
   }, []);
 
-  const style = { width: '100px' };
-
   return (
     <div>
       <Header />
       <div className="container">
-        <h1>Caminho de aprendizado</h1>
+        <h1>Caminho de aprendizado Dominio {domain}</h1>
       </div>
       
       <div className="container">
         {/* <div className="card">
           <div className="card-body"> */}
-          <OrganizationalChart data={data} />  
+
+          <OrganizationalChart data={data} /> 
           {/* </div>
         </div> */}
       </div>

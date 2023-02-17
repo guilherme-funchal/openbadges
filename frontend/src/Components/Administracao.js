@@ -25,6 +25,7 @@ export default function Administracao() {
     }
 
     async function editUser(entity_id) {
+        console.log(entity_id);
         EditItemsUser(entity_id);
         setShowModalEditUser(true);
     }
@@ -114,38 +115,40 @@ export default function Administracao() {
                 var senha1 = formValues[0];
                 var senha2 = formValues[1];
 
+                if  ( senha1 !== "") {
+                    if (senha1 === senha2) {
+                        try {
+                            var block = {
+                                "password": senha1
+                            }
+                            var response = await Api.put('users/password/'+ id, block, header);
 
-                if (senha1 === senha2) {
-                    try {
-                        var block = {
-                            "password": senha1
-                          }
-                        var response = await Api.put('users/password/'+ id, block, header);
-
-                        if (response.status === 200) {
-                            await Sucesso.fire({
-                                icon: 'success',
-                                title: 'Senha atualizada'
+                            if (response.status === 200) {
+                                await Sucesso.fire({
+                                    icon: 'success',
+                                    title: 'Senha atualizada'
+                                })
+                            }    
+                        } catch (e) {
+                            await Falha.fire({
+                                icon: 'error',
+                                title: 'Senha não foi alterada'
                             })
-                        }    
-                    } catch (e) {
+                        }
+                    } else {
                         await Falha.fire({
                             icon: 'error',
-                            title: 'Senha não foi alterada'
+                            title: 'Senhas digitadas são diferentes!!!'
                         })
                     }
-                } else {
-                    await Falha.fire({
-                        icon: 'error',
-                        title: 'Senhas digitadas são diferentes!!!'
-                    })
-                }
+                }    
             }
 
 
 
         })()
 
+    
     }
 
     useEffect(() => {

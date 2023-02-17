@@ -10,8 +10,6 @@ import moment from "moment";
 function ModalViewIssuer(props) {
   var baseURL = process.env.REACT_APP_REST_HOST+ '/files/'
 
-  console.log(props.items);
-
   useEffect(() => {
 
   }, [])

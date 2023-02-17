@@ -13,7 +13,9 @@ export default function ModalViewBadge(props) {
   
   const style = { width: '45px' }
 
-  if (props.items?.revoked === false){
+  console.log("----->", props.items);
+
+  if (props.items[0]?.revoked === false){
     state = "Válido";
   } else {
     state = "Revogado";
@@ -34,16 +36,16 @@ export default function ModalViewBadge(props) {
             <div className="card card-primary card-outline">
               <div className="card-body box-profile">
                 <div className="text-center">
-                  <img className="profile-user-img img-fluid img-circle" src={ baseURL + props.items?.file} alt="User profile picture" /> 
+                  <img className="profile-user-img img-fluid img-circle" src={ baseURL + props.items[0]?.file} alt="User profile picture" /> 
                 </div>
                 <h3 className="profile-username text-center"></h3>
                 <p className="text-muted text-center"></p>
                 <ul className="list-group list-group-unbordered mb-3">
                   <li className="list-group-item">
-                  <p class="text-muted text-sm"><b>Badge : </b> {props.items?.badge} </p>
-                  <p class="text-muted text-sm"><b>Arquivo imagem: </b> {props.items?.file} </p>
-                   <p class="text-muted text-sm"><b>ID : </b> {props.items?.id} </p>
-                  <p class="text-muted text-sm"><b>Data emissão : </b> {props.items?.issueOn} </p>
+                  <p class="text-muted text-sm"><b>Badge : </b> {props.items[0]?.badge} </p>
+                  <p class="text-muted text-sm"><b>Arquivo imagem: </b> {props.items[0]?.file} </p>
+                   <p class="text-muted text-sm"><b>ID : </b> {props.items[0]?.id} </p>
+                  <p class="text-muted text-sm"><b>Data emissão : </b> {props.items[0]?.issueOn} </p>
                   <p class="text-muted text-sm"><b>Estado : </b> {state} </p> 
                   </li>
                 </ul>

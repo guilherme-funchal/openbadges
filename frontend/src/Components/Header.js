@@ -4,8 +4,38 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Api from '../Api';
 import { Link } from "react-router-dom";
+import ModalEditUser from './Modals/ModalEditUser';
 
 export default function Header() {
+
+  const [showModalEditUser, setShowModalEditUser] = useState(false);
+  const [items, setItems] = useState([' ']);
+  const [header, setHeader] = useState([]);
+
+  async function EditItemsUser(entity_id, token) {
+    var header = {
+      'headers': {
+          'Authorization': 'Bearer ' + token.access_token,
+          'Content-Type': 'application/json'
+      }
+    }
+    setHeader(header);
+
+    console.log("header", header);
+    console.log("entity_id", entity_id);
+
+    var response = await Api.get('users/' + entity_id, header);
+    setItems(response.data);
+  }
+
+  async function editUser() {
+    var login = localStorage.getItem('login');
+    var token = JSON.parse(login);
+    var entityId = token.entity_id;
+
+    EditItemsUser(entityId, token);
+    setShowModalEditUser(true);
+  }
 
   useEffect(() => {
     const access_token = localStorage.getItem('login');
@@ -75,7 +105,80 @@ export default function Header() {
       }
     })
   }
+  
+  async function changePassword() {
 
+    var login = localStorage.getItem('login');
+    var token = JSON.parse(login);
+    var entityId = token.entity_id;
+    var header = {
+      'headers': {
+          'Authorization': 'Bearer ' + token.access_token,
+          'Content-Type': 'application/json'
+      }
+    }
+
+    const response = await Api.get('users/' + entityId, header);
+    var id = response.data.usuario.id;
+
+
+
+    (async () => {
+
+        const { value: formValues } = await Swal.fire({
+            title: 'Trocar a senha',
+            html:
+                '<input type="password" id="senha1" class="swal2-input" placeholder="senha">' +
+                '<input type="password" id="senha2" class="swal2-input" placeholder="confirmação">',
+            focusConfirm: false,
+            preConfirm: () => {
+                return [
+                    document.getElementById('senha1').value,
+                    document.getElementById('senha2').value
+                ]
+            }
+        })
+
+        if (formValues) {
+            var senha1 = formValues[0];
+            var senha2 = formValues[1];
+
+            if  ( senha1 !== "") {
+
+              if (senha1 === senha2) {
+                  try {
+                      var block = {
+                          "password": senha1
+                        }
+
+                      var response = await Api.put('users/password/'+ id, block, header);
+
+                      if (response.status === 200) {
+                          await Sucesso.fire({
+                              icon: 'success',
+                              title: 'Senha atualizada'
+                          })
+                      }    
+                  } catch (e) {
+                      await Falha.fire({
+                          icon: 'error',
+                          title: 'Senha não foi alterada'
+                      })
+                  }
+              } else {
+                  await Falha.fire({
+                      icon: 'error',
+                      title: 'Senhas digitadas são diferentes!!!'
+                  })
+              }
+            }  
+        }
+
+
+
+    })()
+
+}
 
   async function doLogin() {
     setError('');
@@ -159,11 +262,11 @@ export default function Header() {
               ) : (
                 <>
                   <ul className="navbar-nav">
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                       <Link to="/Profile" className="nav-link">
                         <p>Profile</p>
                       </Link>
-                    </li>
+                    </li> */}
                     <li className="nav-item">
                       <Link to="/Badges" className="nav-link">
                         <p>Badges</p>
@@ -186,12 +289,21 @@ export default function Header() {
                     </li>
                   </ul>
                   <ul className="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                  <li>  
+                      <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button" onClick={editUser}>
+                        <i className="fa fa-user" />
+                      </a>
+                    </li>
+                  <li>  
+                      <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button" onClick={changePassword}>
+                        <i className="fa fa-key" />
+                      </a>
+                    </li>
                     <li className="nav-item">
                       <a className="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button" onClick={doLogout}>
                         <i className="fa fa-unlock-alt" />
                       </a>
                     </li>
-
                   </ul>
                 </>
               )
@@ -200,6 +312,7 @@ export default function Header() {
 
 
 
+        <ModalEditUser onClose={() => { setShowModalEditUser(false); setItems(' '); }} show={showModalEditUser} backdrop={"static"} keyboard={false} items={items} header={header} type={"user"} />
 
 
       </div>

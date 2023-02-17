@@ -131,7 +131,7 @@ export default function Emissores(props) {
                     <div className="card-body pt-0">
                       <div className="row">
                         <div className="col-7">
-                          <h2 className="lead"><b>Nome : </b>{data.description}</h2>
+                          <h2 className="lead"><b>Nome : </b>{data.name}</h2>
                           <h2 className="lead"><b>ID : </b>{data.entityId}</h2>
                           {/* <h2 className="lead"><b>Descrição : {data.criteriaNarrative}</b></h2> */}
                           <ul className="ml-4 mb-0 fa-ul text-muted">
@@ -145,13 +145,15 @@ export default function Emissores(props) {
                     </div>
                     <div className="card-footer">
                       <div className="text-right">
-                      <Link to="/premiados" key={data.id} state={{ id: data.entityId }}>
+                      <Link to="/Premiados" key={data.id} state={{ id: data.entityId}}>
                           <Button style={style} variant="info" size="sm"><i className="fas fa-users"></i> Premiados</Button>
                       </Link>
                       <Button style={style} variant="warning" size="sm" onClick={() => {sendBadge(data.entityId, data.issuerId);setShowAddBadge(true);}}><i className="fas fa-handshake"></i> Premiar</Button>
                       <Button style={style} variant="danger" size="sm" onClick={() => delClass(data.id)}><i className="fas fa-ban"></i> Excluir</Button>
                       <Button style={style} variant="primary" size="sm" onClick={() => editClasse(data.entityId)}><i className="fas fa-check"></i> Editar</Button>
-
+                      <Link to="/DiagramClass" key={data.id} state={{ id: data.entityId }}>
+                          <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
+                      </Link>
                       </div>
                     </div>
 
@@ -164,9 +166,9 @@ export default function Emissores(props) {
         })}
         
       </div>
-      <Modal1 name="teste" onClose={() => {setShowAddClasse(false); getClasses();navigate(0);}} show={showAddClasse} entityId={issuerId}/>
-      <Modal2 name="teste" onClose={() => {setShowAddBadge(false);getClasses();navigate(0);}} show={showAddBadge} entityId={entityId} issuerId={issuerId} />
-      <Modal3  name="teste" onClose={() => {setShowEditClasse(false);getClasses();navigate(0);}} show={showEditClasse} items={items} header={header}/>
+      <Modal1 name="teste" onClose={() => {setShowAddClasse(false); getClasses(); navigate(0);}} show={showAddClasse} entityId={issuerId}/>
+      <Modal2 name="teste" onClose={() => {setShowAddBadge(false); getClasses(); navigate(0);}} show={showAddBadge} entityId={entityId} issuerId={issuerId} />
+      <Modal3  name="teste" onClose={() => {setShowEditClasse(false); getClasses(); navigate(0);}} show={showEditClasse} items={items} header={header}/>
       <Footer />
     </div>
   )

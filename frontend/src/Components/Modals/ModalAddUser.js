@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
-import { Form, Button,Col } from "react-bootstrap";
+import { Form, Button, Col } from "react-bootstrap";
 import Api from '../../Api';
 import Swal from 'sweetalert2';
 import { Controller, useForm } from "react-hook-form";
@@ -56,7 +56,8 @@ function ModalAddUser(props) {
       type: "",
       image: "",
       password: "",
-      level: ""
+      level: "",
+      domain: ""
     },
   });
 
@@ -64,9 +65,9 @@ function ModalAddUser(props) {
 
     console.log(file);
 
-    let formdata = new FormData(); 
+    let formdata = new FormData();
     formdata.append('file', file);
-    
+
     console.log(formdata.file);
 
     var login = localStorage.getItem('login');
@@ -78,8 +79,6 @@ function ModalAddUser(props) {
         'Content-Type': 'multipart/form-data'
       }
     }
-    
-    console.log(headers);
 
     var transactions_result = await Api.post("/files", formdata, headers);
 
@@ -89,10 +88,10 @@ function ModalAddUser(props) {
       "type": userType,
       "image": 'public/uploads/' + transactions_result.data.file,
       "password": data.password,
-      "level": userLevel
+      "level": userLevel,
+      "domain": data.domain
     };
 
-    console.log("block->", block)
     await Api.post('users', block, props.header);
 
     await Toast.fire({
@@ -140,6 +139,7 @@ function ModalAddUser(props) {
                   </div>
                 )}
               </Form.Group>
+              <br></br>
               <Form.Group as={Col} md="20" controlId="validationCustom01">
                 <Form.Label>Email</Form.Label>
                 <Controller
@@ -186,33 +186,59 @@ function ModalAddUser(props) {
                     </Form.Control.Feedback>
                   </div>
                 )}
-              </Form.Group>   
+              </Form.Group>
+              <br></br>
               <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Estado</Form.Label><br></br>
+                <Form.Label>Domain</Form.Label>
+                <Controller
+                  name="domain"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Form.Control
+                      {...field}
+                      type="text"
+                      placeholder="Dominio"
+                      isInvalid={errors.domain}
+                    />
+                  )}
+                />
+                {errors.name && (
+                  <div className="invalid-feedback">
+                    <Form.Control.Feedback type="invalid">
+                      O campo é requerido
+                    </Form.Control.Feedback>
+                  </div>
+                )}
+              </Form.Group>
+              <br></br>
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
+                <Form.Label>Tipo</Form.Label><br></br>
                 <select name="type" value={type} onChange={state => setType(state.target.value)}>
                   <option value="pf">Pessoa física</option>
                   <option value="pj">Pessoa jurídica</option>
                 </select><br /><br />
-            </Form.Group>  
-            <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Estado</Form.Label><br></br>
+              </Form.Group>
+              
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
+                <Form.Label>Perfil</Form.Label><br></br>
                 <select name="level" value={userLevel} onChange={state => setLevel(state.target.value)}>
                   <option value="1">Usuário</option>
                   <option value="0">Administrador</option>
                 </select><br /><br />
-            </Form.Group>  
-            <Form.Group as={Col} md="20" controlId="validationCustom01">
+              </Form.Group>
+              <Form.Group as={Col} md="20" controlId="validationCustom01">
                 <Form.Label>Foto</Form.Label><br></br>
                 <input type="file" name="image" onChange={e => setFile(e.target.files[0])} />
-            </Form.Group> 
-              
+              </Form.Group>
+
               <br></br>
               <div className="text-right">
                 <Button style={style} variant="danger" onClick={props.onClose} size="sm">
-                <i class="fas fa-ban"></i>
+                  <i class="fas fa-ban"></i>
                 </Button>
                 <Button style={style} variant="primary" type="submit" size="sm">
-                <i class="fas fa-check"></i>
+                  <i class="fas fa-check"></i>
                 </Button>
               </div>
             </form>

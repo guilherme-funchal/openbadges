@@ -22,8 +22,8 @@ export default function Badges() {
     };
     
 
-    const getBadges = async (header) => {
-        const response = await Api.get('assertions', header);
+    const getBadges = async (header, entityId) => {
+        const response = await Api.get('assertions/user/' + entityId , header);
         setAssertions(response.data);
     };
 
@@ -43,7 +43,7 @@ export default function Badges() {
         }
         setToken(token.access_token);
         setHeader(header);
-        getBadges(header);
+        getBadges(header,token.entity_id);
         getClasses(header);
         getIssuers(header);
 

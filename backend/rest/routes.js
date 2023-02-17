@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const IssuerController = require('./controller/IssuerController');
+const GraphController = require('./controller/GraphController');
 const BadgeClassController = require('./controller/BadgeClassController');
 const AssertionsController = require('./controller/AssertionsController');
 const UserController = require('./controller/UserController');
@@ -25,7 +26,8 @@ router.delete('/badgeclass/:id', verifyToken, BadgeClassController.delete);
 router.patch('/badgeclass', verifyToken, BadgeClassController.update);
 
 router.get('/assertions', verifyToken, AssertionsController.list);
-router.get('/assertions/:badgeClassId', verifyToken, AssertionsController.listEmail);
+router.get('/assertions/list/:badgeClassId', verifyToken, AssertionsController.listsearch);
+router.get('/assertions/user/:entityId', verifyToken, AssertionsController.usersearch);
 router.get('/assertions/:entityId', verifyToken, AssertionsController.search);
 router.post('/assertions', verifyToken, AssertionsController.insert);
 router.delete('/assertions/:entityId', verifyToken, AssertionsController.delete);
@@ -42,20 +44,16 @@ router.get('/users/email/:email', verifyToken, UserController.search_email);
 router.post('/users/test', verifyToken, UserController.test);
 router.delete('/users/:id',verifyToken,  UserController.delete);
 
-// router.post('/users', UserController.create);
-// router.put('/users/:id', UserController.update);
-// router.put('/users/password/:id', UserController.update_password);
-// router.get('/users', UserController.list);
-// router.get('/users/:entity_id', UserController.search);
-// router.post('/users/test', UserController.test);
-// router.delete('/users/:id',  UserController.delete);
-
 router.post('/files', verifyToken, upload.single('file'), fileUploadController.uploadSingle);
 router.get('/files/:file', fileUploadController.downloadSingle);
 router.get('/assertion/:file', fileUploadController.downloadSingleAssertion);
 router.delete('/files/:file', verifyToken, fileUploadController.removeSingle);
 router.delete('/files/assertions/:file', verifyToken, fileUploadController.removeSingleAssertion);
 
+router.get('/graph/domain/:Domain', verifyToken, GraphController.searchDomain);
+router.get('/graph/issuer/:issuerId', verifyToken, GraphController.searchIssuerId);
+router.get('/graph/class/:classId', verifyToken, GraphController.searchClassId);
+router.get('/graph/user/:entityId', verifyToken, GraphController.searchUserId);
 
 router.post('/user/login', UserAuth.login);
 router.post('/user/refresh', UserAuth.RefreshToken);

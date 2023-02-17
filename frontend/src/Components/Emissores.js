@@ -64,7 +64,6 @@ export default function Emissores() {
   }
 
   function delIssuer(id) {
-    console.log("id->", id);
     Swal.fire({
       title: 'Deseja excluir o emissor?',
       text: "",
@@ -120,6 +119,9 @@ export default function Emissores() {
         <Button style={style} variant="primary" size="sm" onClick={() => setShowAddEmissor(true)}>
           <i class="fas fa-plus"></i> Novo
         </Button>
+        <Link to="/DiagramDomain">
+        <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Dominio</Button>
+        </Link>
         {issuers.map((data) => {
           console.log("data:", data)
           return(
@@ -157,7 +159,7 @@ export default function Emissores() {
                         </Link>
                         <Button style={style} variant="danger" size="sm" onClick={() => delIssuer(data.id)}><i className="fas fa-ban" ></i> Excluir</Button>
                         <Button style={style} variant="primary" size="sm" onClick={() => editIssuer(data.id)}><i className="fas fa-check"></i> Editar</Button>
-                        <Link to="/Diagram">
+                        <Link to="/DiagramIssuer" key={data.id} state={{ id: data.entityId }}>
                           <Button style={style} variant="success" size="sm"><i className="fas fa-sitemap"></i> Diagrama</Button>
                         </Link>
                       </div>

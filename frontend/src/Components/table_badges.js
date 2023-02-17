@@ -33,10 +33,17 @@ export default function TableBadges(props) {
     const arr = [];
 
     const detailBadge = async (id) => {
+        console.log("aqui!!!!!");
         let result = id.replace(".png", "");
         result = result.replace("assertion-", "");
-        const response = await Api.get('assertions/' + result, props.header);
+        console.log("result->", result);
+
+        const response = await Api.get('assertions/list/' + result, props.header);
+
         setItems(response.data);
+
+        console.log("------>", items);
+        
         setShowBadge(true);
     };
 

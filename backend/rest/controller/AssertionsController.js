@@ -46,20 +46,18 @@ const burnBadge = async (entityId, badgeId, token) => {
     const path_assertion = "./public/assertions/";
     // const path_image = "public/badgeClass/";
     const path_image = "./public/uploads/";
+
     var responseIssue = await api.get('assertions/' + entityId, config);
 
     var jsonData = responseIssue.data.block;
 
     var responseBadgeClass = await api.get('badgeclass/' + badgeId, config);
+   
     var image = responseBadgeClass.data[0].image;
 
     image = path_image +  image
-
-    console.log("->", image)
-    
+  
     var img=fs.readFileSync(image)
-
-    console.log("->", img)
 
     var options = {
       image: img,
@@ -181,10 +179,94 @@ module.exports = {
           }
         }
       }
-      res.status(200).json(block);
+      res.status(200).json({block});
     } catch (e) {
       console.error(e)
     }  
+  },
+
+  async usersearch(req, res) {
+    try {
+      const authHeader = req.headers['authorization'];
+      const token = authHeader && authHeader.split(' ')[1];
+      let entityId = String(req.params.entityId);
+
+      var web3 = new Web3(address);
+      var block = [];
+
+      var contratoInteligente = new web3.eth.Contract(CONTACT_ABI.CONTACT_ABI, CONTACT_ADDRESS.CONTACT_ADDRESS);
+
+      let assertions = await contratoInteligente.methods.getItemsAssertion().call(function (err, res) {
+        if (err) {
+          console.log("Ocorreu um erro", err)
+          return
+        }
+        
+      });
+
+      const quantidade = assertions.length + 1;
+
+      for (var i = 1; i < quantidade; i++) {
+
+        let assertion = await contratoInteligente.methods.getAssertionByID(i).call(function (err, res) {
+          if (err) {
+            console.log("Ocorreu um erro", err)
+            return
+          }
+
+        });
+
+        if (assertion['6'] !== "") {
+          var user = await getUserData(String(assertion['6']), token);
+          var email_salt = crypto.randomBytes(12).toString('hex');
+          var email_hash = crypto.createHash("sha256").update(email_salt, "utf8").digest("hex")
+        }
+
+        if (assertion['0'] !== "0") {
+          console.log("entityId->", entityId);
+
+          if ( entityId === assertion['6']) {
+            block.push({
+              // uid: assertion['0'],
+              "@context": "https://w3id.org/openbadges/v2",
+              type: "Assertion",
+              id: "https://openbadges.serpro.gov.br/public/assertions/" + assertion['1'],
+              badge: "https://openbadges.serpro.gov.br/public/badges/" + assertion['5'],
+              badgeClassId: assertion['5'],
+              image: assertion['3'],
+              file: "assertion-" + assertion['1'] + ".png",
+              verification: {
+                type: "HostedBadge"
+              },
+              issueOn: assertion['7'],
+              "recipient": {
+                "hashed": true,
+                "type": "email",
+                "identity": "sha256$" + email_hash,
+                "salt": email_salt
+              },      
+              //   isssuerId: assertion['4'],
+              //   badgeclassId: assertion['5'],
+              //   recipienteId: assertion['6'],
+              revoked: assertion['8'],
+              revocationReason: assertion['9'],
+              "extensions:recipientProfile": {
+                "name": user.data.usuario.email,
+                "@context": "https://openbadgespec.org/extensions/recipientProfile/context.json",
+                "type": [
+                  "Extension",
+                  "extensions:RecipientProfile"
+                ]
+              }
+            });
+          }
+          
+        }
+      }
+      res.status(200).json({block});
+    } catch (e) {
+      console.error(e)
+    }
   },
 
   async list(req, res) {
@@ -264,7 +346,7 @@ module.exports = {
       console.error(e)
     }
   },
-  async listEmail(req, res) {
+  async listsearch(req, res) {
     try {
 
       let badgeClassId = String(req.params.badgeClassId);
@@ -304,6 +386,7 @@ module.exports = {
         }
 
         if (assertion['0'] !== "0") {
+          console.log(badgeClassId, assertion['1']);
           if (badgeClassId === assertion['5']){
             block.push({
               id: assertion['1'],
@@ -317,7 +400,7 @@ module.exports = {
               email: user.data.usuario.email,
               nome: user.data.usuario.username,
             });
-        }
+          }
         }
       }
       res.status(200).json(block);

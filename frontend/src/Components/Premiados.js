@@ -21,30 +21,23 @@ export default function Premiados(props) {
 
         var login = localStorage.getItem('login');
         var token = JSON.parse(login);
-        const response = await Api.get('assertions/' + entityId, header);
-        setItems(response.data);
-
-        console.log("response", items);
-    }
-
-
-    useEffect(() => {
-        setEntityId(location.state.id);
-        getPremiados(location.state.id);
-        var login = localStorage.getItem('login');
-        var token = JSON.parse(login);
         var header = {
             'headers': {
                 'Authorization': 'Bearer ' + token.access_token,
                 'Content-Type': 'application/json'
             }
         }
-        setHeader(header);
-        setToken(token.access_token);
+        const response = await Api.get('assertions/list/' + entityId, header);
+        setItems(response.data);
+    }
 
+
+    useEffect(() => {
+        setEntityId(location.state.id);
+        getPremiados(location.state.id);
     }, [])
 
-    const style = { width: '85px' }
+    const style = { width: '35px' }
 
     return (
         <div>
@@ -87,7 +80,8 @@ export default function Premiados(props) {
                                         <th>Nome</th>
                                         <th>Email</th>
                                         <th>Data</th>
-                                        <th>Opções</th>
+                                        <th>Ver</th>
+                                        <th>Revogar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -98,7 +92,10 @@ export default function Premiados(props) {
                                         <td>{data.email}</td>
                                         <td>{data.issueOn}</td>
                                         <td>
-                                            <Button style={style} variant="primary" size="sm"><i className="fas fa-ban"></i> Ver</Button>
+                                            <Button style={style} variant="primary" size="sm"><i className="fas fa-eye"></i></Button>
+                                        </td>
+                                        <td>
+                                            <Button style={style} variant="danger" size="sm"><i className="fas fa-ban"></i></Button>
                                         </td>
                                     </tr> 
                                     )      

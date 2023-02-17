@@ -65,9 +65,11 @@ function ModalAddBadge(props) {
       "issuerId" : props.issuerId,
       "badgeclassId" : props.entityId,
       "recipientId" : response.data.usuario.entity_id,
-      "expires" : data.expires
+      "expires" : String(data.expires)
     };
 
+    console.log("block->", block);
+    
     await Api.post('assertions', block, headers);
 
     await Toast.fire({

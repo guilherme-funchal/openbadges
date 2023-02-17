@@ -69,6 +69,7 @@ module.exports = {
           "token_type": "Bearer",
           "level": user.level,
           "entity_id": user.entity_id,
+          "domain": user.domain,
           "refresh_token": refreshToken
         }
         res.status(200).json(data)

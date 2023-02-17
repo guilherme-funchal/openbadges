@@ -13,7 +13,8 @@ class User extends Model {
         updated_at: DataTypes.STRING,
         last_login: DataTypes.STRING,
         entity_id: DataTypes.STRING,
-        level: DataTypes.INTEGER
+        level: DataTypes.INTEGER,
+        domain: DataTypes.STRING
     }, {
       tableName: 'users',
       sequelize

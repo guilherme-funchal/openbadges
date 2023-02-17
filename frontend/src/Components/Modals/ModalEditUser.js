@@ -17,14 +17,22 @@ function ModalEditUser(props) {
   const [userType, setType] = useState(props.items.usuario?.type);
   const [userLevel, setLevel] = useState(props.items.usuario?.level);
 
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState("empty");
+  const [prof, setProfile] = useState("");
 
   var id = props.items.usuario?.id;
   var username = props.items.usuario?.username;
   var email = props.items.usuario?.email;
   var image = props.items.usuario?.image;
+  var domain = props.items.usuario?.domanin;
+
+
+  console.log("props->", props);
+
+
 
   useEffect(() => {
+    setProfile(props.type);
 
   }, [])
 
@@ -54,13 +62,19 @@ function ModalEditUser(props) {
       email: "",
       type: "",
       image: "",
-      level: ""
+      level: "",
+      domain: ""
     },
   });
 
   async function submitForm(data) {
 
+    console.log("file : ", file);
+
     if (file !== "empty") {
+
+      console.log("aqui 1");
+
       let formdata = new FormData();
       formdata.append('file', file);
 
@@ -74,8 +88,8 @@ function ModalEditUser(props) {
         }
       }
 
-      var  old_image = image;
-     
+      var old_image = image;
+
 
       var transactions_result = await Api.post("/files", formdata, headers);
       image = transactions_result.data.file;
@@ -84,30 +98,31 @@ function ModalEditUser(props) {
       var remove_result = await Api.delete("/files/" + old_image, props.header);
       console.log(remove_result);
 
-      const block = {
+      var block = {
         "username": username,
         "email": email,
         "type": userType,
         "image": image,
-        "level": userLevel
+        "level": userLevel,
+        "domain": domain
       };
-  
+
       await Api.put('users/' + id, block, props.header);
 
-      
-    } else {
 
-      const block = {
+    } else {
+      console.log("aqui 2");
+
+      var block = {
         "username": username,
         "email": email,
         "type": userType,
         "image": image,
-        "level": userLevel
+        "level": userLevel,
+        "domain": domain
       };
       await Api.put('users/' + id, block, props.header);
     }
-
-    
 
     await Toast.fire({
       icon: 'success',
@@ -132,65 +147,157 @@ function ModalEditUser(props) {
             <h4 className="modal-title">Editar usuário</h4>
           </div>
           <div className="modal-body">
-            <form ref={form} noValidate onSubmit={handleSubmit(submitForm)}>
-              <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Nome usuario</Form.Label>
-                <Form.Control
-                  type="text"
-                  id="username"
-                  name="username"
-                  placeholder="Nome usuario"
-                  defaultValue={props.items.usuario?.username}
-                  onChange={(e) => username = e.target.value}
-                />
-              </Form.Group>
-              <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  defaultValue={props.items.usuario?.email}
-                  onChange={(e) => email = e.target.value}
-                />
-              </Form.Group>
-              <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Tipo</Form.Label><br></br>
-                <select name="type" value={userType} onChange={type => setType(type.target.value)}>
-                  <option value="pf">Pessoa física</option>
-                  <option value="pj">Pessoa jurídica</option>
-                </select><br /><br />
-              </Form.Group>
-              <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Estado</Form.Label><br></br>
-                <select name="level" value={userLevel} onChange={level => setLevel(level.target.value)}>
-                  <option value="1">Usuário</option>
-                  <option value="0">Administrador</option>
-                </select><br /><br />
-              </Form.Group>
-              <Form.Group as={Col} md="20" controlId="validationCustom01">
-                <Form.Label>Arquivo atual : {props.items.usuario?.image}</Form.Label><br></br>
-                <Form.Label></Form.Label><br></br>
-                <input
-                  type="file"
-                  name="image"
-                  defaultValue={props.items.usuario?.image}
-                  onChange={e => setFile(e.target.files[0])}
-                />
+            {prof === "adm" &&
+              <form ref={form} noValidate onSubmit={handleSubmit(submitForm)}>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Nome usuario</Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Nome usuario"
+                    defaultValue={props.items.usuario?.username}
+                    onChange={(e) => username = e.target.value}
+                  />
+                </Form.Group>
                 <br></br>
-              </Form.Group>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    defaultValue={props.items.usuario?.email}
+                    onChange={(e) => email = e.target.value}
+                  />
+                </Form.Group>
+                <br></br>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Dominio</Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="domain"
+                    name="domain"
+                    placeholder="Domain"
+                    defaultValue={props.items.usuario?.domain}
+                    onChange={(e) => domain = e.target.value}
+                  />
+                </Form.Group>
+                <br></br>
 
-              <br></br>
-              <div className="text-right">
-                <Button variant="danger" style={style} onClick={props.onClose} size="sm">
-                  <i class="fas fa-ban"></i>
-                </Button>
-                <Button variant="primary" style={style} type="submit" size="sm">
-                  <i class="fas fa-check"></i>
-                </Button>
-              </div>
-            </form>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Tipo</Form.Label><br></br>
+                  <select name="type" value={userType} onChange={type => setType(type.target.value)}>
+                    <option value="pf">Pessoa física</option>
+                    <option value="pj">Pessoa jurídica</option>
+                  </select>
+                </Form.Group>
+                <br></br>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Estado</Form.Label><br></br>
+                  <select name="level" value={userLevel} onChange={level => setLevel(level.target.value)}>
+                    <option value="1">Usuário</option>
+                    <option value="0">Administrador</option>
+                  </select>
+                </Form.Group>
+                <br></br>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Arquivo atual : {props.items.usuario?.image}</Form.Label><br></br>
+                  <Form.Label></Form.Label><br></br>
+                  <input
+                    type="file"
+                    name="image"
+                    defaultValue={props.items.usuario?.image}
+                    onChange={e => setFile(e.target.files[0])}
+                  />
+                </Form.Group>
+                <div className="text-right">
+                  <Button variant="danger" style={style} onClick={props.onClose} size="sm">
+                    <i class="fas fa-ban"></i>
+                  </Button>
+                  <Button variant="primary" style={style} type="submit" size="sm">
+                    <i class="fas fa-check"></i>
+                  </Button>
+                </div>
+              </form>
+            }
+            {prof === "user" &&
+
+              <form ref={form} noValidate onSubmit={handleSubmit(submitForm)}>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Nome usuario</Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Nome usuario"
+                    defaultValue={props.items.usuario?.username}
+                    onChange={(e) => username = e.target.value}
+                  />
+                </Form.Group>
+                <br></br>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="email"
+                    name="email"
+                    placeholder="Email"
+                    defaultValue={props.items.usuario?.email}
+                    onChange={(e) => email = e.target.value}
+                  />
+                </Form.Group>
+                <br></br>
+                {/* <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Dominio</Form.Label>
+                  <Form.Control
+                    type="text"
+                    id="domain"
+                    name="domain"
+                    placeholder="Domain"
+                    defaultValue={props.items.usuario?.domain}
+                    onChange={(e) => domain = e.target.value}
+                  />
+                </Form.Group> */}
+
+
+                {/* <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Tipo</Form.Label><br></br>
+                  <select name="type" value={userType} onChange={type => setType(type.target.value)}>
+                    <option value="pf">Pessoa física</option>
+                    <option value="pj">Pessoa jurídica</option>
+                  </select>
+                </Form.Group>
+                <br></br>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Estado</Form.Label><br></br>
+                  <select name="level" value={userLevel} onChange={level => setLevel(level.target.value)}>
+                    <option value="1">Usuário</option>
+                    <option value="0">Administrador</option>
+                  </select>
+                </Form.Group> */}
+                <br></br>
+                <Form.Group as={Col} md="20" controlId="validationCustom01">
+                  <Form.Label>Arquivo atual : {props.items.usuario?.image}</Form.Label><br></br>
+                  <Form.Label></Form.Label><br></br>
+                  <input
+                    type="file"
+                    name="image"
+                    defaultValue={props.items.usuario?.image}
+                    onChange={e => setFile(e.target.files[0])}
+                  />
+                </Form.Group>
+                <div className="text-right">
+                  <Button variant="danger" style={style} onClick={props.onClose} size="sm">
+                    <i class="fas fa-ban"></i>
+                  </Button>
+                  <Button variant="primary" style={style} type="submit" size="sm">
+                    <i class="fas fa-check"></i>
+                  </Button>
+                </div>
+              </form>
+            }
           </div>
           <div className="modal-footer">
           </div>

@@ -76,7 +76,7 @@
   .node-team-name {
     margin-bottom: 0.5rem;
     color: #fef9ef;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   .node-team-member-img {
     width: 30px;
@@ -89,7 +89,7 @@
     border-radius: 1rem;
   }
   .node-info {
-    margin-left: 1.5rem;
+    margin-left: 1.2rem;
     color: #fef9ef;
     display: flex;
     flex-direction: column;
@@ -97,7 +97,7 @@
   }
   .node-name {
     padding-bottom: 0.3rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
   }
   .node-role {
@@ -322,7 +322,7 @@
   }
   .diagram-card-name {
     margin-top: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
   }
   .diagram-card-role {
